@@ -1,8 +1,8 @@
 from flask import current_app, g
 from peewee import MySQLDatabase
-from app.models.database import *
+from app.models.db_models import *
 
-db_models = []
+db_models = [Student]
 
 def get_db() -> MySQLDatabase:
     if 'db' not in g:
