@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from .db import get_db, close_db
+from .commands import init_app_commands
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -24,7 +25,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # init_app_commands(app)
+    init_app_commands(app)
 
     @app.before_request
     def before_each_request():
