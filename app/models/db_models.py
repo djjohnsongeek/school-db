@@ -1,16 +1,12 @@
 import os
 from peewee import *
+from app.models.base import Person, BaseModel
 
-class BaseModel(Model):
-    id = AutoField()
+class Student(Person):
+    student_number = CharField(max_length=32, unique=True)
+    application_date = DateField()
+    occupation = CharField(max_length=128)
 
-    class Meta:
-        legacy_table_names = False
-
-class Student(BaseModel):
-    first_name_lao = CharField(max_length=128)
-    last_name_lao = CharField(max_length=128)
-    first_name = CharField(max_length=128)
-    last_name = CharField(max_length=128)
-    birthday = DateField()
-    email = CharField(max_length=64, unique=True)
+class Staff(Person):
+    hashed_password = CharField()
+    pass
