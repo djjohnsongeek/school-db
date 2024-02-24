@@ -13,18 +13,23 @@ class Student(Person):
         table_name = "students"
 
 class Staff(Person):
+    username = CharField(max_length=64)
     hashed_password = CharField(max_length=256)
+    role = IntegerField()
 
 class Term(BaseModel):
     name = CharField(max_length=64)
+    start_date = DateField()
+    end_date = DateField()
 
     class Meta:
         table_name = "terms"
 
 class SchoolClass(BaseModel):
     name = CharField(max_length=64)
-    teacher = ForeignKeyField(Staff, backref="classes")
     room_number = IntegerField()
+    teacher = ForeignKeyField(Staff, backref="classes")
+    term = ForeignKeyField(SchoolClass, backref="classes")
 
     class Meta:
         table_name = "classes"
