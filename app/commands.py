@@ -9,6 +9,8 @@ def init_db():
     db.drop_tables(db_models)
     db.create_tables(db_models)
 
+    # todo: add test data
+
     db.close()
 
 def init_app_commands(app):
