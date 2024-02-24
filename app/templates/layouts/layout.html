@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>School Database</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/lib/font-awesome-4.7.0') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='/images/database.png')}}">
+    {% block early_scripts %}{% endblock %}
+</head>
+
+<body>
+    <nav class="navbar mb-5 has-shadow" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="#">
+                <img src="{{ url_for('static', filename='/images/database.png')}}" height="28">
+            </a>
+        </div>
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="#">
+                    Terms
+                </a>
+                <a class="navbar-item" href="#">
+                    Classes
+                </a>
+                <a class="navbar-item" href="#">
+                    Teachers
+                </a>
+                <a class="navbar-item" href="#">
+                    Students
+                </a>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div>
+                        Uesr Name Here
+                    </div>
+                </div>
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-light" href="#">
+                            <strong>Logout</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main>
+        {% block main %}
+        {% endblock %}
+    </main>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
