@@ -8,5 +8,5 @@ class Student(Person):
     occupation = CharField(max_length=128)
 
 class Staff(Person):
-    hashed_password = CharField()
+    hashed_password = CharField(max_length=256)
     pass
