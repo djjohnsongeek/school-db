@@ -10,3 +10,16 @@ class Student(Person):
 class Staff(Person):
     hashed_password = CharField(max_length=256)
     pass
+
+class Term(BaseModel):
+    name = CharField(max_length=64)
+
+class SchoolClass(BaseModel):
+    name = CharField(max_length=64)
+    teacher = ForeignKeyField(Staff, backref="classes")
+    room_number = IntegerField()
+
+class ClassRosterItem(BaseModel):
+    student = ForeignKeyField(Student, backref="class_list")
+    school_class = ForeignKeyField(SchoolClass, backref="student_list")
+    

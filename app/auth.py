@@ -1,6 +1,5 @@
 import functools
-import uuid
-from flask import redirect, session, url_for, flash, g
+from flask import redirect, session, url_for, flash
 
 def login_required(view):
     @functools.wraps(view)
