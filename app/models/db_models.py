@@ -64,3 +64,5 @@ class SessionAttendance(BaseModel):
 
     class Meta:
         table_name = "attendance"
+
+## To Do talk to steve about grading
