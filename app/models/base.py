@@ -8,12 +8,12 @@ class BaseModel(Model):
         legacy_table_names = False
 
 class Person(BaseModel):
-    first_name_lao = CharField(max_length=128)
-    last_name_lao = CharField(max_length=128)
+    first_name_lao = CharField(max_length=128, null=True)
+    last_name_lao = CharField(max_length=128, null=True)
     first_name = CharField(max_length=128)
     last_name = CharField(max_length=128)
-    nick_name = CharField(max_length=128)
-    gender = CharField(max_length=1)
+    nick_name = CharField(max_length=128, null=True)
+    gender = CharField(max_length=6)
     phone_number = CharField(max_length=32)
     birthday = DateField()
     email = CharField(max_length=64, unique=True)
