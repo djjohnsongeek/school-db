@@ -29,7 +29,7 @@ class SchoolClass(BaseModel):
     name = CharField(max_length=64)
     room_number = IntegerField()
     teacher = ForeignKeyField(Staff, backref="classes")
-    term = ForeignKeyField(SchoolClass, backref="classes")
+    term = ForeignKeyField(Term, backref="classes")
 
     class Meta:
         table_name = "classes"
@@ -41,4 +41,20 @@ class ClassRosterEntry(BaseModel):
     class Meta:
         table_name = "class_rosters"
 
-    
+class Session(BaseModel):
+    name = CharField(max_length=64)
+    date = DateField()
+    cancelled = BooleanField()
+    school_class = ForeignKeyField(SchoolClass, backref="session")
+
+    class Meta:
+        table_name = "sessions"
+
+class SessionAttendance(BaseModel):
+    student = ForeignKeyField(Student, backref="session_attendance")
+    session = ForeignKeyField(Session, backref="attendance")
+    recorded_by = ForeignKeyField(Staff, backref="recorded_attendance")
+    value = CharField(max_length=1)
+
+    class Meta:
+        table_name = "attendance"
