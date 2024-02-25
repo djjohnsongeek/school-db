@@ -2,8 +2,6 @@ import os
 from peewee import *
 from app.models.base import Person, BaseModel
 
-#todo add table name meta
-
 class Student(Person):
     student_number = CharField(max_length=32, unique=True)
     application_date = DateField()
@@ -16,6 +14,14 @@ class Staff(Person):
     username = CharField(max_length=64)
     hashed_password = CharField(max_length=256)
     role = IntegerField()
+
+class LoginLog(BaseModel):
+    staff = ForeignKeyField(Staff, backref="login_logs")
+    time = DateTimeField()
+    success = BooleanField()
+
+    class Meta:
+        table_name = "login_logs"
 
 class Term(BaseModel):
     name = CharField(max_length=64)
