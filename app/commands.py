@@ -1,5 +1,5 @@
 from app.db import get_db, db_models
-from app.models.db_models import Staff, Student
+from app.models.db_models import Staff, Student, Term, SchoolClass, ClassRosterEntry, Session
 from app.models.enums import StaffRole, PersonGender
 from datetime import date
 from werkzeug.security import generate_password_hash
@@ -30,7 +30,7 @@ def init_db():
         role=StaffRole.General.value,
     ).execute()
 
-    Staff.insert(
+    teacher = Staff.create(
         first_name_lao=None,
         last_name_lao=None,
         first_name="Rebecca",
@@ -44,10 +44,10 @@ def init_db():
         birthday=date.today(),
         address="Midway, NC 27103",
         role=StaffRole.Teacher.value,
-    ).execute()
+    )
 
     # Insert Students
-    Student.insert(
+    student_1 = Student.create(
         first_name_lao="ອາລານາ",
         last_name_lao="ພົນນາສາ",
         first_name="Alana",
@@ -61,9 +61,9 @@ def init_db():
         student_number="01022024",
         application_date=date.fromisoformat("2024-02-22"),
         occupation="Unknown"
-    ).execute()
+    )
 
-    Student.insert(
+    student_2 = Student.create(
         first_name_lao="ເກສອນ",
         last_name_lao="ໄຊຍະວົງ",
         first_name="Kesone",
@@ -77,9 +77,84 @@ def init_db():
         student_number="02022024",
         application_date=date.fromisoformat("2024-02-22"),
         occupation="None"
+    )
+
+    # Insert terms
+    term = Term.create(
+        name="Fall 2024",
+        start_date=date.fromisoformat("2024-08-01"),
+        end_date=date.fromisoformat("2024-12-01")
+    )
+
+    term_2 = Term.create(
+        name="Spring 2025",
+        start_date=date.fromisoformat("2025-01-01"),
+        end_date=date.fromisoformat("2025-05-01")
+    )
+
+    # Insert classes
+    algebra = SchoolClass.create(
+        name='Algebra 1',
+        room_number=5,
+        teacher=teacher,
+        term=term
+    )
+
+    SchoolClass.insert(
+        name="Physics",
+        room_number=12,
+        teacher=teacher,
+        term=term_2
     ).execute()
 
-    # todo: add test data
+    # Fill out the class roster
+    ClassRosterEntry.insert(
+        student = student_1,
+        school_class = algebra,
+    ).execute()
+
+    ClassRosterEntry.insert(
+        student = student_2,
+        school_class = algebra,
+    ).execute()
+
+    # Create class sessions
+    Session.insert(
+        name="Session 1",
+        date=date.fromisoformat("2024-08-01"),
+        cancelled=False,
+        school_class=algebra
+    ).execute()
+
+    Session.insert(
+        name="Session 2",
+        date=date.fromisoformat("2024-08-08"),
+        cancelled=False,
+        school_class=algebra
+    ).execute()
+
+    Session.insert(
+        name="Session 3",
+        date=date.fromisoformat("2024-08-15"),
+        cancelled=False,
+        school_class=algebra
+    ).execute()
+
+    Session.insert(
+        name="Session 4",
+        date=date.fromisoformat("2024-09-01"),
+        cancelled=False,
+        school_class=algebra
+    ).execute()
+
+    Session.insert(
+        name="Session 5",
+        date=date.fromisoformat("2024-09-08"),
+        cancelled=False,
+        school_class=algebra
+    ).execute()
+
+    # TODO: grading system
 
     db.close()
 
