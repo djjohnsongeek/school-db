@@ -38,7 +38,9 @@ def create_app(test_config=None):
         return response
     
     from .controllers.index_controller import index_blueprint
+    from .controllers.classes_controller import classes_blueprint
 
     app.register_blueprint(index_blueprint)
+    app.register_blueprint(classes_blueprint)
 
     return app

@@ -1,6 +1,7 @@
 import os
 from peewee import *
 from app.models.base import Person, BaseModel
+from datetime import date
 
 class Student(Person):
     student_number = CharField(max_length=32, unique=True)
@@ -14,6 +15,9 @@ class Staff(Person):
     username = CharField(max_length=64)
     hashed_password = CharField(max_length=256)
     role = IntegerField()
+
+    def full_english_name(self):
+        return f"{self.first_name} {self.last_name}"
 
 class LoginLog(BaseModel):
     staff = ForeignKeyField(Staff, backref="login_logs")
@@ -37,12 +41,20 @@ class SchoolClass(BaseModel):
     teacher = ForeignKeyField(Staff, backref="classes")
     term = ForeignKeyField(Term, backref="classes")
 
+    def remaining_sessions(self):
+        i = len(self.sessions)
+        for session in self.sessions:
+            if date.today() > session.date:
+                i -= 1
+
+        return i
+
     class Meta:
         table_name = "classes"
 
 class ClassRosterEntry(BaseModel):
     student = ForeignKeyField(Student, backref="class_list")
-    school_class = ForeignKeyField(SchoolClass, backref="student_list")
+    school_class = ForeignKeyField(SchoolClass, backref="roster")
 
     class Meta:
         table_name = "class_rosters"
@@ -51,7 +63,7 @@ class Session(BaseModel):
     name = CharField(max_length=64)
     date = DateField()
     cancelled = BooleanField()
-    school_class = ForeignKeyField(SchoolClass, backref="session")
+    school_class = ForeignKeyField(SchoolClass, backref="sessions")
 
     class Meta:
         table_name = "sessions"

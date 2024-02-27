@@ -1,0 +1,97 @@
+{% extends '/layouts/layout.html' %}
+
+{% block main %}
+<div class="container is-fluid">
+    <div class="block">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-header-title title is-3">Classes</h1>
+            </div>
+            <div class="card-content">
+                <div class="block">
+                    <div class="field is-grouped">
+                        <div class="control has-icons-left">
+                            <input class="input" type="text" placeholder="Type to search ...">
+                            <span class="icon is-small is-left">
+                                <i class="fa fa-search"></i>
+                            </span>
+                        </div>
+                        <div class="control mr-2">
+                            <div class="select">
+                                <select>
+                                    <option>All Terms</option>
+                                    <option>Fall 2024</option>
+                                    <option>Spring 2024</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control">
+                            <a class="button is-link" href="#">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </span>
+                                    <span>New Class</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <table class="table is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>
+                                Class Name
+                            </th>
+                            <th>
+                                Term
+                            </th>
+                            <th>
+                                Teacher
+                            </th>
+                            <th>
+                                Room Number
+                            </th>
+                            <th>
+                                Total Sessions
+                            </th>
+                            <th>
+                                Remaining Sessions
+                            </th>
+                            <th>
+                                Student Count
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for school_class in classes %}
+                        <tr>
+                            <td>{{school_class.name}}</td>
+                            <td>{{school_class.term}}</td>
+                            <td>{{school_class.teacher_name}}</td>
+                            <td>{{school_class.room_number}}</td>
+                            <td>{{school_class.sessions_count}}</td>
+                            <td>{{school_class.remaining_sessions_count}}</td>
+                            <td>{{school_class.roster_count}}</td>
+                            <td>
+                                <a class="button is-link" href="#">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                        </span>
+                                        <span>Details</span>
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

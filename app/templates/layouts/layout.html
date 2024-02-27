@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>School Database</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='/css/lib/font-awesome-4.7.0') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/lib/font-awesome-4.7.0/css/font-awesome.min.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='/images/database.png')}}">
     {% block early_scripts %}{% endblock %}
 </head>
@@ -23,7 +23,7 @@
                 <a class="navbar-item" href="#">
                     Terms
                 </a>
-                <a class="navbar-item" href="#">
+                <a class="navbar-item" href="{{ url_for('classes.home') }}">
                     Classes
                 </a>
                 <a class="navbar-item" href="#">
