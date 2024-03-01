@@ -23,6 +23,9 @@ class Staff(Person):
         else:
             return self.full_lao_name()
 
+    def get_role(self):
+        return StaffRole(self.role)
+
 class LoginLog(BaseModel):
     staff = ForeignKeyField(Staff, backref="login_logs")
     time = DateTimeField()
