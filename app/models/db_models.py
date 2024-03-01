@@ -1,6 +1,7 @@
 import os
 from peewee import *
-from app.models.base import Person, BaseModel
+from app.models.base_models import Person, BaseModel
+from app.models.enums import StaffRole
 from datetime import date
 
 class Student(Person):
@@ -16,8 +17,11 @@ class Staff(Person):
     hashed_password = CharField(max_length=256)
     role = IntegerField()
 
-    def full_english_name(self):
-        return f"{self.first_name} {self.last_name}"
+    def full_name(self):
+        if self.role == StaffRole.Teacher.value:
+            return self.full_english_name()
+        else:
+            return self.full_lao_name()
 
 class LoginLog(BaseModel):
     staff = ForeignKeyField(Staff, backref="login_logs")

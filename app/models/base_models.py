@@ -18,3 +18,12 @@ class Person(BaseModel):
     birthday = DateField()
     email = CharField(max_length=64, unique=True)
     address = CharField(max_length=128)
+
+    def full_english_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    def full_lao_name(self):
+        return f"{self.first_name_lao} {self.last_name_lao}"
+
+    def full_name(self):
+        return f"{self.full_lao_name()} ({self.full_english_name})"
