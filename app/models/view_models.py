@@ -1,4 +1,5 @@
 from app.models.db_models import SchoolClass
+from app.models.enums import PersonGender, StaffRole
 
 class ClassItem:
     def __init__(self, class_model):
@@ -17,8 +18,8 @@ class StaffItem:
         self.id = staff_model.id
         self.name = staff_model.full_name()
         self.nick_name = staff_model.nick_name
-        self.role = staff_model.get_role()
-        self.gender = staff_model.gender
+        self.role = StaffRole(staff_model.role)
+        self.gender = PersonGender(staff_model.gender)
         self.birthday = staff_model.birthday.strftime("%d/%m/%Y")
         self.phone_number = staff_model.phone_number
         self.address = staff_model.address

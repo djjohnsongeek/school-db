@@ -13,7 +13,7 @@ class Person(BaseModel):
     first_name = CharField(max_length=128)
     last_name = CharField(max_length=128)
     nick_name = CharField(max_length=128, null=True)
-    gender = CharField(max_length=6)
+    gender = IntegerField(null=False)
     phone_number = CharField(max_length=32)
     birthday = DateField()
     email = CharField(max_length=64, unique=True)
