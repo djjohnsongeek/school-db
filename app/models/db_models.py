@@ -17,7 +17,7 @@ class Staff(Person):
     hashed_password = CharField(max_length=256)
     role = IntegerField()
 
-    def full_name(self):
+    def full_name(self) -> str:
         if self.role == StaffRole.Teacher.value:
             return self.full_english_name()
         else:
@@ -45,7 +45,7 @@ class SchoolClass(BaseModel):
     teacher = ForeignKeyField(Staff, backref="classes")
     term = ForeignKeyField(Term, backref="classes")
 
-    def remaining_sessions(self):
+    def remaining_sessions(self) -> int:
         i = len(self.sessions)
         for session in self.sessions:
             if date.today() > session.date:
