@@ -40,9 +40,11 @@ def create_app(test_config=None):
     from .controllers.index_controller import index_blueprint
     from .controllers.classes_controller import classes_blueprint
     from .controllers.staff_controller import staff_blueprint
+    from .controllers.student_controller import student_blueprint
 
     app.register_blueprint(index_blueprint)
     app.register_blueprint(classes_blueprint)
     app.register_blueprint(staff_blueprint)
+    app.register_blueprint(student_blueprint)
 
     return app

@@ -1,11 +1,11 @@
-{% extends '/layouts/layout.html' %}
+{% extends "/layouts/layout.html" %}
 
 {% block main %}
 <div class="container is-fluid">
     <div class="block">
         <div class="card">
             <div class="card-header">
-                <h1 class="card-header-title title is-3">Staff</h1>
+                <h1 class="card-header-title title is-3">Students</h1>
             </div>
             <div class="card-content">
                 <div class="block">
@@ -17,12 +17,12 @@
                             </span>
                         </div>
                         <div class="control">
-                            <a class="button is-link" href="#">
+                            <a class="button is-link" href="./new-student.html">
                                 <span class="icon-text">
                                     <span class="icon">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                     </span>
-                                    <span>New Staff</span>
+                                    <span>New Student</span>
                                 </span>
                             </a>
                         </div>
@@ -32,13 +32,13 @@
                     <thead>
                         <tr>
                             <th>
+                                Student Number
+                            </th>
+                            <th>
                                 Name
                             </th>
                             <th>
                                 Nickname
-                            </th>
-                            <th>
-                                Role
                             </th>
                             <th>
                                 Gender
@@ -56,21 +56,29 @@
                                 Address
                             </th>
                             <th>
+                                Work / School
+                            </th>
+                            <th>
+                                Application Date
+                            </th>
+                            <th>
                                 Actions
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for staff_member in staff %}
+                        {% for student in students %}
                         <tr>
-                            <td>{{staff_member.name}}</td>
-                            <td>{{staff_member.nick_name}}</td>
-                            <td>{{staff_member.role.name}}</td>
-                            <td>{{staff_member.gender.name}}</td>
-                            <td>{{staff_member.birthday}}</td>
-                            <td>{{staff_member.email}}</td>
-                            <td>{{staff_member.phone_number}}</td>
-                            <td>{{staff_member.address}}</td>
+                            <td>{{student.student_number}}</td>
+                            <td>{{student.name}}</td>
+                            <td>{{student.nick_name}}</td>
+                            <td>{{student.gender.name}}</td>
+                            <td>{{student.birthday}}</td>
+                            <td>{{student.email}}</td>
+                            <td>{{student.phone_number}}</td>
+                            <td>{{student.address}}</td>
+                            <td>{{student.occupation}}</td>
+                            <td>{{student.application_date}}</td>
                             <td>
                                 <a class="button is-link" href="#">
                                     <span class="icon-text">
@@ -78,14 +86,6 @@
                                             <i class="fa fa-info-circle" aria-hidden="true"></i>
                                         </span>
                                         <span>Details</span>
-                                    </span>
-                                </a>
-                                <a class="button is-danger" href="#">
-                                    <span class="icon-text">
-                                        <span class="icon">
-                                            <i class="fa fa-key" aria-hidden="true"></i>
-                                        </span>
-                                        <span>Reset</span>
                                     </span>
                                 </a>
                             </td>
