@@ -1,7 +1,10 @@
 import os
 from flask import Flask
+from flask_wtf import CSRFProtect
 from .db import get_db, close_db
 from .commands import init_app_commands
+
+csrf = CSRFProtect()
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -25,6 +28,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    csrf.init_app(app)
     init_app_commands(app)
 
     @app.before_request
