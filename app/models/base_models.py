@@ -26,4 +26,4 @@ class Person(BaseModel):
         return f"{self.first_name_lao} {self.last_name_lao}"
 
     def full_name(self):
-        return f"{self.full_lao_name()} ({self.full_english_name})"
+        return f"{self.full_lao_name()} ({self.full_english_name()})"

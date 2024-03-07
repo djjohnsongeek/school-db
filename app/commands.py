@@ -26,7 +26,7 @@ def init_db(no_populate):
             username="djohnson",
             hashed_password=generate_password_hash("password"),
             email="danieleejohnson@gmail.com",
-            birthday=date.today(),
+            birthday=date.fromisoformat("1992-05-25"),
             address="Midway, NC 27107",
             role=StaffRole.General.value,
         ).execute()
@@ -42,7 +42,7 @@ def init_db(no_populate):
             username="rjohnson",
             hashed_password=generate_password_hash("password"),
             email="rebeccalbobo@gmail.com",
-            birthday=date.today(),
+            birthday=date.fromisoformat("1992-05-12"),
             address="Midway, NC 27103",
             role=StaffRole.Teacher.value,
         )

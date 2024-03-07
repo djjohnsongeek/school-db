@@ -32,13 +32,10 @@
                     <thead>
                         <tr>
                             <th>
-                                Id
+                                Student Number
                             </th>
                             <th>
                                 Name
-                            </th>
-                            <th>
-                                Name (English)
                             </th>
                             <th>
                                 Nickname
@@ -67,19 +64,19 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for student in students %}
                         <tr>
-                            <td>23</td>
-                            <td>ອາລານາ ພົນນາສາ</td>
-                            <td>Alana Phonasa</td>
-                            <td>Bird</td>
-                            <td>Female</td>
-                            <td>12/05/1992</td>
-                            <td>856 000 000 0000</td>
-                            <td>Phon Xay Rd</td>
-                            <td>Unknown</td>
-                            <td>22/02/2024</td>
+                            <td>{{student.student_number}}</td>
+                            <td>{{student.name}}</td>
+                            <td>{{student.nick_name}}</td>
+                            <td>{{student.gender.name}}</td>
+                            <td>{{student.birthday}}</td>
+                            <td>{{student.phone_number}}</td>
+                            <td>{{student.address}}</td>
+                            <td>{{student.occupation}}</td>
+                            <td>{{student.application_date}}</td>
                             <td>
-                                <a class="button is-link" href="./student.html">
+                                <a class="button is-link" href="#">
                                     <span class="icon-text">
                                         <span class="icon">
                                             <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -89,28 +86,7 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>32</td>
-                            <td>ເກສອນ ໄຊຍະວົງ</td>
-                            <td>Kesone Sayavong</td>
-                            <td>Rock</td>
-                            <td>Male</td>
-                            <td>25/05/1994</td>
-                            <td>856 000 000 0000</td>
-                            <td>Phon Xay Rd</td>
-                            <td>None</td>
-                            <td>22/02/2024</td>
-                            <td>
-                                <a class="button is-link" href="./student.html">
-                                    <span class="icon-text">
-                                        <span class="icon">
-                                            <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                        </span>
-                                        <span>Details</span>
-                                    </span>
-                                </a>
-                            </td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
