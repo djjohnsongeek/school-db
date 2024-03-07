@@ -22,6 +22,7 @@ class PersonItem:
         self.birthday = person_model.birthday.strftime("%d/%m/%Y")
         self.phone_number = person_model.phone_number
         self.address = person_model.address
+        self.email = person_model.email
 
 class StaffItem(PersonItem):
     def __init__(self, staff_model):
