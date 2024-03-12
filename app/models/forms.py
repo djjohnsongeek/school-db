@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, HiddenInput, DateField, EmailField, SelectField
+from wtforms import StringField, IntegerField, DateField, EmailField, SelectField
 from wtforms.validators import DataRequired, Email
 
 class StaffEditForm(FlaskForm):
-    staff_id = IntegerField(widget=HiddenInput(), validators=[DataRequired()])
+    staff_id = IntegerField(validators=[DataRequired()])
     first_name_lao = StringField("First Name", validators=[DataRequired()])
     last_name_lao = StringField("Last Name", validators=[DataRequired()])
     first_name = StringField("First Name (English)", validators=[DataRequired()])

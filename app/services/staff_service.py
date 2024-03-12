@@ -17,7 +17,7 @@ def to_staff_form(staff_model: Staff) -> StaffEditForm:
     if staff_model is not None:
         form = StaffEditForm(
             first_name=staff_model.first_name,
-            last_name=staff_model.first_namelast_name,
+            last_name=staff_model.last_name,
             first_name_lao=staff_model.first_name_lao,
             last_name_lao=staff_model.last_name_lao,
             nickname=staff_model.nick_name,
@@ -29,7 +29,5 @@ def to_staff_form(staff_model: Staff) -> StaffEditForm:
             address=staff_model.address,
             birthday=staff_model.birthday,
         )
-
-        return form
-    else:
-        return None
+    
+    return staff_model if staff_model is not None else None

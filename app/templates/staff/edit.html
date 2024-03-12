@@ -1,5 +1,89 @@
 {% extends "/layouts/layout.html" %}
 
 {% block main %}
+<div class="container">
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title title is-3">ດານີເອນ ຈອນສັນ (Daniel Johnson)</h1>
+                </div>
+                <div class="card-content">
+                    <form method="POST" action="/">
+                        {{ staff_form.csrf_token }}
 
+                        <div class="field">
+                            {{ staff_form.first_name_lao.label }}
+                            {{ staff_form.first_name_lao() }}
+                        </div>
+
+                        <button class="button is-primary" type="submit">
+                            <span class="icon-text">
+                                <span class="icon">
+                                    <i class="fa fa-save" aria-hidden="true"></i>
+                                </span>
+                                <span>Save Changes</span>
+                            </span>
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title title is-3">Current Classes</h1>
+                </div>
+                <div class="card-content">
+                    <table class="table is-fullwidth">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Term</th>
+                                <th>Students</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="./class.html">Algebra 1</a></td>
+                                <td>Fall 2024</td>
+                                <td>7</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title title is-3">Past Classes</h1>
+                </div>
+                <div class="card-content">
+                    <table class="table is-fullwidth">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Term</th>
+                                <th>Students</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="./class.html">Algebra 1</a></td>
+                                <td>Spring 2024</td>
+                                <td>5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
