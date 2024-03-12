@@ -1,5 +1,5 @@
 from app.repo import staff_repo
-from app.models.view_models import StaffItem
+from app.models.view_models import StaffItem, StaffEditItem
 from app.models.db_models import Staff
 from app.models.forms import StaffEditForm
 
@@ -9,13 +9,18 @@ def get_staff_list() -> []:
 
 def get_staff(staff_id: int) -> StaffEditForm:
     staff = staff_repo.retrieve(staff_id)
-    form = to_staff_form(staff)
-    return form
+
+    if staff is not None:
+        form = to_staff_form(staff)
+        return StaffEditItem(staff, form)
+    else:
+        return None
 
 def to_staff_form(staff_model: Staff) -> StaffEditForm:
     # convert to wtforms object
     if staff_model is not None:
         form = StaffEditForm(
+            staff_id=staff_model.id,
             first_name=staff_model.first_name,
             last_name=staff_model.last_name,
             first_name_lao=staff_model.first_name_lao,
@@ -30,4 +35,4 @@ def to_staff_form(staff_model: Staff) -> StaffEditForm:
             birthday=staff_model.birthday,
         )
     
-    return staff_model if staff_model is not None else None
+    return form if staff_model is not None else None

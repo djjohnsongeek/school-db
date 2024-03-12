@@ -6,17 +6,92 @@
         <div class="column">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-header-title title is-3">ດານີເອນ ຈອນສັນ (Daniel Johnson)</h1>
+                    <h2 class="card-header-title title is-3">
+                        <span class="has-text-grey mr-2">{{ staff_model.role.name }} - </span>
+                        <span>{{ staff_model.fullname }}</span>
+                    </h1>
                 </div>
                 <div class="card-content">
                     <form method="POST" action="/">
-                        {{ staff_form.csrf_token }}
-
-                        <div class="field">
-                            {{ staff_form.first_name_lao.label }}
-                            {{ staff_form.first_name_lao() }}
+                        {{ staff_model.form.csrf_token }}
+                        <div class="columns">
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label">{{ staff_model.form.first_name_lao.label }}</label>
+                                    <div class="control">
+                                        {{ staff_model.form.first_name_lao(class="input") }}
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">{{ staff_model.form.last_name_lao.label }}</label>
+                                    <div class="control">
+                                        {{ staff_model.form.last_name_lao(class="input") }}
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">{{ staff_model.form.username.label }}</label>
+                                    <div class="control">
+                                        {{ staff_model.form.username(class="input") }}
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">{{ staff_model.form.email.label }}</label>
+                                    <div class="control">
+                                        {{ staff_model.form.email(class="input") }}
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">{{ staff_model.form.birthday.label }}</label>
+                                    <div class="control">
+                                        {{ staff_model.form.birthday(class="input") }}
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">{{ staff_model.form.address.label }}</label>
+                                    <div class="control">
+                                        {{ staff_model.form.address(class="input") }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label">{{ staff_model.form.first_name.label }}</label>
+                                    <div class="control">
+                                        {{ staff_model.form.first_name(class="input") }}
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">{{ staff_model.form.last_name.label }}</label>
+                                    <div class="control">
+                                        {{ staff_model.form.last_name(class="input") }}
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">{{ staff_model.form.nick_name.label }}</label>
+                                    <div class="control">
+                                        {{ staff_model.form.nick_name(class="input") }}
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">{{ staff_model.form.phone_number.label }}</label>
+                                    <div class="control">
+                                        {{ staff_model.form.phone_number(class="input") }}
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">{{ staff_model.form.gender.label }}</label>
+                                    <div class="select">
+                                        {{ staff_model.form.gender() }}
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">{{ staff_model.form.role.label }}</label>
+                                    <div class="select">
+                                        {{ staff_model.form.role() }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                         <button class="button is-primary" type="submit">
                             <span class="icon-text">
                                 <span class="icon">
@@ -26,64 +101,39 @@
                             </span>
                         </button>
                     </form>
-
                 </div>
             </div>
         </div>
     </div>
+    {% if staff_model.classes %}
     <div class="columns">
         <div class="column">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-header-title title is-3">Current Classes</h1>
+                    <h2 class="card-header-title title is-3">Classes</h1>
                 </div>
                 <div class="card-content">
-                    <table class="table is-fullwidth">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Term</th>
-                                <th>Students</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {# TODO: accessing the term model like this creats and n+1 problem #}
+                            {% for staff_class in staff_model.classes %}
                             <tr>
-                                <td><a href="./class.html">Algebra 1</a></td>
-                                <td>Fall 2024</td>
-                                <td>7</td>
+                                <td><a href="#">{{ staff_class.name }}</a></td>
+                                <td>{{ staff_class.term.name }}</td>
                             </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    <div class="columns">
-        <div class="column">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-header-title title is-3">Past Classes</h1>
-                </div>
-                <div class="card-content">
-                    <table class="table is-fullwidth">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Term</th>
-                                <th>Students</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><a href="./class.html">Algebra 1</a></td>
-                                <td>Spring 2024</td>
-                                <td>5</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% endif %}
 </div>
 {% endblock %}
