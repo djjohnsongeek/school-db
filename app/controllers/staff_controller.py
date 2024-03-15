@@ -8,15 +8,19 @@ def home():
     staff = staff_service.get_staff_list()
     return render_template("/staff/list.html", staff=staff)
 
-@staff_blueprint.route("/staff/<int:staff_id>", methods=["GET"])
+@staff_blueprint.route("/staff/<int:staff_id>", methods=["GET", "POST"])
 def edit(staff_id: int):
     if request.method == "GET":
-        staff_model = staff_service.get_staff(staff_id)
-        if staff_model is None:
+        staff_edit_model = staff_service.get_staff(staff_id)
+        if staff_edit_model is None:
             return redirect(url_for("index.error", error_code=404))
         else:
-            return render_template("/staff/edit.html", staff_model=staff_model)
+            return render_template("/staff/edit.html", staff_model=staff_edit_model)
+
     if request.method == "POST":
         staff_form = StaffEditForm()
-        staff_service.update_staff(staff_form)
-        return 
+        staff_edit_model = staff_service.update_staff(staff_form)
+        if staff_edit_model is None:
+            return redirect(url_for("index.error", error_code=404))
+        else:
+            return render_template("/staff/edit.html", staff_model=staff_edit_model)

@@ -7,7 +7,7 @@ def get_staff_list() -> []:
     staff_models = staff_repo.retrieve_all()
     return [StaffItem(model) for model in staff_models]
 
-def get_staff(staff_id: int) -> StaffEditForm:
+def get_staff(staff_id: int) -> StaffEditItem:
     staff = staff_repo.retrieve(staff_id)
 
     if staff is not None:
@@ -37,12 +37,11 @@ def to_staff_form(staff_model: Staff) -> StaffEditForm:
     
     return form if staff_model is not None else None
 
-def update_staff(form: StaffEditForm) -> bool:
-    result = False
+def update_staff(form: StaffEditForm) -> StaffEditItem:
+    staff_model = staff_repo.retrieve(int(form.staff_id.data))
 
-    if form.validate():
-        # other validations?
-        staff_model = get_staff(int(form.staff_id.data))
+    if staff_model is not None and form.validate():
         result = staff_repo.update(form)
+        form = to_staff_form(staff_model)
 
-    return result
+    return StaffEditItem(staff_model, form)
