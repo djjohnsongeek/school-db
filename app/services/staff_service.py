@@ -36,3 +36,13 @@ def to_staff_form(staff_model: Staff) -> StaffEditForm:
         )
     
     return form if staff_model is not None else None
+
+def update_staff(form: StaffEditForm) -> bool:
+    result = False
+
+    if form.validate():
+        # other validations?
+        staff_model = get_staff(int(form.staff_id.data))
+        result = staff_repo.update(form)
+
+    return result

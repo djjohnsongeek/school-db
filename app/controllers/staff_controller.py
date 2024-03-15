@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from app.services import staff_service
+from app.models.forms import StaffEditForm
 staff_blueprint = Blueprint("staff", __name__)
 
 @staff_blueprint.route("/staff", methods=["GET"])
@@ -15,3 +16,7 @@ def edit(staff_id: int):
             return redirect(url_for("index.error", error_code=404))
         else:
             return render_template("/staff/edit.html", staff_model=staff_model)
+    if request.method == "POST":
+        staff_form = StaffEditForm()
+        staff_service.update_staff(staff_form)
+        return 

@@ -21,7 +21,7 @@ class Staff(Person):
         if self.role == StaffRole.Teacher.value:
             return self.full_english_name()
         else:
-            return self.full_lao_name()
+            return super().full_name()
             
 class LoginLog(BaseModel):
     staff = ForeignKeyField(Staff, backref="login_logs")
