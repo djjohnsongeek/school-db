@@ -25,7 +25,7 @@ def to_staff_form(staff_model: Staff) -> StaffEditForm:
             last_name=staff_model.last_name,
             first_name_lao=staff_model.first_name_lao,
             last_name_lao=staff_model.last_name_lao,
-            nickname=staff_model.nick_name,
+            nick_name=staff_model.nick_name,
             gender=staff_model.gender,
             role=staff_model.role,
             email=staff_model.email,
@@ -41,7 +41,9 @@ def update_staff(form: StaffEditForm) -> StaffEditItem:
     staff_model = staff_repo.retrieve(int(form.staff_id.data))
 
     if staff_model is not None and form.validate():
-        result = staff_repo.update(form)
+        result = staff_repo.update(form, staff_model)
         form = to_staff_form(staff_model)
+    elif staff_model is None:
+        return None
 
     return StaffEditItem(staff_model, form)
