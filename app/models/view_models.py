@@ -44,3 +44,7 @@ class StaffEditItem():
         self.role = StaffRole(staff_model.role)
         self.classes = staff_model.classes
         self.form = edit_form
+
+class StaffCreateItem():
+    def __init__(self, edit_form: StaffEditForm):
+        self.form = edit_form

@@ -14,3 +14,7 @@ def flash_message(message: str, category: MessageCategory):
         flash_cat = ""
 
     flash(message, flash_cat)
+
+def flash_messages(messages: [], category: MessageCategory):
+    for m in messages:
+        flash_message(m, category)

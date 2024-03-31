@@ -2,6 +2,7 @@ from app.repo import staff_repo
 from app.models.view_models import StaffItem, StaffEditItem
 from app.models.db_models import Staff
 from app.models.forms import StaffEditForm
+from werkzeug.security import generate_password_hash
 
 def get_staff_list() -> []:
     staff_models = staff_repo.retrieve_all()
@@ -47,3 +48,15 @@ def update_staff(form: StaffEditForm) -> StaffEditItem:
         return None
 
     return StaffEditItem(staff_model, form)
+
+def create_staff(form: StaffEditForm) -> []:
+    errors = []
+    if not form.validate():
+        errors.append("New staff member could not be created.")
+    else:
+        # TODO: Password requirements, generate password
+        result = staff_repo.create(form, generate_password_hash("place-holder-password"))
+        if not result:
+            errors.append("Failed to create new staff member.")
+
+    return errors

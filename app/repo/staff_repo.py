@@ -23,3 +23,27 @@ def update(form: StaffEditForm, staff: Staff) -> bool:
     
     rows_updated = staff.save()
     return rows_updated == 1
+
+def create(form: StaffEditForm, password: str) -> bool:
+    try:
+        primary_key = Staff.insert(
+            first_name_lao=form.first_name_lao.data,
+            last_name_lao=form.last_name_lao.data,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            nick_name=form.nick_name.data,
+            gender=form.gender.data,
+            phone_number=form.phone_number.data,
+            username=form.username.data,
+            hashed_password=password,
+            email=form.email.data,
+            birthday=form.birthday.data,
+            address=form.address.data,
+            role=form.role.data,
+        ).execute()
+
+        return primary_key > -1
+    except Exception:
+
+        # TODO LOG THIS ERROR
+        return False
