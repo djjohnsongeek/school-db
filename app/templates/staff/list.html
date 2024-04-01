@@ -44,16 +44,10 @@
                                 Gender
                             </th>
                             <th>
-                                Birthday
-                            </th>
-                            <th>
                                 Email
                             </th>
                             <th>
                                 Phone Number
-                            </th>
-                            <th>
-                                Address
                             </th>
                             <th>
                                 Actions
@@ -67,10 +61,8 @@
                             <td>{{staff_member.nick_name}}</td>
                             <td>{{staff_member.role.name}}</td>
                             <td>{{staff_member.gender.name}}</td>
-                            <td>{{staff_member.birthday}}</td>
                             <td>{{staff_member.email}}</td>
                             <td>{{staff_member.phone_number}}</td>
-                            <td>{{staff_member.address}}</td>
                             <td>
                                 <a class="button is-link" href="{{ url_for('staff.edit', staff_id=staff_member.id) }}">
                                     <span class="icon-text">
@@ -80,12 +72,20 @@
                                         <span>Details</span>
                                     </span>
                                 </a>
-                                <a class="button is-danger" href="#">
+                                <a class="button is-warning" href="#">
                                     <span class="icon-text">
                                         <span class="icon">
                                             <i class="fa fa-key" aria-hidden="true"></i>
                                         </span>
                                         <span>Reset</span>
+                                    </span>
+                                </a>
+                                <a class="button is-danger" href="#">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </span>
+                                        <span>Delete</span>
                                     </span>
                                 </a>
                             </td>
