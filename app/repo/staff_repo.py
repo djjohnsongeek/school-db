@@ -7,6 +7,20 @@ def retrieve_all() -> []:
 def retrieve(staff_id: int) -> Staff:
     return Staff.get_or_none(Staff.id == staff_id)
 
+def retrieve_by_email(email: str) -> Staff:
+    return Staff.get_or_none(Staff.email == email)
+
+def retrieve_by_username(username: str) -> Staff:
+    return Staff.get_or_none(Staff.username == username)
+
+def email_exists(email: str) -> bool:
+    staff = retrieve_by_email(email)
+    return staff is not None
+
+def username_exists(username: str) -> bool:
+    staff = retrieve_by_username(username)
+    return staff is not None
+
 def update(form: StaffEditForm, staff: Staff) -> bool:
     staff.first_name = form.first_name.data
     staff.first_name_lao = form.first_name_lao.data
@@ -43,7 +57,7 @@ def create(form: StaffEditForm, password: str) -> bool:
         ).execute()
 
         return primary_key > -1
-    except Exception:
-
+    except Exception as e:
+        print(e)
         # TODO LOG THIS ERROR
         return False
