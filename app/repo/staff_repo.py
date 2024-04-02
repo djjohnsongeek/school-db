@@ -61,3 +61,6 @@ def create(form: StaffEditForm, password: str) -> bool:
         print(e)
         # TODO LOG THIS ERROR
         return False
+
+def soft_delete(staff: Staff) -> bool:
+    pass

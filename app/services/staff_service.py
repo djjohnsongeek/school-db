@@ -70,3 +70,24 @@ def create_staff(form: StaffEditForm) -> []:
             errors.append("Failed to create new staff member.")
 
     return errors
+
+# Removes staff from the dropdown list when assigning a class to a teacher
+# Removes staff from the main list of staff
+# Can later be restored (TODO)
+def soft_delete(staff_id: int) -> []:
+    errors = []
+    staff = staff_repo.retrieve(staff_id)
+
+    # other checks?
+    # ensure there are no current classes being taught
+        # get current term's classes (there might not be a current term) that have this teacher
+        # if this teacher has current term classes, staff cannot be deleted
+
+    if staff is None:
+        errors.append("Staff member was not found.")
+    
+    if not errors:
+        # perform soft delete
+        pass
+
+    return errors
