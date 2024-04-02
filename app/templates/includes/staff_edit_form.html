@@ -109,6 +109,7 @@
                 <div class="select">
                     {{ staff_model.form.role() }}
                 </div>
+                <br/><small>Only staff with the 'Teacher' role can teach classes.</small>
                 {% for error in staff_model.form.role.errors %}
                     <p class="help is-danger">{{ error }}</p>
                 {% endfor %}
