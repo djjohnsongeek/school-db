@@ -10,7 +10,7 @@ for (let element of document.getElementsByClassName("delete"))
     });
 }
 
-// MODAL LOGIC
+// Modals Logic
 var Modal = {
     initialize: function()
     {
@@ -62,4 +62,42 @@ var Modal = {
         }
     },
 }
+
+// Async Request logic
+
+/*
+requestObj = {
+    category: "",
+    action: "",
+    data: {},
+    successCallback: function(),
+    errorCallback: function()
+}
+*/
+// need to gracefully handle HTTP error codes automatically
+var AsyncApi = {
+    baseURL: "/api",
+    postRequest: async function(requestObj)
+    {
+        const url = `${this.baseURL}/${requestObj.category}/${requestObj.action}`;
+        options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrf_token,
+            },
+            data: JSON.stringify(requestObj.data),
+        }
+
+        fetch(url, options)
+            .then((response) => {
+                data = response.json();
+                requestObj.successCallback(data);
+            })
+            .catch((error) => {
+                requestObj.errorCallback();
+            });
+    }
+}
+
 Modal.initialize();
