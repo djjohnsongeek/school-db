@@ -3,13 +3,12 @@ from app.services import staff_service
 
 def delete_item(category: str, action: str, request: Request) -> []:
     errors = []
-    print("is json:", request.is_json)
-
     request_data = request.get_json()
-    item_id = request_data.get("item_id", None)
+    if request_data:
+        item_id = request_data.get("item_id", None)
 
     if not valid_category(category) or not valid_action(action) or request_data is None or item_id is None:
-        errors.add("Invalid request.")
+        errors.append("Invalid request.")
 
     if not errors:
         if action == "delete":

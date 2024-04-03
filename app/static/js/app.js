@@ -86,16 +86,33 @@ var AsyncApi = {
                 "Content-Type": "application/json",
                 "X-CSRFToken": csrf_token,
             },
-            data: JSON.stringify(requestObj.data),
+            body: JSON.stringify(requestObj.data),
         }
-
+     
         fetch(url, options)
             .then((response) => {
-                data = response.json();
-                requestObj.successCallback(data);
+                if (response.ok)
+                {
+                    
+                    let responseData = response.json()
+                    console.log(responseData);
+
+                    if (responseData.errors.length > 0)
+                    {
+                        alert(responseData.errors.join("<br/>"));
+                    }
+                    else {
+                        requestObj.successCallback(responseData);
+                    }
+                }
+                else {
+                    alert("http error");
+                    requestObj.errorCallback();
+                }
             })
             .catch((error) => {
-                requestObj.errorCallback();
+                console.log(error);
+                alert("Request failed.");
             });
     }
 }
