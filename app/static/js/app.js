@@ -63,6 +63,55 @@ var Modal = {
     },
 }
 
+// Messages Logic
+var Messages = {
+    containerId: "app-messages-container",
+    addMessage: function(msg, category)
+    {
+        const container = document.getElementById(this.containerId);
+        let msgHtml = this.createMsgHtml(msg, category);
+        container.appendChild(msgHtml);
+    },
+    addMessages: function(msgs, category)
+    {
+        for (let msg of msgs)
+        {
+            this.addMessage(msg, category);
+        }
+    },
+    createMsgHtml(msg, category)
+    {
+        // validate category
+        if (!["danger", "warning", "success"].includes(category))
+        {
+            throw new Error("Invalid message category detected.");
+        }
+        
+        // Create div container
+        let msgContainer = document.createElement("div");
+        msgContainer.classList.add("notification");
+        msgContainer.classList.add(`is-${category}`);
+        let msgTextNode = document.createTextNode(msg);
+
+        // Create delete button
+        let msgDelBtn = document.createElement("button");
+        msgDelBtn.classList.add("delete")
+
+        // Link the two
+        msgContainer.appendChild(msgDelBtn);
+        msgContainer.appendChild(msgTextNode);
+        
+        // Add event listener
+        msgDelBtn.addEventListener("click", function(event) {
+            const notification = event.currentTarget.parentNode;
+            const container = notification.parentNode;
+            container.removeChild(notification)
+        });
+
+        return msgContainer;
+    }
+}
+
 // Async Request logic
 
 /*
@@ -93,26 +142,24 @@ var AsyncApi = {
             .then((response) => {
                 if (response.ok)
                 {
-                    
-                    let responseData = response.json()
-                    console.log(responseData);
-
-                    if (responseData.errors.length > 0)
-                    {
-                        alert(responseData.errors.join("<br/>"));
-                    }
-                    else {
-                        requestObj.successCallback(responseData);
-                    }
+                    response.json().then((responseData) => {
+                        if (responseData.errors.length > 0)
+                        {
+                            Messages.addMessages(responseData.errors, "danger");
+                        }
+                        else {
+                            requestObj.successCallback(responseData);
+                        }
+                    });
                 }
                 else {
-                    alert("http error");
+                    Messages.addMessage("Failed to properly complete the request.", "danger");
                     requestObj.errorCallback();
                 }
             })
             .catch((error) => {
                 console.log(error);
-                alert("Request failed.");
+                Messages.addMessage("An unknown error occured.", "danger");
             });
     }
 }
