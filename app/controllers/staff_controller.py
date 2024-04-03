@@ -44,4 +44,5 @@ def create():
             controller_service.flash_messages(errors, MessageCategory.Error)
             return render_template("/staff/create.html", staff_model=StaffCreateItem(edit_form))
         else:
+            controller_service.flash_message("New Staff Member created!", MessageCategory.Success)
             return redirect(url_for("staff.home"))
