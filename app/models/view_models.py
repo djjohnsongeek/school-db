@@ -48,3 +48,14 @@ class StaffEditItem():
 class StaffCreateItem():
     def __init__(self, edit_form: StaffEditForm):
         self.form = edit_form
+
+class AsyncJsResponseItem():
+    def __init__(self, errors: [], data: dict):
+        self.errors = errors
+        self.data = data
+
+    def to_dict() -> {}:
+        return {
+            "errors": self.errors,
+            "data": self.data
+        }
