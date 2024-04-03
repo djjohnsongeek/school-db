@@ -6,7 +6,5 @@ api_blueprint = Blueprint("api", __name__)
 def staff_delete(category: str, action: str):
     # csrf token?
     # automatically calls jsonify
-    errors = api_service.delete_item(category, action, request)
-    return {
-        "errors": errors
-    }
+    response = api_service.delete_item(category, action, request)
+    return response.to_dict()
