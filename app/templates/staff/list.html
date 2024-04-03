@@ -56,7 +56,7 @@
                     </thead>
                     <tbody>
                         {% for staff_member in staff %}
-                        <tr>
+                        <tr id="staff-member-row-{{ staff_member.id }}">
                             <td>{{staff_member.name}}</td>
                             <td>{{staff_member.nick_name}}</td>
                             <td>{{staff_member.role.name}}</td>
