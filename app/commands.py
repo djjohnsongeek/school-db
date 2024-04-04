@@ -28,7 +28,7 @@ def init_db(no_populate):
             email="danieleejohnson@gmail.com",
             birthday=date.fromisoformat("1992-05-25"),
             address="Midway, NC 27107",
-            role=StaffRole.General.value,
+            role=StaffRole.Staff.value,
         ).execute()
 
         teacher = Staff.create(

@@ -1,7 +1,10 @@
 import os
 from flask import Flask
+from flask_wtf import CSRFProtect
 from .db import get_db, close_db
 from .commands import init_app_commands
+
+csrf = CSRFProtect()
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -25,6 +28,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    csrf.init_app(app)
     init_app_commands(app)
 
     @app.before_request
@@ -41,10 +45,12 @@ def create_app(test_config=None):
     from .controllers.classes_controller import classes_blueprint
     from .controllers.staff_controller import staff_blueprint
     from .controllers.student_controller import student_blueprint
+    from .controllers.api_controller import api_blueprint
 
     app.register_blueprint(index_blueprint)
     app.register_blueprint(classes_blueprint)
     app.register_blueprint(staff_blueprint)
     app.register_blueprint(student_blueprint)
+    app.register_blueprint(api_blueprint)
 
     return app

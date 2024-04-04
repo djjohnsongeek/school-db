@@ -20,3 +20,7 @@ MAILJET_SECRET_KEY = ""
 MAILJET_SENDER_EMAIL = ""
 
 LOG_FILE_PATH = os.path.join(cwd, "instance", "error_logs.txt")
+
+# API CONFIG
+ALLOWED_CATEGORIES = ["staff"]
+ALLOWED_ACTIONS = ["delete"]

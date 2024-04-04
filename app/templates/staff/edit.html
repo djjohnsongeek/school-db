@@ -1,0 +1,51 @@
+{% extends "/layouts/layout.html" %}
+
+{% block main %}
+<div class="container">
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title title is-3">
+                        <span class="has-text-grey mr-2">{{ staff_model.role.name }} - </span>
+                        <span>{{ staff_model.fullname }}</span>
+                    </h1>
+                </div>
+                <div class="card-content">
+                    {% include "/includes/staff_edit_form.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if staff_model.classes %}
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title title is-3">Classes</h1>
+                </div>
+                <div class="card-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Term</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {# TODO: accessing the term model like this creats an n+1 problem? #}
+                            {% for staff_class in staff_model.classes %}
+                            <tr>
+                                <td><a href="#">{{ staff_class.name }}</a></td>
+                                <td>{{ staff_class.term.name }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
