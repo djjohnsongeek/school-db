@@ -4,7 +4,7 @@ from datetime import datetime
 
 ## SELECT
 def retrieve_all() -> []:
-    return Staff.select()
+    return Staff.select().where(Staff.deleted == False)
 
 def retrieve(staff_id: int) -> Staff:
     return Staff.get_or_none(Staff.id == staff_id)

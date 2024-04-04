@@ -54,7 +54,7 @@ class AsyncJsResponseItem():
         self.errors = errors
         self.data = data
 
-    def to_dict() -> {}:
+    def to_dict(self) -> {}:
         return {
             "errors": self.errors,
             "data": self.data

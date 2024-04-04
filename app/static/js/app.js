@@ -153,7 +153,7 @@ var AsyncApi = {
                     });
                 }
                 else {
-                    Messages.addMessage("Failed to properly complete the request.", "danger");
+                    Messages.addMessage(`A server error occured: ${response.status} `, "danger");
                     requestObj.errorCallback();
                 }
             })

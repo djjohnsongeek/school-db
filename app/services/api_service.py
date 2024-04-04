@@ -4,7 +4,6 @@ from app.models.view_models import AsyncJsResponseItem
 
 def delete_item(category: str, action: str, request: Request) -> AsyncJsResponseItem:
     errors = []
-    # TODO: figure out how to properly parse json
     request_data = request.get_json()
     if request_data:
         item_id = request_data.get("itemId", None)
@@ -24,7 +23,7 @@ def delete_item(category: str, action: str, request: Request) -> AsyncJsResponse
             elif category == "student":
                 pass
 
-    return AsyncJsResponseItem(error=error, data={"itemId" : item_id})
+    return AsyncJsResponseItem(errors, {"itemId" : item_id})
 
 def valid_category(category: str) -> bool:
     return category.lower() in current_app.config["ALLOWED_CATEGORIES"]

@@ -12,10 +12,14 @@ document.getElementById("confirm-delete-btn").addEventListener("click", function
         data: {
             itemId: itemId
         },
-        successCallback: function(data)
+        successCallback: function(response)
         {
-            console.log("Called success callback");
-            console.log(data);
+            const id = response.data.itemId;
+            let rowEl = document.getElementById(`staff-member-row-${id}`);
+            rowEl.remove();
+            delete rowEl;
+
+            Messages.addMessage("Staff member successfully deleted.", "success");
         },
         errorCallback: function() {
             console.log("Called error call back");
