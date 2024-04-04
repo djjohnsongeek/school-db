@@ -68,7 +68,7 @@
                     </thead>
                     <tbody>
                         {% for student in students %}
-                        <tr>
+                        <tr id="student-row-{{ student.id }}">
                             <td>{{student.student_number}}</td>
                             <td>{{student.name}}</td>
                             <td>{{student.nick_name}}</td>
@@ -80,6 +80,7 @@
                             <td>{{student.occupation}}</td>
                             <td>{{student.application_date}}</td>
                             <td>
+                                {# {{ url_for('student.edit', student_id=student.id) }} #}
                                 <a class="button is-link" href="#">
                                     <span class="icon-text">
                                         <span class="icon">
@@ -88,11 +89,47 @@
                                         <span>Details</span>
                                     </span>
                                 </a>
+                                <button class="button is-danger modal-trigger" data-target="confirm-delete-modal" data-item-id="{{ student.id }}">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </span>
+                                        <span>Delete</span>
+                                    </span>
+                                </button>
                             </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="modal" id="confirm-delete-modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+              <header class="modal-card-head">
+                <p class="modal-card-title">Delete Student</p>
+              </header>
+              <section class="modal-card-body">
+                <span>Are sure you want to delete this Student?</span><br/>
+                <small>Deleted students cannot be added to classes.</small><br/>
+                <small>Deleted students will not be shown in the main student list by default.</small>
+              </section>
+              <footer class="modal-card-foot">
+                <div class="buttons">
+                  <button class="button is-danger" id="confirm-delete-btn">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </span>
+                        <span>Yes</span>
+                    </span>
+                  </button>
+                  <button class="button is-secondary close-modal">No</button>
+                </div>
+              </footer>
             </div>
         </div>
     </div>
