@@ -7,7 +7,10 @@ class BaseModel(Model):
     class Meta:
         legacy_table_names = False
 
-class Person(BaseModel):
+class SoftDelete(BaseModel):
+    deleted = BooleanField(null=False, default=False)
+
+class Person(SoftDelete):
     first_name_lao = CharField(max_length=128, null=True)
     last_name_lao = CharField(max_length=128, null=True)
     first_name = CharField(max_length=128)

@@ -1,4 +1,4 @@
-from app.repo import staff_repo
+from app.repo import staff_repo, class_repo
 from app.models.view_models import StaffItem, StaffEditItem
 from app.models.db_models import Staff
 from app.models.forms import StaffEditForm
@@ -78,16 +78,16 @@ def soft_delete(staff_id: int) -> []:
     errors = []
     staff = staff_repo.retrieve(staff_id)
 
-    # other checks?
-    # ensure there are no current classes being taught
-        # get current term's classes (there might not be a current term) that have this teacher
-        # if this teacher has current term classes, staff cannot be deleted
-
     if staff is None:
         errors.append("Staff member was not found.")
-    
+    else:
+        classes = class_repo.retrieve_current_or_future(staff)
+        if classes.count() > 0:
+            errors.append("This Teacher is teaching current or future classes and cannot be deleted.")
+
     if not errors:
-        # perform soft delete
-        pass
+        result = staff_repo.soft_delete(staff)
+        if not result:
+            errors.append("Failed to delete staff memeber")
 
     return errors

@@ -7,7 +7,7 @@ def delete_item(category: str, action: str, request: Request) -> AsyncJsResponse
     # TODO: figure out how to properly parse json
     request_data = request.get_json()
     if request_data:
-        item_id = request_data.get("item_id", None)
+        item_id = request_data.get("itemId", None)
 
     if not valid_category(category) or not valid_action(action) or request_data is None or item_id is None:
         errors.append("Invalid request.")
@@ -15,7 +15,7 @@ def delete_item(category: str, action: str, request: Request) -> AsyncJsResponse
     if not errors:
         if action == "delete":
             if category == "staff":
-                result = app_service.soft_delete(item_id)
+                result = staff_service.soft_delete(item_id)
 
                 # update main errors object
                 for error in result:

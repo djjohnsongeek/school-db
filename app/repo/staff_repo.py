@@ -1,6 +1,8 @@
-from app.models.db_models import Staff
+from app.models.db_models import Staff, SchoolClass
 from app.models.forms import StaffEditForm
+from datetime import datetime
 
+## SELECT
 def retrieve_all() -> []:
     return Staff.select()
 
@@ -21,6 +23,7 @@ def username_exists(username: str) -> bool:
     staff = retrieve_by_username(username)
     return staff is not None
 
+## UPDATE
 def update(form: StaffEditForm, staff: Staff) -> bool:
     staff.first_name = form.first_name.data
     staff.first_name_lao = form.first_name_lao.data
@@ -38,6 +41,12 @@ def update(form: StaffEditForm, staff: Staff) -> bool:
     rows_updated = staff.save()
     return rows_updated == 1
 
+def soft_delete(staff: Staff) -> bool:
+    staff.deleted = True
+    rows_updated = staff.save()
+    return rows_updated == 1
+
+## INSERT
 def create(form: StaffEditForm, password: str) -> bool:
     try:
         primary_key = Staff.insert(
@@ -62,5 +71,3 @@ def create(form: StaffEditForm, password: str) -> bool:
         # TODO LOG THIS ERROR
         return False
 
-def soft_delete(staff: Staff) -> bool:
-    pass
