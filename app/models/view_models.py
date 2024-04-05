@@ -1,7 +1,7 @@
 from app.models.db_models import SchoolClass, Staff, Student
 from app.models.base_models import Person
 from app.models.enums import PersonGender, StaffRole
-from app.models.forms import StaffEditForm
+from app.models.forms import StaffEditForm, StudentEditForm
 
 class ClassItem:
     def __init__(self, class_model: SchoolClass):
@@ -47,6 +47,12 @@ class StaffEditItem():
 
 class StaffCreateItem():
     def __init__(self, edit_form: StaffEditForm):
+        self.form = edit_form
+
+class StudentEditItem():
+    def __init__(self, student_model: Student, edit_form: StudentEditForm):
+        self.fullname = student_model.full_name()
+        # TODO need classes
         self.form = edit_form
 
 class AsyncJsResponseItem():

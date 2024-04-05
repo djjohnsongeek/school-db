@@ -80,8 +80,7 @@
                             <td>{{student.occupation}}</td>
                             <td>{{student.application_date}}</td>
                             <td>
-                                {# {{ url_for('student.edit', student_id=student.id) }} #}
-                                <a class="button is-link" href="#">
+                                <a class="button is-link" href="{{ url_for('students.edit', student_id=student.id) }}">
                                     <span class="icon-text">
                                         <span class="icon">
                                             <i class="fa fa-info-circle" aria-hidden="true"></i>

@@ -1,0 +1,135 @@
+<form method="POST">
+    {{ student_model.form.csrf_token }}
+    {{ student_model.form.student_id() }}
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <label class="label">{{ student_model.form.first_name_lao.label }}</label>
+                <div class="control">
+                    {{ student_model.form.first_name_lao(class="input") }}
+                </div>
+                {% for error in student_model.form.first_name_lao.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="field">
+                <label class="label">{{ student_model.form.last_name_lao.label }}</label>
+                <div class="control">
+                    {{ student_model.form.last_name_lao(class="input") }}
+                </div>
+                {% for error in student_model.form.last_name_lao.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="field">
+                <label class="label">{{ student_model.form.student_number.label }}</label>
+                <div class="control">
+                    {{ student_model.form.student_number(class="input") }}
+                </div>
+                {% for error in student_model.form.student_number.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="field">
+                <label class="label">{{ student_model.form.email.label }}</label>
+                <div class="control">
+                    {{ student_model.form.email(class="input") }}
+                </div>
+                {% for error in student_model.form.email.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="field">
+                <label class="label">{{ student_model.form.birthday.label }}</label>
+                <div class="control">
+                    {{ student_model.form.birthday(class="input") }}
+                </div>
+                {% for error in student_model.form.birthday.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="field">
+                <label class="label">{{ student_model.form.address.label }}</label>
+                <div class="control">
+                    {{ student_model.form.address(class="input") }}
+                </div>
+                {% for error in student_model.form.address.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="field">
+                <label class="label">{{ student_model.form.occupation.label }}</label>
+                <div class="control">
+                    {{ student_model.form.occupation(class="input") }}
+                </div>
+                {% for error in student_model.form.occupation.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="column">
+            <div class="field">
+                <label class="label">{{ student_model.form.first_name.label }}</label>
+                <div class="control">
+                    {{ student_model.form.first_name(class="input") }}
+                </div>
+                {% for error in student_model.form.first_name.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="field">
+                <label class="label">{{ student_model.form.last_name.label }}</label>
+                <div class="control">
+                    {{ student_model.form.last_name(class="input") }}
+                </div>
+                {% for error in student_model.form.last_name.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="field">
+                <label class="label">{{ student_model.form.nick_name.label }}</label>
+                <div class="control">
+                    {{ student_model.form.nick_name(class="input") }}
+                </div>
+                {% for error in student_model.form.nick_name.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="field">
+                <label class="label">{{ student_model.form.phone_number.label }}</label>
+                <div class="control">
+                    {{ student_model.form.phone_number(class="input") }}
+                </div>
+                {% for error in student_model.form.phone_number.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="field">
+                <label class="label">{{ student_model.form.application_date.label }}</label>
+                <div class="control">
+                    {{ student_model.form.application_date(class="input") }}
+                </div>
+                {% for error in student_model.form.application_date.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="field">
+                <label class="label">{{ student_model.form.gender.label }}</label>
+                <div class="select">
+                    {{ student_model.form.gender() }}
+                </div>
+                {% for error in student_model.form.gender.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <button class="button is-primary" type="submit">
+        <span class="icon-text">
+            <span class="icon">
+                <i class="fa fa-save" aria-hidden="true"></i>
+            </span>
+            <span>Save Changes</span>
+        </span>
+    </button>
+</form>
