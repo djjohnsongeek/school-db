@@ -20,7 +20,7 @@ def to_student_form(student_model: Student) -> StudentEditForm:
     # convert to wtforms object
     if student_model is not None:
         form = StudentEditForm(
-            student_model=student_model.id,
+            student_id=student_model.id,
             first_name=student_model.first_name,
             last_name=student_model.last_name,
             first_name_lao=student_model.first_name_lao,
@@ -37,3 +37,14 @@ def to_student_form(student_model: Student) -> StudentEditForm:
         )
     
     return form if student_model is not None else None
+
+def update_student(form: StudentEditForm) -> StudentEditItem:
+    student_model = student_repo.retrieve(int(form.student_id.data))
+    if student_model is not None and form.validate():
+        # TODO check if update actull worked
+        result = student_repo.update(student_model, form)
+        form = to_student_form(student_model)
+    elif student_model is None:
+        return None
+
+    return StudentEditItem(student_model, form)
