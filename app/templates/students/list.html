@@ -17,7 +17,7 @@
                             </span>
                         </div>
                         <div class="control">
-                            <a class="button is-link" href="./new-student.html">
+                            <a class="button is-link" href="{{ url_for('students.create') }}">
                                 <span class="icon-text">
                                     <span class="icon">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -44,22 +44,10 @@
                                 Gender
                             </th>
                             <th>
-                                Birthday
-                            </th>
-                            <th>
-                                Email
-                            </th>
-                            <th>
                                 Phone Number
                             </th>
                             <th>
                                 Address
-                            </th>
-                            <th>
-                                Work / School
-                            </th>
-                            <th>
-                                Application Date
                             </th>
                             <th>
                                 Actions
@@ -73,12 +61,8 @@
                             <td>{{student.name}}</td>
                             <td>{{student.nick_name}}</td>
                             <td>{{student.gender.name}}</td>
-                            <td>{{student.birthday}}</td>
-                            <td>{{student.email}}</td>
                             <td>{{student.phone_number}}</td>
                             <td>{{student.address}}</td>
-                            <td>{{student.occupation}}</td>
-                            <td>{{student.application_date}}</td>
                             <td>
                                 <a class="button is-link" href="{{ url_for('students.edit', student_id=student.id) }}">
                                     <span class="icon-text">
