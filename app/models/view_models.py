@@ -55,6 +55,10 @@ class StudentEditItem():
         # TODO need classes
         self.form = edit_form
 
+class StudentCreateItem():
+    def __init__(self, form: StudentEditForm):
+        self.form = form
+
 class AsyncJsResponseItem():
     def __init__(self, errors: [], data: dict):
         self.errors = errors
