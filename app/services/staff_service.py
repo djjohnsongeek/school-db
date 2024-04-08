@@ -42,6 +42,7 @@ def update_staff(form: StaffEditForm) -> StaffEditItem:
     staff_model = staff_repo.retrieve(int(form.staff_id.data))
 
     if staff_model is not None and form.validate():
+        # TODO check if update actually worked
         result = staff_repo.update(form, staff_model)
         form = to_staff_form(staff_model)
     elif staff_model is None:
