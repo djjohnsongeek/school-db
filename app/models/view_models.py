@@ -39,11 +39,12 @@ class StudentItem(PersonItem):
         self.student_number = student_model.student_number
 
 class StaffEditItem():
-    def __init__(self, staff_model: Staff, edit_form: StaffEditForm):
+    def __init__(self, staff_model: Staff, edit_form: StaffEditForm, edit_errors: []):
         self.fullname = staff_model.full_name()
         self.role = StaffRole(staff_model.role)
         self.classes = staff_model.classes
         self.form = edit_form
+        self.edit_errors = edit_errors
 
 class StaffCreateItem():
     def __init__(self, edit_form: StaffEditForm):

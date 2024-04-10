@@ -42,6 +42,8 @@ def update_student(form: StudentEditForm) -> StudentEditItem:
     student_model = student_repo.retrieve(int(form.student_id.data))
     if student_model is not None and form.validate():
         # TODO check if update actull worked
+        # TODO validate that email, if changed, is still unique
+        # TODO validate that student number cannot be changed
         result = student_repo.update(student_model, form)
         form = to_student_form(student_model)
     elif student_model is None:

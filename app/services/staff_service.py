@@ -41,12 +41,27 @@ def to_staff_form(staff_model: Staff) -> StaffEditForm:
 def update_staff(form: StaffEditForm) -> StaffEditItem:
     staff_model = staff_repo.retrieve(int(form.staff_id.data))
 
-    if staff_model is not None and form.validate():
+    # validation
+    if staff_model is None:
+        return None
+
+    errors = []
+    if form.email.data != staff_model.email.data and staff_repo.email_exists(form.email.data):
+        errors.append("The email address supplied is already in use.")
+
+    if form.username.data != staff_model.username.data and staff_repo.username_exists(form.username.data):
+        errors.append("The username supplied is already in user.")
+
+    if not form.validate():
+        errors.append("Invalid data")
+
+    if len(errors) == 0 and form.validate():
         # TODO check if update actually worked
         result = staff_repo.update(form, staff_model)
-        form = to_staff_form(staff_model)
-    elif staff_model is None:
-        return None
+        if not result:
+            errors.append("Failed to update the database.")
+        else:
+            form = to_staff_form(staff_model)
 
     return StaffEditItem(staff_model, form)
 
