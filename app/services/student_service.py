@@ -1,6 +1,6 @@
 from app.repo import student_repo
 from app.models.db_models import Student
-from app.models.view_models import StudentItem, StudentEditItem, StudentCreateItem
+from app.models.view_models import StudentItem, StudentEditItem, StudentCreateItem, StudentClassItem
 from app.models.forms import StudentEditForm
 
 def get_student_list() -> []:
@@ -12,7 +12,8 @@ def get_student(student_id: int) -> StudentEditItem:
 
     if student_model is not None:
         form = to_student_form(student_model)
-        return StudentEditItem(student_model, form, [])
+        classes = [StudentClassItem(roster_entry) for roster_entry in student_repo.retrieve_classes(student_model)]
+        return StudentEditItem(student_model, form, classes, [])
     else:
         return None
 
@@ -44,6 +45,7 @@ def update_student(form: StudentEditForm) -> StudentEditItem:
         return None
 
     errors = []
+    classes = [StudentClassItem(roster_entry) for roster_entry in student_repo.retrieve_classes(student_model)]
     if student_model.email != form.email.data and student_repo.email_exists(form.email.data):
         errors.append("This email address is already in use.")
 
@@ -58,7 +60,8 @@ def update_student(form: StudentEditForm) -> StudentEditItem:
         result = student_repo.update(student_model, form)
         form = to_student_form(student_model)
 
-    return StudentEditItem(student_model, form, errors)
+
+    return StudentEditItem(student_model, form, classes, errors)
 
 def create_student(form: StudentEditForm) -> []:
     errors = []

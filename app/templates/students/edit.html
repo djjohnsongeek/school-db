@@ -17,5 +17,34 @@
             </div>
         </div>
     </div>
+    {% if student_model.classes %}
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title title is-3">Classes</h1>
+                </div>
+                <div class="card-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Term</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student_class in student_model.classes %}
+                            <tr>
+                                <td><a href="#">{{ student_class.name }}</a></td>
+                                <td>{{ student_class.term }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

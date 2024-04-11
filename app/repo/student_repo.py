@@ -1,4 +1,4 @@
-from app.models.db_models import Student
+from app.models.db_models import Student, ClassRosterEntry, SchoolClass, Term
 from app.models.forms import StudentEditForm
 
 def retrieve_all() -> []:
@@ -12,6 +12,13 @@ def retrieve_by_email(email: str) -> Student:
 
 def retrieve_by_number(student_number: str) -> Student:
     return Student.get_or_none(Student.student_number == student_number)
+
+def retrieve_classes(student: Student) -> []:
+    return (ClassRosterEntry
+        .select()
+        .join(SchoolClass)
+        .join(Term)
+        .where(ClassRosterEntry.student == student))
 
 def email_exists(email: str) -> bool:
     return retrieve_by_email(email) != None
