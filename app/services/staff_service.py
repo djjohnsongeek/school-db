@@ -63,14 +63,15 @@ def update_staff(form: StaffEditForm) -> StaffEditItem:
 
 def create_staff(form: StaffEditForm) -> []:
     errors = []
-    form.staff_id.data = 1
-
     username_exists = staff_repo.username_exists(form.username.data)
     email_exists = staff_repo.email_exists(form.email.data)
 
     if username_exists or email_exists:
         errors.append("This email address or username is already in use.")
 
+    # we manually set the id so it will pass validatoin
+    # the id is not used to insert
+    form.staff_id.data = 1
     if not form.validate():
         errors.append("Invalid data detected. A new staff member was not created.")
 
