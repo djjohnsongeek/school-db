@@ -36,3 +36,27 @@ def update(student: Student, form: StudentEditForm):
 
     rows_updated = student.save()
     return rows_updated == 1
+
+def create(form: StudentEditForm) -> bool:
+    try:
+        primary_key = Student.insert(
+            first_name_lao=form.first_name_lao.data,
+            last_name_lao=form.last_name_lao.data,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            nick_name=form.nick_name.data,
+            gender=form.gender.data,
+            phone_number=form.phone_number.data,
+            student_number=form.student_number.data,
+            email=form.email.data,
+            birthday=form.birthday.data,
+            address=form.address.data,
+            occupation=form.occupation.data,
+            application_date=form.application_date.data
+        ).execute()
+
+        return primary_key > -1
+    except Exception as e:
+        print(e)
+        # TODO LOG THIS ERROR
+        return False
