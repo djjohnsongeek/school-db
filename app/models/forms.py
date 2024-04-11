@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, DateField, EmailField, SelectField, HiddenField
 from wtforms.validators import DataRequired, Email, Length
+from app.models.validators import StudentNumber
 
 class PersonForm(FlaskForm):
     first_name_lao = StringField("First Name", validators=[DataRequired(), Length(min=1, max=128)])
@@ -21,6 +22,6 @@ class StaffEditForm(PersonForm):
 
 class StudentEditForm(PersonForm):
     student_id = HiddenField(validators=[DataRequired()])
-    student_number = StringField("Student Number", validators=[DataRequired(), Length(min=8, max=32)])
+    student_number = StringField("Student Number", validators=[DataRequired(), StudentNumber()])
     application_date = DateField("Application Date", validators=[DataRequired()])
     occupation = StringField("Occupation", validators=[DataRequired(), Length(min=1, max=128)])
