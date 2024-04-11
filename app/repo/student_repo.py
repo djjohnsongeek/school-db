@@ -7,6 +7,18 @@ def retrieve_all() -> []:
 def retrieve(id: int) -> Student:
     return Student.get_or_none(Student.id == id)
 
+def retrieve_by_email(email: str) -> Student:
+    return Student.get_or_none(Student.email == email)
+
+def retrieve_by_number(student_number: str) -> Student:
+    return Student.get_or_none(Student.student_number == student_number)
+
+def email_exists(email: str) -> bool:
+    return retrieve_by_email(email) != None
+
+def student_number_exists(student_num: str) -> bool:
+    return retrieve_by_number(student_num) != None
+
 def update(student: Student, form: StudentEditForm):
     student.first_name = form.first_name.data
     student.last_name = form.last_name.data
