@@ -25,11 +25,11 @@ def edit(staff_id: int):
         if staff_edit_model is None:
             return redirect(url_for("index.error", error_code=404))
         else:
-
-            if staff_edit_model.form.errors:
-                controller_service.flash_message("Failed to update staff member details.", MessageCategory.Error)
+            if staff_edit_model.edit_errors:
+                controller_service.flash_messages(staff_edit_model.edit_errors, MessageCategory.Error)
             else:
                 controller_service.flash_message("Staff member details updated!", MessageCategory.Success)
+                
             return render_template("/staff/edit.html", staff_model=staff_edit_model)
 
 @staff_blueprint.route("/staff/create", methods=["GET", "POST"])
