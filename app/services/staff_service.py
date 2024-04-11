@@ -13,7 +13,7 @@ def get_staff(staff_id: int) -> StaffEditItem:
 
     if staff is not None:
         form = to_staff_form(staff)
-        return StaffEditItem(staff, form)
+        return StaffEditItem(staff, form, [])
     else:
         return None
 
@@ -46,24 +46,20 @@ def update_staff(form: StaffEditForm) -> StaffEditItem:
         return None
 
     errors = []
-    if form.email.data != staff_model.email.data and staff_repo.email_exists(form.email.data):
-        errors.append("The email address supplied is already in use.")
+    if form.email.data != staff_model.email and staff_repo.email_exists(form.email.data):
+        errors.append("The email supplied is already in use.")
 
-    if form.username.data != staff_model.username.data and staff_repo.username_exists(form.username.data):
-        errors.append("The username supplied is already in user.")
+    if form.username.data != staff_model.username and staff_repo.username_exists(form.username.data):
+        errors.append("The username supplied is already in use.")
 
     if not form.validate():
-        errors.append("Invalid data")
+        errors.append("Invalid data detected. No changes have been saved.")
 
-    if len(errors) == 0 and form.validate():
-        # TODO check if update actually worked
+    if len(errors) == 0:
         result = staff_repo.update(form, staff_model)
-        if not result:
-            errors.append("Failed to update the database.")
-        else:
-            form = to_staff_form(staff_model)
+        form = to_staff_form(staff_model)
 
-    return StaffEditItem(staff_model, form)
+    return StaffEditItem(staff_model, form, errors)
 
 def create_staff(form: StaffEditForm) -> []:
     errors = []

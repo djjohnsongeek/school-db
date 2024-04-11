@@ -12,7 +12,7 @@ def get_student(student_id: int) -> StudentEditItem:
 
     if student_model is not None:
         form = to_student_form(student_model)
-        return StudentEditItem(student_model, form)
+        return StudentEditItem(student_model, form, [])
     else:
         return None
 
@@ -40,13 +40,22 @@ def to_student_form(student_model: Student) -> StudentEditForm:
 
 def update_student(form: StudentEditForm) -> StudentEditItem:
     student_model = student_repo.retrieve(int(form.student_id.data))
-    if student_model is not None and form.validate():
-        # TODO check if update actull worked
-        # TODO validate that email, if changed, is still unique
-        # TODO validate that student number cannot be changed
-        result = student_repo.update(student_model, form)
-        form = to_student_form(student_model)
-    elif student_model is None:
+    if student_model is None:
         return None
 
-    return StudentEditItem(student_model, form)
+    errors = []
+    if student_model.email != form.email.data and student_repo.email_exists(form.email.data):
+        errors.append("This email address is already in use.")
+
+    if student_model.student_number != form.student_number.data and student_repo.student_number_exists(form.student_number.data):
+        errors.append("This Student Number is already in use.")
+        # TODO should this value be readonly?
+    
+    if not form.validate():
+        errors.append("Invalid data detected. No changes have been made.")
+
+    if len(errors) == 0:
+        result = student_repo.update(student_model, form)
+        form = to_student_form(student_model)
+
+    return StudentEditItem(student_model, form, errors)
