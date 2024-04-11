@@ -1,6 +1,6 @@
 from app.repo import student_repo
 from app.models.db_models import Student
-from app.models.view_models import StudentItem, StudentEditItem
+from app.models.view_models import StudentItem, StudentEditItem, StudentCreateItem
 from app.models.forms import StudentEditForm
 
 def get_student_list() -> []:
@@ -59,3 +59,24 @@ def update_student(form: StudentEditForm) -> StudentEditItem:
         form = to_student_form(student_model)
 
     return StudentEditItem(student_model, form, errors)
+
+def create_student(form: StudentEditForm) -> []:
+    errors = []
+    if student_repo.student_number_exists(form.student_number.data):
+        errors.append("The supplied student number is already in use.")
+    
+    if student_repo.email_exists(form.email.data):
+        errors.append("This supplied email address is already in use.")
+
+    # We manually set the id so validation will pass
+    # This value does not get when inserting the new record
+    form.student_id.data = 1
+    if not form.validate():
+        errors.append("Invalid data detected. A new student was not created.")
+
+    if len(errors) == 0:
+        result = student_repo.create(form)
+        if not result:
+            errors.append("Failed to create new staff member.")
+
+    return errors
