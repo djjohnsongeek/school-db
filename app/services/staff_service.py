@@ -71,11 +71,10 @@ def create_staff(form: StaffEditForm) -> []:
     if username_exists or email_exists:
         errors.append("This email address or username is already in use.")
 
-    form.validate()
+    if not form.validate():
+        errors.append("Invalid data detected. A new staff member was not created.")
 
-    if errors or form.errors:
-        errors.append("A new staff member was not created.")
-    else:
+    if len(errors) == 0:
         # TODO: Password requirements, generate password
         result = staff_repo.create(form, generate_password_hash("place-holder-password"))
         if not result:
