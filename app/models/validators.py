@@ -11,14 +11,13 @@ class StudentNumber(object):
         valid = True
         student_number = field.data
 
-        if student_number is None:
-            raise ValidateError
+        if student_number is None or not student_number.isdigit():
+            raise ValidationError(self.message)
 
         year = int(student_number[-4:])
         month = int(student_number[-6:][:2])
 
-        valid = (student_number.isdigit() and
-                len(student_number) >= 8 and len(student_number) < 33 and
+        valid = (len(student_number) >= 8 and len(student_number) < 33 and
                 year <= datetime.now().year and year > 2023
                 and month > 0 and month < 13)
 
