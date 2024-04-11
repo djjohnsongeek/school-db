@@ -45,6 +45,21 @@
             </div>
         </div>
     </div>
+    {% else %}
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title title is-3">Classes</h1>
+                </div>
+                <div class="card-content">
+                    <div class="notification is-warning">
+                        No Classes Found
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     {% endif %}
 </div>
 {% endblock %}
