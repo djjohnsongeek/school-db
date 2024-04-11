@@ -26,8 +26,8 @@ def edit(student_id: int):
         if student_edit_model is None:
             return redirect(url_for("index.error", error_code=404))
         else:
-            if student_edit_model.form.errors:
-                controller_service.flash_message("Failed to update student's details.", MessageCategory.Error)
+            if student_edit_model.edit_errors:
+                controller_service.flash_messages(student_edit_model.edit_errors, MessageCategory.Error)
             else:
                 controller_service.flash_message("Student's details updated!", MessageCategory.Success)
             return render_template("/students/edit.html", student_model=student_edit_model)
