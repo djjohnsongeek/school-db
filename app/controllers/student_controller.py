@@ -39,4 +39,11 @@ def create():
         create_model = StudentCreateItem(student_form)
         return render_template("/students/create.html", student_model=create_model)
     else:
-        pass
+        form = StudentEditForm()
+        errors = student_service.create_student(form)
+        if len(errors) > 0:
+            controller_service.flash_messages(errors, MessageCategory.Error)
+            return render_template("/students/create.html", student_model=StudentCreateItem(form))
+        else:
+            controller_service.flash_message("New student created!", MessageCategory.Success)
+            return redirect(url_for("students.home"))
