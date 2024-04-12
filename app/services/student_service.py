@@ -83,3 +83,22 @@ def create_student(form: StudentEditForm) -> []:
             errors.append("Failed to create new staff member.")
 
     return errors
+
+# Removes student from the dropdown list adding students to a class
+# Removes student from the main list of students
+# Can later be restored (TODO)
+def soft_delete(student_id: int) -> []:
+    errors = []
+    student = student_repo.retrieve(student_id)
+
+    # TODO dicussion needs to be had about how to handle a student's data
+
+    if student is None:
+        errors.append("Student was not found.")
+
+    if not errors:
+        result = student_repo.soft_delete(student)
+        if not result:
+            errors.append("Failed to delete student.")
+
+    return errors

@@ -67,3 +67,8 @@ def create(form: StudentEditForm) -> bool:
         print(e)
         # TODO LOG THIS ERROR
         return False
+
+def soft_delete(student: Student):
+    student.deleted = True
+    rows_updated = student.save()
+    return rows_updated == 1
