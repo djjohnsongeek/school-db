@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>
-    {% if staff_model.classes %}
+    {% if staff_model.role.name == "Teacher" %}
     <div class="columns">
         <div class="column">
             <div class="card">
@@ -25,6 +25,7 @@
                     <h2 class="card-header-title title is-3">Classes</h1>
                 </div>
                 <div class="card-content">
+                    {% if staff_model.classes %}
                     <table class="table">
                         <thead>
                             <tr>
@@ -42,6 +43,11 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    {% else %}
+                    <div class="notification is-warning">
+                        No Classes Found
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
