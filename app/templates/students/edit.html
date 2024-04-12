@@ -6,10 +6,20 @@
         <div class="column">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-header-title title is-3">
+                    <h1 class="card-header-title title is-3">
                         <span class="has-text-grey mr-2">Student - </span>
                         <span>{{ student_model.fullname }}</span>
                     </h1>
+                    <button class="card-header-icon">
+                        <a href="{{ url_for('students.home') }}">
+                            <span class="icon-text">
+                                <span class="icon">
+                                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                </span>
+                                <strong>Back To List</strong>
+                            </span>
+                        </a>
+                    </button>
                 </div>
                 <div class="card-content">
                     {% include "/includes/student_edit_form.html" %}
@@ -21,7 +31,7 @@
         <div class="column">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-header-title title is-3">Classes</h1>
+                    <h2 class="card-header-title title is-3">Classes</h2>
                 </div>
                 <div class="card-content">
                     {% if student_model.classes %}
