@@ -13,7 +13,7 @@ def get_staff(staff_id: int) -> StaffEditItem:
 
     if staff is not None:
         form = to_staff_form(staff)
-        return StaffEditItem(staff, form)
+        return StaffEditItem(staff, form, [])
     else:
         return None
 
@@ -41,29 +41,41 @@ def to_staff_form(staff_model: Staff) -> StaffEditForm:
 def update_staff(form: StaffEditForm) -> StaffEditItem:
     staff_model = staff_repo.retrieve(int(form.staff_id.data))
 
-    if staff_model is not None and form.validate():
-        result = staff_repo.update(form, staff_model)
-        form = to_staff_form(staff_model)
-    elif staff_model is None:
+    # validation
+    if staff_model is None:
         return None
 
-    return StaffEditItem(staff_model, form)
+    errors = []
+    if form.email.data != staff_model.email and staff_repo.email_exists(form.email.data):
+        errors.append("The email supplied is already in use.")
+
+    if form.username.data != staff_model.username and staff_repo.username_exists(form.username.data):
+        errors.append("The username supplied is already in use.")
+
+    if not form.validate():
+        errors.append("Invalid data detected. No changes have been saved.")
+
+    if len(errors) == 0:
+        result = staff_repo.update(form, staff_model)
+        form = to_staff_form(staff_model)
+
+    return StaffEditItem(staff_model, form, errors)
 
 def create_staff(form: StaffEditForm) -> []:
     errors = []
-    form.staff_id.data = 1
-
     username_exists = staff_repo.username_exists(form.username.data)
     email_exists = staff_repo.email_exists(form.email.data)
 
     if username_exists or email_exists:
         errors.append("This email address or username is already in use.")
 
-    form.validate()
+    # we manually set the id so it will pass validatoin
+    # the id is not used to insert
+    form.staff_id.data = 1
+    if not form.validate():
+        errors.append("Invalid data detected. A new staff member was not created.")
 
-    if errors or form.errors:
-        errors.append("A new staff member was not created.")
-    else:
+    if len(errors) == 0:
         # TODO: Password requirements, generate password
         result = staff_repo.create(form, generate_password_hash("place-holder-password"))
         if not result:

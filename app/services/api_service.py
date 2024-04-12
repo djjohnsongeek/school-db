@@ -1,5 +1,5 @@
 from flask import Request, current_app
-from app.services import staff_service
+from app.services import staff_service, student_service
 from app.models.view_models import AsyncJsResponseItem
 
 def delete_item(category: str, action: str, request: Request) -> AsyncJsResponseItem:
@@ -11,17 +11,17 @@ def delete_item(category: str, action: str, request: Request) -> AsyncJsResponse
     if not valid_category(category) or not valid_action(action) or request_data is None or item_id is None:
         errors.append("Invalid request.")
 
+    results = []
     if not errors:
         if action == "delete":
             if category == "staff":
-                result = staff_service.soft_delete(item_id)
-
-                # update main errors object
-                for error in result:
-                    errors.append(error)
-
+                results = staff_service.soft_delete(item_id)
             elif category == "student":
-                pass
+                results = student_service.soft_delete(item_id)
+    
+    # update main errors object
+    for error in results:
+        errors.append(error)
 
     return AsyncJsResponseItem(errors, {"itemId" : item_id})
 

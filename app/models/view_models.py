@@ -1,7 +1,7 @@
-from app.models.db_models import SchoolClass, Staff, Student
+from app.models.db_models import SchoolClass, Staff, Student, ClassRosterEntry
 from app.models.base_models import Person
 from app.models.enums import PersonGender, StaffRole
-from app.models.forms import StaffEditForm
+from app.models.forms import StaffEditForm, StudentEditForm
 
 class ClassItem:
     def __init__(self, class_model: SchoolClass):
@@ -39,15 +39,32 @@ class StudentItem(PersonItem):
         self.student_number = student_model.student_number
 
 class StaffEditItem():
-    def __init__(self, staff_model: Staff, edit_form: StaffEditForm):
+    def __init__(self, staff_model: Staff, edit_form: StaffEditForm, edit_errors: []):
         self.fullname = staff_model.full_name()
         self.role = StaffRole(staff_model.role)
         self.classes = staff_model.classes
         self.form = edit_form
+        self.edit_errors = edit_errors
 
 class StaffCreateItem():
     def __init__(self, edit_form: StaffEditForm):
         self.form = edit_form
+
+class StudentEditItem():
+    def __init__(self, student_model: Student, edit_form: StudentEditForm, classes: [], edit_errors: []):
+        self.fullname = student_model.full_name()
+        self.classes = classes
+        self.form = edit_form
+        self.edit_errors = edit_errors
+
+class StudentCreateItem():
+    def __init__(self, form: StudentEditForm):
+        self.form = form
+
+class StudentClassItem():
+    def __init__(self, class_info: ClassRosterEntry):
+        self.term = class_info.school_class.term.name
+        self.name = class_info.school_class.name
 
 class AsyncJsResponseItem():
     def __init__(self, errors: [], data: dict):

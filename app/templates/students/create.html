@@ -7,10 +7,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-header-title title is-3">
-                        <span class="has-text-grey mr-2"> Create New Staff Member</span>
+                        <span class="has-text-grey mr-2"> Create New Student</span>
                     </h1>
                     <button class="card-header-icon">
-                        <a href="{{ url_for('staff.home') }}">
+                        <a href="{{ url_for('students.home') }}">
                             <span class="icon-text">
                                 <span class="icon">
                                     <i class="fa fa-arrow-left" aria-hidden="true"></i>
@@ -21,7 +21,7 @@
                     </button>
                 </div>
                 <div class="card-content">
-                    {% include "/includes/staff_edit_form.html" %}
+                    {% include "/includes/student_edit_form.html" %}
                 </div>
             </div>
         </div>

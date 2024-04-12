@@ -23,16 +23,16 @@
         </div>
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
-                <a class="navbar-item" href="#">
+                <a class="navbar-item{{ ' has-background-light' if 'term' in request.path else '' }}" href="#">
                     Terms
                 </a>
-                <a class="navbar-item" href="{{ url_for('classes.home') }}">
+                <a class="navbar-item{{ ' has-background-light' if 'classes' in request.path else '' }}" href="{{ url_for('classes.home') }}">
                     Classes
                 </a>
-                <a class="navbar-item" href="{{ url_for('staff.home') }}">
+                <a class="navbar-item{{ ' has-background-light' if 'staff' in request.path else '' }}" href="{{ url_for('staff.home') }}">
                     Staff
                 </a>
-                <a class="navbar-item" href="{{ url_for('students.home') }}">
+                <a class="navbar-item{{ ' has-background-light' if 'students' in request.path else '' }}" href="{{ url_for('students.home') }}">
                     Students
                 </a>
             </div>

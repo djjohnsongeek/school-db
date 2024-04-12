@@ -7,11 +7,11 @@
             <div class="card">
                 <div class="card-header">
                     <h1 class="card-header-title title is-3">
-                        <span class="has-text-grey mr-2">{{ staff_model.role.name }} - </span>
-                        <span>{{ staff_model.fullname }}</span>
+                        <span class="has-text-grey mr-2">Student - </span>
+                        <span>{{ student_model.fullname }}</span>
                     </h1>
                     <button class="card-header-icon">
-                        <a href="{{ url_for('staff.home') }}">
+                        <a href="{{ url_for('students.home') }}">
                             <span class="icon-text">
                                 <span class="icon">
                                     <i class="fa fa-arrow-left" aria-hidden="true"></i>
@@ -22,12 +22,11 @@
                     </button>
                 </div>
                 <div class="card-content">
-                    {% include "/includes/staff_edit_form.html" %}
+                    {% include "/includes/student_edit_form.html" %}
                 </div>
             </div>
         </div>
     </div>
-    {% if staff_model.role.name == "Teacher" %}
     <div class="columns">
         <div class="column">
             <div class="card">
@@ -35,7 +34,7 @@
                     <h2 class="card-header-title title is-3">Classes</h2>
                 </div>
                 <div class="card-content">
-                    {% if staff_model.classes %}
+                    {% if student_model.classes %}
                     <table class="table">
                         <thead>
                             <tr>
@@ -44,11 +43,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {# TODO: accessing the term model like this creats an n+1 problem? #}
-                            {% for staff_class in staff_model.classes %}
+                            {% for student_class in student_model.classes %}
                             <tr>
-                                <td><a href="#">{{ staff_class.name }}</a></td>
-                                <td>{{ staff_class.term.name }}</td>
+                                <td><a href="#">{{ student_class.name }}</a></td>
+                                <td>{{ student_class.term }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -62,6 +60,5 @@
             </div>
         </div>
     </div>
-    {% endif %}
 </div>
 {% endblock %}
