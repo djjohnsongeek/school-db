@@ -1,0 +1,80 @@
+{% extends "/layouts/layout.html" %}
+
+{% block main %}
+<div class="container is-fluid">
+    <div class="block">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-header-title title is-3">Terms</h1>
+            </div>
+            <div class="card-content">
+                <div class="block">
+                    <div class="field is-grouped">
+                        <div class="control has-icons-left">
+                            <input class="input" type="text" placeholder="Type to search ...">
+                            <span class="icon is-small is-left">
+                                <i class="fa fa-search"></i>
+                            </span>
+                        </div>
+                        <div class="control">
+                            <a class="button is-link" href="{{ url_for('students.create') }}">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </span>
+                                    <span>New Term</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <table class="table is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Start Date
+                            </th>
+                            <th>
+                                End Date
+                            </th>
+                            <th colspan="2">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for term in terms %}
+                        <tr id="term-row-{{ term.id }}">
+                            <td>{{term.name}}</td>
+                            <td>{{term.start_date}}</td>
+                            <td>{{term.end_date}}</td>
+                            <td>
+                                <a class="button is-link" href="#">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                        </span>
+                                        <span>Details</span>
+                                    </span>
+                                </a>
+                                <button class="button is-danger modal-trigger" data-target="confirm-delete-modal" data-item-id="{{ term.id }}">
+                                    <span class="icon-text">
+                                        <span class="icon">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </span>
+                                        <span>Delete</span>
+                                    </span>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

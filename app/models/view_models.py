@@ -1,4 +1,4 @@
-from app.models.db_models import SchoolClass, Staff, Student, ClassRosterEntry
+from app.models.db_models import SchoolClass, Staff, Student, ClassRosterEntry, Term
 from app.models.base_models import Person
 from app.models.enums import PersonGender, StaffRole
 from app.models.forms import StaffEditForm, StudentEditForm
@@ -76,3 +76,10 @@ class AsyncJsResponseItem():
             "errors": self.errors,
             "data": self.data
         }
+
+class TermItem():
+    def __init__(self, term: Term):
+        self.id = term.id
+        self.start_date = term.start_date
+        self.end_date = term.end_date
+        self.name = term.name
