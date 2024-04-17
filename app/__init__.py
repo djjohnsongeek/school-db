@@ -46,11 +46,13 @@ def create_app(test_config=None):
     from .controllers.staff_controller import staff_blueprint
     from .controllers.student_controller import student_blueprint
     from .controllers.api_controller import api_blueprint
+    from .controllers.terms_controller import terms_blueprint
 
     app.register_blueprint(index_blueprint)
     app.register_blueprint(classes_blueprint)
     app.register_blueprint(staff_blueprint)
     app.register_blueprint(student_blueprint)
     app.register_blueprint(api_blueprint)
+    app.register_blueprint(terms_blueprint)
 
     return app
