@@ -1,0 +1,47 @@
+<form method="POST">
+    {{ term_model.form.csrf_token }}
+    {{ term_model.form.term_id() }}
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <label class="label">{{ term_model.form.name.label }}</label>
+                <div class="control">
+                    {{ term_model.form.name(class="input") }}
+                </div>
+                {% for error in term_model.form.name.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div> 
+        </div>
+        <div class="column">
+            <div class="field">
+                <label class="label">{{ term_model.form.start_date.label }}</label>
+                <div class="control">
+                    {{ term_model.form.start_date(class="input") }}
+                </div>
+                {% for error in term_model.form.start_date.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div> 
+        </div>
+        <div class="column">
+            <div class="field">
+                <label class="label">{{ term_model.form.end_date.label }}</label>
+                <div class="control">
+                    {{ term_model.form.end_date(class="input") }}
+                </div>
+                {% for error in term_model.form.end_date.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div> 
+        </div>
+    </div>
+    <button class="button is-primary" type="submit">
+        <span class="icon-text">
+            <span class="icon">
+                <i class="fa fa-save" aria-hidden="true"></i>
+            </span>
+            <span>Save Changes</span>
+        </span>
+    </button>
+</form>

@@ -25,3 +25,9 @@ class StudentEditForm(PersonForm):
     student_number = StringField("Student Number", validators=[DataRequired(), StudentNumber()])
     application_date = DateField("Application Date", validators=[DataRequired()])
     occupation = StringField("Occupation", validators=[DataRequired(), Length(min=1, max=128)])
+
+class TermEditForm(FlaskForm):
+    term_id = HiddenField(validators=[DataRequired()])
+    name = StringField("Term Name", validators=[DataRequired()])
+    start_date = DateField("Start Date", validators=[DataRequired()])
+    end_date = DateField("End Date", validators=[DataRequired()])

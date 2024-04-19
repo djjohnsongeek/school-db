@@ -1,7 +1,7 @@
 from app.models.db_models import SchoolClass, Staff, Student, ClassRosterEntry, Term
 from app.models.base_models import Person
 from app.models.enums import PersonGender, StaffRole
-from app.models.forms import StaffEditForm, StudentEditForm
+from app.models.forms import StaffEditForm, StudentEditForm, TermEditForm
 
 class ClassItem:
     def __init__(self, class_model: SchoolClass):
@@ -83,3 +83,7 @@ class TermItem():
         self.start_date = term.start_date
         self.end_date = term.end_date
         self.name = term.name
+
+class TermCreateItem():
+    def __init__(self, form: TermEditForm):
+        self.form = form
