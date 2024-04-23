@@ -52,7 +52,7 @@
                             <td>{{term.start_date}}</td>
                             <td>{{term.end_date}}</td>
                             <td>
-                                <a class="button is-link" href="#">
+                                <a class="button is-link" href="{{ url_for('terms.edit', term_id=term.id) }}">
                                     <span class="icon-text">
                                         <span class="icon">
                                             <i class="fa fa-info-circle" aria-hidden="true"></i>

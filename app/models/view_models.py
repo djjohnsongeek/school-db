@@ -84,6 +84,6 @@ class TermItem():
         self.end_date = term.end_date
         self.name = term.name
 
-class TermCreateItem():
+class TermEditItem():
     def __init__(self, form: TermEditForm):
         self.form = form

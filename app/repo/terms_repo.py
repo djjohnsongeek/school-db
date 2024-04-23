@@ -5,6 +5,9 @@ from datetime import datetime
 def retrieve_all():
     return Term.select()
 
+def retrieve(id: int):
+    return Term.get_or_none(Term.id == id)
+
 def create(form: TermEditForm):
     try:
         primary_key = Term.insert(
