@@ -20,3 +20,12 @@ def create(form: TermEditForm):
         print(e)
         # TODO LOG THIS ERROR
         return False
+
+def update(term_model: Term, form: TermEditForm) -> bool:
+    term_model.end_date = form.end_date.data
+    term_model.start_date = form.start_date.data
+    term_model.name = form.name.data
+
+    
+    rows_updated = term_model.save()
+    return rows_updated == 1

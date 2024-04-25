@@ -85,5 +85,6 @@ class TermItem():
         self.name = term.name
 
 class TermEditItem():
-    def __init__(self, form: TermEditForm):
+    def __init__(self, form: TermEditForm, edit_errors: []):
         self.form = form
+        self.edit_errors = edit_errors

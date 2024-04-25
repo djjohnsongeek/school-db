@@ -22,11 +22,28 @@ def create_term(form: TermEditForm) -> []:
 
     return errors
 
+def update_term(form: TermEditForm):
+    term_model = terms_repo.retrieve(form.term_id.data)
+    if term_model is None:
+        return None
+
+    errors = []
+    if not form.validate():
+        errors.append("Invalid data detected. No changes have been made.")
+
+    if form.start_date.data >= form.end_date.data:
+        errors.append("The End Date cannot occur before the Start Date")
+
+    if len(errors) == 0:
+        result = terms_repo.update(term_model, form)
+
+    return TermEditItem(form, errors)
+
 def retrieve_term(term_id: int) -> TermEditItem:
     term = terms_repo.retrieve(term_id)
     form = to_term_form(term)
     if form is not None:
-        return TermEditItem(form)
+        return TermEditItem(form, [])
     else:
         return None
 
@@ -36,7 +53,7 @@ def to_term_form(term_model: Term) -> TermEditForm:
 
     if term_model is not None:
         form = TermEditForm(
-            id=term_model.id,
+            term_id=term_model.id,
             name=term_model.name,
             start_date=term_model.start_date,
             end_date=term_model.end_date,
