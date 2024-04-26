@@ -31,7 +31,7 @@ class LoginLog(BaseModel):
     class Meta:
         table_name = "login_logs"
 
-class Term(BaseModel):
+class Term(SoftDelete):
     name = CharField(max_length=64)
     start_date = DateField()
     end_date = DateField()

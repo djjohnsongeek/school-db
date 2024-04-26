@@ -29,3 +29,8 @@ def update(term_model: Term, form: TermEditForm) -> bool:
     
     rows_updated = term_model.save()
     return rows_updated == 1
+
+def soft_delete(term: Term) -> bool:
+    term.deleted = true
+    rows_updated = term.save()
+    return rows_updated == 1

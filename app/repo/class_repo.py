@@ -14,3 +14,12 @@ def retrieve_current_or_future(staff: Staff) -> []:
         .where((SchoolClass.term.end_date > now) & (SchoolClass.teacher.id == staff.id)))
     
     return query
+
+def retrieve_by_term(term: Term) -> []:
+    now = datetime.now()
+    query = (SchoolClass
+        .select()
+        .join(Term)
+        .where(SchoolClass.term.id == term.id))
+
+    return query
