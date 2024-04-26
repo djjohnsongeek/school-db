@@ -55,6 +55,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% if not staff %}
+                        <tr>
+                            <td colspan="7">
+                                <div class="notification is-warning">
+                                    No Staff Found
+                                </div>
+                            </td>
+                        </tr>
+                        {% endif %}
                         {% for staff_member in staff %}
                         <tr id="staff-member-row-{{ staff_member.id }}">
                             <td>{{staff_member.name}}</td>
