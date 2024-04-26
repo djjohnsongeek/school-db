@@ -60,7 +60,6 @@ def update_student(form: StudentEditForm) -> StudentEditItem:
         result = student_repo.update(student_model, form)
         form = to_student_form(student_model)
 
-
     return StudentEditItem(student_model, form, classes, errors)
 
 def create_student(form: StudentEditForm) -> []:

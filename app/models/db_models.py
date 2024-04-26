@@ -1,6 +1,6 @@
 import os
 from peewee import *
-from app.models.base_models import Person, BaseModel
+from app.models.base_models import Person, BaseModel, SoftDelete
 from app.models.enums import StaffRole
 from datetime import date
 
@@ -31,7 +31,7 @@ class LoginLog(BaseModel):
     class Meta:
         table_name = "login_logs"
 
-class Term(BaseModel):
+class Term(SoftDelete):
     name = CharField(max_length=64)
     start_date = DateField()
     end_date = DateField()

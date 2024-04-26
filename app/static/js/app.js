@@ -164,4 +164,35 @@ var AsyncApi = {
     }
 }
 
+
+var AppApi = {
+    deleteRequest: function(event, configObj) {
+        const eventElement = event.currentTarget;
+        const modalElement = eventElement.closest(".modal");
+        const itemId = modalElement.dataset.itemId;
+        Modal.close(modalElement);
+    
+        let options = {
+            category: configObj.category,
+            action: "delete",
+            data: {
+                itemId: itemId
+            },
+            successCallback: function(response)
+            {
+                const id = response.data.itemId;
+                let rowEl = document.getElementById(`${configObj.rowToRemoveIdPrefix}${id}`);
+                rowEl.remove();
+                delete rowEl;
+    
+                Messages.addMessage(`${configObj.itemName} successfully deleted.`, "success");
+            },
+            errorCallback: function() {
+                console.log("Called error call back");
+            }
+        }
+        AsyncApi.postRequest(options);
+    }
+}
+
 Modal.initialize();
