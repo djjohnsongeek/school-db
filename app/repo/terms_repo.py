@@ -3,7 +3,7 @@ from app.models.forms import TermEditForm
 from datetime import datetime
 
 def retrieve_all():
-    return Term.select()
+    return Term.select().where(Term.deleted == False)
 
 def retrieve(id: int):
     return Term.get_or_none(Term.id == id)
@@ -31,6 +31,6 @@ def update(term_model: Term, form: TermEditForm) -> bool:
     return rows_updated == 1
 
 def soft_delete(term: Term) -> bool:
-    term.deleted = true
+    term.deleted = True
     rows_updated = term.save()
     return rows_updated == 1

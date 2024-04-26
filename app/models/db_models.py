@@ -1,6 +1,6 @@
 import os
 from peewee import *
-from app.models.base_models import Person, BaseModel
+from app.models.base_models import Person, BaseModel, SoftDelete
 from app.models.enums import StaffRole
 from datetime import date
 

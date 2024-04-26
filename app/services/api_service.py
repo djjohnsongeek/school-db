@@ -19,7 +19,7 @@ def delete_item(category: str, action: str, request: Request) -> AsyncJsResponse
             elif category == "student":
                 results = student_service.soft_delete(item_id)
             elif category == "term":
-                results = term_service.soft_delete(item_id)
+                results = terms_service.soft_delete(item_id)
     
     # update main errors object
     for error in results:
