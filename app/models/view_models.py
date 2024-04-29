@@ -1,7 +1,7 @@
 from app.models.db_models import SchoolClass, Staff, Student, ClassRosterEntry, Term
 from app.models.base_models import Person
 from app.models.enums import PersonGender, StaffRole
-from app.models.forms import StaffEditForm, StudentEditForm, TermEditForm
+from app.models.forms import StaffEditForm, StudentEditForm, TermEditForm, ClassEditForm
 
 class ClassItem:
     def __init__(self, class_model: SchoolClass):
@@ -86,5 +86,10 @@ class TermItem():
 
 class TermEditItem():
     def __init__(self, form: TermEditForm, edit_errors: []):
+        self.form = form
+        self.edit_errors = edit_errors
+
+class ClassEditItem():
+    def __init__(self, form: ClassEditForm, edit_errors: []):
         self.form = form
         self.edit_errors = edit_errors

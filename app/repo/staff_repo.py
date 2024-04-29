@@ -1,5 +1,6 @@
 from app.models.db_models import Staff, SchoolClass
 from app.models.forms import StaffEditForm
+from app.models.enums import StaffRole
 from datetime import datetime
 
 ## SELECT
@@ -14,6 +15,9 @@ def retrieve_by_email(email: str) -> Staff:
 
 def retrieve_by_username(username: str) -> Staff:
     return Staff.get_or_none(Staff.username == username)
+
+def retrieve_teachers() -> []:
+    return Staff.select().where((Staff.role == int(StaffRole.Teacher)) & (Staff.deleted == False))
 
 def email_exists(email: str) -> bool:
     staff = retrieve_by_email(email)

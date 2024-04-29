@@ -1,0 +1,89 @@
+{% extends "/layouts/layout.html" %}
+
+{% block main %}
+<div class="container">
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title title is-3">
+                        <span class="has-text-grey mr-2"> Create a New Class</span>
+                    </h1>
+                    <button class="card-header-icon">
+                        <a href="{{ url_for('classes.home') }}">
+                            <span class="icon-text">
+                                <span class="icon">
+                                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                </span>
+                                <strong>Back To List</strong>
+                            </span>
+                        </a>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <form method="POST">
+                        {{ class_model.form.csrf_token }}
+                        {{ class_model.form.class_id() }}
+                        <div class="columns">
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label">{{ class_model.form.name.label }}</label>
+                                    <div class="control">
+                                        {{ class_model.form.name(class="input") }}
+                                    </div>
+                                    {% for error in class_model.form.name.errors %}
+                                        <p class="help is-danger">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label">{{ class_model.form.room_number.label }}</label>
+                                    <div class="control">
+                                        {{ class_model.form.room_number(class="input") }}
+                                    </div>
+                                    {% for error in class_model.form.room_number.errors %}
+                                        <p class="help is-danger">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="columns">
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label">{{ class_model.form.teacher_id.label }}</label>
+                                    <div class="select">
+                                        {{ class_model.form.teacher_id() }}
+                                    </div>
+                                    {% for error in class_model.form.teacher_id.errors %}
+                                        <p class="help is-danger">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="field">
+                                    <label class="label">{{ class_model.form.term_id.label }}</label>
+                                    <div class="select">
+                                        {{ class_model.form.term_id() }}
+                                    </div>
+                                    {% for error in class_model.form.term_id.errors %}
+                                        <p class="help is-danger">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <button class="button is-primary" type="submit">
+                            <span class="icon-text">
+                                <span class="icon">
+                                    <i class="fa fa-save" aria-hidden="true"></i>
+                                </span>
+                                <span>Save Changes</span>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
