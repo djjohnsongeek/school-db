@@ -22,6 +22,12 @@ def get_create_model() -> ClassEditItem:
 
     return ClassEditItem(create_form, [])
 
+def to_create_model(form: ClassEditForm, errors: []) -> ClassEditItem:
+    form.teacher_id.choices = get_teacher_choices()
+    form.term_id.choices = get_term_choices()
+
+    return ClassEditItem(form, errors)
+
 def get_teacher_choices() -> []:
     teachers = staff_repo.retrieve_teachers()
     return [(teacher.id, teacher.full_name()) for teacher in teachers]
@@ -29,3 +35,25 @@ def get_teacher_choices() -> []:
 def get_term_choices() -> []:
     terms = terms_repo.retrieve_current()
     return [(term.id, term.name) for term in terms]
+
+def create_class(form: ClassEditForm) -> ClassEditItem:
+    errors = []
+
+    term = terms_repo.retrieve(form.term_id.data)
+    teacher = staff_repo.retrieve(form.teacher_id.data)
+    form.teacher_id.choices = get_teacher_choices()
+    form.term_id.choices = get_term_choices()
+
+    if term is None or teacher is None:
+        errors.append("A new class must be assigned to a teacher and a term.")
+
+    form.class_id.data = 1
+    if not form.validate():
+        errors.append("Invalid data detected. No changes have been saved.")
+
+    if len(errors) == 0:
+        result = class_repo.create_class(form, teacher, term)
+        if not result:
+            errors.append("Failed to create new class.")
+
+    return to_create_model(form, errors)

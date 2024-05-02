@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for
 from app.services import class_service, controller_service
 from app.models.view_models import ClassEditItem
 from app.models.forms import ClassEditForm
@@ -21,3 +21,12 @@ def create():
             controller_service.flash_messages(class_create_model.edit_errors, MessageCategory.Warning)
 
         return render_template("classes/create.html", class_model=class_create_model)
+    if request.method == "POST":
+        create_form = ClassEditForm()
+        class_edit_model = class_service.create_class(create_form)
+        if class_edit_model.edit_errors:
+            controller_service.flash_messages(class_edit_model.edit_errors, MessageCategory.Error)
+            return render_template("classes/create.html", class_model=class_edit_model)
+        else:
+            controller_service.flash_message("Class created!", MessageCategory.Success)
+            return redirect(url_for("classes.home"))

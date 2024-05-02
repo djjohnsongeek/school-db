@@ -36,5 +36,5 @@ class ClassEditForm(FlaskForm):
     class_id = HiddenField(validators=[DataRequired()])
     name = StringField("Name", validators=[DataRequired()])
     room_number = IntegerField("Room Number", validators=[DataRequired()])
-    teacher_id = SelectField("Teacher", validators=[DataRequired()], coerce=int)
-    term_id = SelectField("Term", validators=[DataRequired()], coerce=int)
+    teacher_id = SelectField("Teacher", validators=[DataRequired()], coerce=int, choices=[])
+    term_id = SelectField("Term", validators=[DataRequired()], coerce=int, choices=[])
