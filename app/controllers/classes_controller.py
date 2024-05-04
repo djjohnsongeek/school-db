@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from app.services import class_service, controller_service
-from app.models.view_models import ClassEditItem
+from app.models.view_models import ClassCreateItem
 from app.models.forms import ClassEditForm
 from app.models.enums import MessageCategory
 
@@ -34,4 +34,5 @@ def create():
 @classes_blueprint.route("/classes/edit/<int:class_id>", methods=["GET", "POST"])
 def edit(class_id: id):
     if request.method == "GET":
+        form = ClassEditForm
         

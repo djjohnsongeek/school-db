@@ -1,0 +1,470 @@
+{% extends "/layouts/layout.html" %}
+
+{% block main %}
+<div class="container">
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title title is-3">
+                        <span class="has-text-grey mr-2">Edit [Class Name Here]</span>
+                    </h1>
+                    <button class="card-header-icon">
+                        <a href="{{ url_for('classes.home') }}">
+                            <span class="icon-text">
+                                <span class="icon">
+                                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                </span>
+                                <strong>Back To List</strong>
+                            </span>
+                        </a>
+                    </button>
+                </div>
+                <div class="card-content">
+                    {% include "/includes/classes_edit_form.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <div class="block">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="card-header-title title is-3">Sessions & Attendance</h1>
+                    </div>
+                    <div class="card-content">
+                        <div class="block">
+                            <button class="button is-primary">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </span>
+                                    <span>Add a Session</span>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="block">
+                            <div class="block">
+                                <div class="card">
+                                    <header class="card-header">
+                                        <p class="card-header-title">
+                                            Session 1 - 21/02/2024
+                                        </p>
+                                        <button class="card-header-icon" aria-label="more options">
+                                            <span class="icon">
+                                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                            </span>
+                                        </button>
+                                    </header>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <header class="card-header">
+                                    <p class="card-header-title">
+                                        Session 2 - 22/02/2024
+                                    </p>
+                                    <button class="card-header-icon" aria-label="more options">
+                                        <span class="icon">
+                                            <i class="fa fa-angle-up" aria-hidden="true"></i>
+                                        </span>
+                                    </button>
+                                </header>
+                                <div class="card-content">
+                                    <div class="columns">
+                                        <div class="column is-4">
+                                            ອາລານາ ພົນນາສາ (Alana Phonasa)
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance1">
+                                                Present
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance1">
+                                                Absent
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance1">
+                                                Tardy
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="columns">
+                                        <div class="column is-4">
+                                            ເກສອນ ໄຊຍະວົງ (Kesone Sayavong)
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance2">
+                                                Present
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance2">
+                                                Absent
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance2">
+                                                Tardy
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="columns">
+                                        <div class="column is-4">
+                                            Student 3
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance3">
+                                                Present
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance3">
+                                                Absent
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance3">
+                                                Tardy
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="columns">
+                                        <div class="column is-4">
+                                            Student 4
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance4">
+                                                Present
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance4">
+                                                Absent
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance4">
+                                                Tardy
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="columns">
+                                        <div class="column is-4">
+                                            Student 5
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance5">
+                                                Present
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance5">
+                                                Absent
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance5">
+                                                Tardy
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="columns">
+                                        <div class="column is-4">
+                                            Student 6
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance6">
+                                                Present
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance6">
+                                                Absent
+                                            </label>
+                                        </div>
+                                        <div class="column">
+                                            <label class="radio">
+                                                <input type="radio" name="attendance6">
+                                                Tardy
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <footer class="card-footer">
+                                    <a href="#" class="card-footer-item has-background-danger has-text-white">
+                                        <span class="icon-text">
+                                            <span class="icon">
+                                                <i class="fa fa-ban" aria-hidden="true"></i>
+                                            </span>
+                                            <span>Cancel Session</span>
+                                        </span>
+                                    </a>
+                                </footer>
+                            </div>
+                        </div>
+                        <div class="block">
+                            <div class="card">
+                                <header class="card-header">
+                                    <p class="card-header-title">
+                                        Session 3 - 23/02/2024
+                                    </p>
+                                    <button class="card-header-icon" aria-label="more options">
+                                        <span class="icon">
+                                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                        </span>
+                                    </button>
+                                </header>
+                            </div>
+                        </div>
+                        <div class="block">
+                            <div class="card">
+                                <header class="card-header">
+                                    <p class="card-header-title">
+                                        Session 4 - 24/02/2024
+                                    </p>
+                                    <button class="card-header-icon" aria-label="more options">
+                                        <span class="icon">
+                                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                        </span>
+                                    </button>
+                                </header>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <div class="block">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="card-header-title title is-3">Students</h1>
+                    </div>
+                    <div class="card-content">
+                        <div class="block">
+                            <button class="button is-primary">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </span>
+                                    <span>Add Student</span>
+                                </span> 
+                            </button>
+                        </div>
+                        <div class="block">
+                            <table class="table is-fullwidth">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>
+                                            Attendance
+                                        </th>
+                                        <th>Grade</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="./student.html">
+                                                <span>ອາລານາ ພົນນາສາ</span>
+                                                <span>(Alana Phonasa)</span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="tag is-success">
+                                                P: 10
+                                            </span>
+                                            <span class="tag is-danger">
+                                                A: 1
+                                            </span>
+                                            <span class="tag is-warning">
+                                                T: 1
+                                            </span>
+                                        </td>
+                                        <td>85</td>
+                                        <td>
+                                            <button class="button is-danger" title="Remove this student from the class.">
+                                                <span class="icon">
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                </span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="./student.html">
+                                                <span>ເກສອນ ໄຊຍະວົງ</span>
+                                                <span>(Kesone Sayavong)</span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="tag is-success">
+                                                P: 8
+                                            </span>
+                                            <span class="tag is-danger">
+                                                A: 1
+                                            </span>
+                                            <span class="tag is-warning">
+                                                T: 3
+                                            </span>
+                                        </td>
+                                        <td>90</td>
+                                        <td>
+                                            <button class="button is-danger" title="Remove this student from the class.">
+                                                <span class="icon">
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                </span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="./student.html">
+                                                Student 3
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="tag is-success">
+                                                P: ?
+                                            </span>
+                                            <span class="tag is-danger">
+                                                A: ?
+                                            </span>
+                                            <span class="tag is-warning">
+                                                T: ?
+                                            </span>
+                                        </td>
+                                        <td>?</td>
+                                        <td>
+                                            <button class="button is-danger" title="Remove this student from the class.">
+                                                <span class="icon">
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                </span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="./student.html">
+                                                Student 4
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="tag is-success">
+                                                P: ?
+                                            </span>
+                                            <span class="tag is-danger">
+                                                A: ?
+                                            </span>
+                                            <span class="tag is-warning">
+                                                T: ?
+                                            </span>
+                                        </td>
+                                        <td>?</td>
+                                        <td>
+                                            <button class="button is-danger" title="Remove this student from the class.">
+                                                <span class="icon">
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                </span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="./student.html">
+                                                Student 5
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="tag is-success">
+                                                P: ?
+                                            </span>
+                                            <span class="tag is-danger">
+                                                A: ?
+                                            </span>
+                                            <span class="tag is-warning">
+                                                T: ?
+                                            </span>
+                                        </td>
+                                        <td>?</td>
+                                        <td>
+                                            <button class="button is-danger" title="Remove this student from the class.">
+                                                <span class="icon">
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                </span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="./student.html">
+                                                Student 6
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="tag is-success">
+                                                P: ?
+                                            </span>
+                                            <span class="tag is-danger">
+                                                A: ?
+                                            </span>
+                                            <span class="tag is-warning">
+                                                T: ?
+                                            </span>
+                                        </td>
+                                        <td>?</td>
+                                        <td>
+                                            <button class="button is-danger" title="Remove this student from the class.">
+                                                <span class="icon">
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                </span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <div class="block">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="card-header-title title is-3">Assignments & Grades</h1>
+                    </div>
+                    <div class="card-content">
+                        To Be Determined
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
