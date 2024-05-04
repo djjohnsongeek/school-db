@@ -30,3 +30,8 @@ def create():
         else:
             controller_service.flash_message("Class created!", MessageCategory.Success)
             return redirect(url_for("classes.home"))
+
+@classes_blueprint.route("/classes/edit/<int:class_id>", methods=["GET", "POST"])
+def edit(class_id: id):
+    if request.method == "GET":
+        
