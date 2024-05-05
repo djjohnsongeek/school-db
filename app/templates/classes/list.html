@@ -77,7 +77,7 @@
                             <td>{{school_class.remaining_sessions_count}}</td>
                             <td>{{school_class.roster_count}}</td>
                             <td>
-                                <a class="button is-link" href="#">
+                                <a class="button is-link" href="{{ url_for('classes.edit', class_id=school_class.id) }}">
                                     <span class="icon-text">
                                         <span class="icon">
                                             <i class="fa fa-info-circle" aria-hidden="true"></i>

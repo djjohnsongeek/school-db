@@ -5,6 +5,13 @@ from datetime import datetime
 def retrieve_all() -> []:
     return SchoolClass.select(SchoolClass, Staff, Term).join(Staff).switch(SchoolClass).join(Term)
 
+def retrieve(class_id: int) -> SchoolClass:
+        return (SchoolClass
+            .select()
+            .join_from(SchoolClass, Staff)
+            .join_from(SchoolClass, Term)
+            .where(SchoolClass.id == class_id))
+
 def retrieve_current_or_future(staff: Staff) -> []:
     now = datetime.now()
     query = (SchoolClass

@@ -1,5 +1,6 @@
 from app.repo import class_repo, staff_repo, terms_repo
 from app.models.view_models import ClassItem, ClassCreateItem, ClassEditItem
+from app.models.db_models import SchoolClass
 from app.models.forms import ClassEditForm
 
 def get_class_list() -> []:
@@ -10,17 +11,28 @@ def get_class_list() -> []:
 def get_create_model() -> ClassCreateItem:
     errors = []
 
-    create_form = ClassEditForm()
-    create_form.teacher_id.choices = get_teacher_choices()
-    create_form.term_id.choices = get_term_choices()
+    form = ClassEditForm()
+    form.teacher_id.choices = get_teacher_choices()
+    form.term_id.choices = get_term_choices()
 
-    if len(create_form.teacher_id.choices) == 0:
+    if len(form.teacher_id.choices) == 0:
         errors.append("No Teachers found, please create a Teacher before creating a class.")
 
-    if len(create_form.term_id.choices) == 0:
+    if len(form.term_id.choices) == 0:
         errors.append("No Terms found, please create a Term before creating a class.")
 
-    return ClassCreateItem(create_form, [])
+    return ClassCreateItem(form, [])
+
+
+def get_edit_model(class_id: int) -> ClassEditItem:
+    errors = []
+    school_class = class_repo.retrieve(class_id)
+
+    if school_class is None:
+        errors.append("No class found.")
+
+    form = to_edit_form(school_class)
+    return to_edit_model(form, school_class, errors)
 
 def to_create_model(form: ClassEditForm, errors: []) -> ClassCreateItem:
     form.teacher_id.choices = get_teacher_choices()
@@ -28,9 +40,24 @@ def to_create_model(form: ClassEditForm, errors: []) -> ClassCreateItem:
 
     return ClassCreateItem(form, errors)
 
-def to_edit_model(form: ClassEditForm, errors: []) -> ClassEditItem:
+def to_edit_form(class_model: SchoolClass) -> ClassEditForm:
+    if class_model is not None:
+        form = ClassEditForm(
+            class_id=class_model.id,
+            name=class_model.name,
+            room_number=class_model.room_number,
+            teacher_id=class_model.teacher.id,
+            term_id=class_model.term.id
+        )
 
-    return ClassEditItem(form=None, class_model=None, edit_errors=[])
+        form.teacher_id.choices = get_teacher_choices()
+        form.term_id.choices = get_term_choices()
+    
+    return form if class_model is not None else None
+
+
+def to_edit_model(form: ClassEditForm, model: SchoolClass, errors: []) -> ClassEditItem:
+    return ClassEditItem(form, model, errors)
 
 def get_teacher_choices() -> []:
     teachers = staff_repo.retrieve_teachers()
