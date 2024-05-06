@@ -10,7 +10,8 @@ def retrieve(class_id: int) -> SchoolClass:
             .select()
             .join_from(SchoolClass, Staff)
             .join_from(SchoolClass, Term)
-            .where(SchoolClass.id == class_id))
+            .where(SchoolClass.id == class_id)
+            .get())
 
 def retrieve_current_or_future(staff: Staff) -> []:
     now = datetime.now()
@@ -46,3 +47,11 @@ def create_class(form: ClassEditForm, teacher: Staff, term: Term) -> bool:
         print(e)
         # TODO LOG THIS ERROR
         return False
+
+def update(form: ClassEditForm, class_model: SchoolClass) -> bool:
+    class_model.name = form.name.data
+    class_model.room_number = form.room_number.data
+    class_model.teacher = form.teacher_id.data
+    class_model.term = form.term_id.data
+
+    return class_model.save() > 0

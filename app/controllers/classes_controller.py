@@ -35,9 +35,10 @@ def create():
 def edit(class_id: id):
     if request.method == "GET":
         edit_model = class_service.get_edit_model(class_id)
-        ## TODO check for errors, any errors
         if edit_model.edit_errors:
             return redirect(url_for("index.error", error_code=404))
         else:
             return render_template("/classes/edit.html", class_model=edit_model)
-        
+    if request.method == "POST":
+        form = ClassEditForm()
+        edit_model = class_service.update(form)

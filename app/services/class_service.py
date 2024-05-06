@@ -88,3 +88,20 @@ def create_class(form: ClassEditForm) -> ClassCreateItem:
             errors.append("Failed to create new class.")
 
     return to_create_model(form, errors)
+
+def update(form: ClassEditForm) -> ClassEditItem:
+    errors = []
+    class_model = class_repo.retrieve(form.class_id)
+
+    if class_model is None:
+        return None
+
+    if not form.validate():
+        errors.validate("Invalid data detected, no changes were saved.")
+
+    if len(errors) == 0:
+        result = class_repo.update(form, class_model)
+
+    # update db record
+    # using update, get edit model
+    # return edit modell

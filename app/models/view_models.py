@@ -97,6 +97,8 @@ class ClassCreateItem():
 class ClassEditItem():
     def __init__(self, form: ClassEditForm, class_model: SchoolClass, edit_errors: []):
         self.form = form
+        self.class_name = class_model.name
         self.sessions = class_model.sessions
         self.students = class_model.roster
         self.teacher = class_model.teacher
+        self.edit_errors = edit_errors
