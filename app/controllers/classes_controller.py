@@ -42,3 +42,8 @@ def edit(class_id: id):
     if request.method == "POST":
         form = ClassEditForm()
         edit_model = class_service.update(form)
+        if edit_model.edit_errors:
+            controller_service.flash_messages(edit_model.edit_errors, MessageCategory.Error)
+        else:
+            controller_service.flash_message("Class updated!", MessageCategory.Success)
+        return render_template("/classes/edit.html", class_model=edit_model)

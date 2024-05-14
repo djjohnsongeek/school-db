@@ -91,17 +91,20 @@ def create_class(form: ClassEditForm) -> ClassCreateItem:
 
 def update(form: ClassEditForm) -> ClassEditItem:
     errors = []
-    class_model = class_repo.retrieve(form.class_id)
+    class_model = class_repo.retrieve(form.class_id.data)
 
     if class_model is None:
         return None
 
+    form.teacher_id.choices = get_teacher_choices()
+    form.term_id.choices = get_term_choices()
+
     if not form.validate():
-        errors.validate("Invalid data detected, no changes were saved.")
+        errors.append("Invalid data detected, no changes were saved.")
 
     if len(errors) == 0:
         result = class_repo.update(form, class_model)
+        if not result:
+            errors.append("Failed to update class info.")
 
-    # update db record
-    # using update, get edit model
-    # return edit modell
+    return ClassEditItem(form, class_model, errors)
