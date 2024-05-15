@@ -10,6 +10,27 @@ for (let element of document.getElementsByClassName("delete"))
     });
 }
 
+// Hide, Reveal Logic
+for (let element of document.getElementsByClassName("toggle"))
+{
+    console.log(element);
+    element.addEventListener("click", function(event) {
+        const t = event.currentTarget.dataset.target;
+        const targets = t.split(",");
+        for (let target of targets)
+        {
+            const targetElm = document.getElementById(target);
+            if (targetElm.classList.contains("is-hidden"))
+            {
+                targetElm.classList.remove("is-hidden");
+            }
+            else {
+                targetElm.classList.add("is-hidden");
+            }
+        }
+    });
+}
+
 // Modals Logic
 var Modal = {
     initialize: function()

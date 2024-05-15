@@ -151,7 +151,7 @@ def init_db(no_populate):
         Session.insert(
             name="Session 5",
             date=date.fromisoformat("2024-09-08"),
-            cancelled=False,
+            cancelled=True,
             school_class=algebra
         ).execute()
 
