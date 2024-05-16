@@ -63,6 +63,7 @@ class StudentCreateItem():
 
 class StudentClassItem():
     def __init__(self, class_info: ClassRosterEntry):
+        self.class_id = class_info.school_class.id
         self.term = class_info.school_class.term.name
         self.name = class_info.school_class.name
 
