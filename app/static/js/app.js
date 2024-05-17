@@ -187,12 +187,16 @@ var AsyncApi = {
 
 
 var AppApi = {
+    /* DELETE Requests Config Obj
+        {
+            category: string
+            itemName : string, 
+            rowToRemoveIdPrefix: string
+        }
+    */
     deleteRequest: function(event, configObj) {
-        const eventElement = event.currentTarget;
-        const modalElement = eventElement.closest(".modal");
+        AppApi.closeModal(event);
         const itemId = modalElement.dataset.itemId;
-        Modal.close(modalElement);
-    
         let options = {
             category: configObj.category,
             action: "delete",
@@ -213,7 +217,35 @@ var AppApi = {
             }
         }
         AsyncApi.postRequest(options);
-    }
+    },
+    /* CREATE Requests Config Obj
+        {
+            category: string
+            formData : FormData 
+        }
+    */
+    createRequest: function(event, configObj) {
+        AppApi.closeModal(event);
+        let options = {
+            category: configObj.category,
+            action: "create",
+            data: Object.fromEntries(configObj.formData),
+            successCallback: function(response)
+            {
+                alert("success");
+            },
+            errorCallback: function() {
+                alert("An error occured");
+            }
+        }
+        AsyncApi.postRequest(options);
+    },
+    closeModal: function(event)
+    {
+        const eventElement = event.currentTarget;
+        const modalElement = eventElement.closest(".modal");
+        Modal.close(modalElement);
+    },
 }
 
 Modal.initialize();
