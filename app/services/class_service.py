@@ -108,3 +108,6 @@ def update(form: ClassEditForm) -> ClassEditItem:
             errors.append("Failed to update class info.")
 
     return ClassEditItem(form, class_model, errors)
+
+def create_session(request_data: dict):
+    return []
