@@ -232,7 +232,7 @@ var AppApi = {
             data: Object.fromEntries(configObj.formData),
             successCallback: function(response)
             {
-                alert("success");
+                Messages.addMessage(`${configObj.category} successfully created!`, "success")
             },
             errorCallback: function() {
                 alert("An error occured");
