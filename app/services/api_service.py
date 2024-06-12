@@ -1,8 +1,9 @@
 from flask import Request, current_app
-from app.services import staff_service, student_service, terms_service
+from app.services import staff_service, student_service, terms_service, class_service
 from app.models.view_models import AsyncJsResponseItem
+from app.errors import NotSupportedError
 
-def delete_item(category: str, action: str, request: Request) -> AsyncJsResponseItem:
+def handle_post(category: str, action: str, request: Request) -> AsyncJsResponseItem:
     errors = []
     request_data = request.get_json()
     if request_data:
@@ -20,6 +21,19 @@ def delete_item(category: str, action: str, request: Request) -> AsyncJsResponse
                 results = student_service.soft_delete(item_id)
             elif category == "term":
                 results = terms_service.soft_delete(item_id)
+            elif category == "session":
+                raise NotImplementedError("Delete Session Not Implemented")
+        if action == "create":
+            if category == "session":
+                request_data["class_id"] = request_data["itemId"]
+                results = class_service.create_session(request_data)
+            elif category == "staff":
+                results.append("Staff creation is not supported")
+            elif category == "student":
+                results.append("Student creation not supported")
+            elif category == "term":
+                results.append("Term creation is not supported")
+            
     
     # update main errors object
     for error in results:
