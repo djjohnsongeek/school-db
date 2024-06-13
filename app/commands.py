@@ -1,5 +1,5 @@
 from app.db import get_db, db_models
-from app.models.db_models import Staff, Student, Term, SchoolClass, ClassRosterEntry, Session
+from app.models.db_models import Staff, Student, Term, SchoolClass, ClassRosterEntry, ClassSession
 from app.models.enums import StaffRole, PersonGender
 from datetime import date
 from werkzeug.security import generate_password_hash
@@ -120,35 +120,35 @@ def init_db(no_populate):
         ).execute()
 
         # Create class sessions
-        Session.insert(
+        ClassSession.insert(
             name="Session 1",
             date=date.fromisoformat("2024-08-01"),
             cancelled=False,
             school_class=algebra
         ).execute()
 
-        Session.insert(
+        ClassSession.insert(
             name="Session 2",
             date=date.fromisoformat("2024-08-08"),
             cancelled=False,
             school_class=algebra
         ).execute()
 
-        Session.insert(
+        ClassSession.insert(
             name="Session 3",
             date=date.fromisoformat("2024-08-15"),
             cancelled=False,
             school_class=algebra
         ).execute()
 
-        Session.insert(
+        ClassSession.insert(
             name="Session 4",
             date=date.fromisoformat("2024-09-01"),
             cancelled=False,
             school_class=algebra
         ).execute()
 
-        Session.insert(
+        ClassSession.insert(
             name="Session 5",
             date=date.fromisoformat("2024-09-08"),
             cancelled=True,

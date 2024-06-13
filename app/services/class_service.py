@@ -110,4 +110,14 @@ def update(form: ClassEditForm) -> ClassEditItem:
     return ClassEditItem(form, class_model, errors)
 
 def create_session(request_data: dict):
+    errors = []
+    class_model = class_repo.retrieve(int(request_data["class_id"]))
+
+    if not class_model:
+        errors.append("Could not find class.")
+
+    if len(errors) == 0:
+        pass
+
+
     return []

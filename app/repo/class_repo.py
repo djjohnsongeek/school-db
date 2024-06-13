@@ -1,4 +1,4 @@
-from app.models.db_models import SchoolClass, Session, Staff, Student, Term
+from app.models.db_models import SchoolClass, ClassSession, Staff, Student, Term
 from app.models.forms import ClassEditForm
 from datetime import datetime
 
@@ -47,6 +47,9 @@ def create_class(form: ClassEditForm, teacher: Staff, term: Term) -> bool:
         print(e)
         # TODO LOG THIS ERROR
         return False
+
+def create_session(class_model: SchoolClass, session: ClassSession):
+    pass
 
 def update(form: ClassEditForm, class_model: SchoolClass) -> bool:
     class_model.name = form.name.data

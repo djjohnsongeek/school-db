@@ -63,7 +63,7 @@ class ClassRosterEntry(BaseModel):
     class Meta:
         table_name = "class_rosters"
 
-class Session(BaseModel):
+class ClassSession(BaseModel):
     name = CharField(max_length=64)
     date = DateField()
     cancelled = BooleanField()
@@ -74,7 +74,7 @@ class Session(BaseModel):
 
 class SessionAttendance(BaseModel):
     student = ForeignKeyField(Student, backref="session_attendance")
-    session = ForeignKeyField(Session, backref="attendance")
+    session = ForeignKeyField(ClassSession, backref="attendance")
     recorded_by = ForeignKeyField(Staff, backref="recorded_attendance")
     value = CharField(max_length=1)
 
