@@ -2,6 +2,7 @@ from app.repo import class_repo, staff_repo, terms_repo
 from app.models.view_models import ClassItem, ClassCreateItem, ClassEditItem
 from app.models.db_models import SchoolClass
 from app.models.forms import ClassEditForm
+from datetime import datetime
 
 def get_class_list() -> []:
     class_models = class_repo.retrieve_all()
@@ -111,13 +112,31 @@ def update(form: ClassEditForm) -> ClassEditItem:
 
 def create_session(request_data: dict):
     errors = []
-    class_model = class_repo.retrieve(int(request_data["class_id"]))
+    class_model = None
+
+    # Validate Class Id
+    try:
+        class_id = int(request_data.get("class_id", None))
+        class_model = class_repo.retrieve(class_id)
+    except (ValueError, TypeError):
+        pass
 
     if not class_model:
         errors.append("Could not find class.")
 
+    # validate date
+    try:
+        request_data["session_time"] = datetime.strptime(request_data["session_time"], '%Y-%m-%dT%H:%M')
+    except ValueError:
+        errors.append("Invalid session date and time format")
+    
+    # Validate Session Name
+    if not request_data.get("session_name") and class_model:
+        session_count = class_repo.session_count(class_model.id)
+        request_data["session_name"] = f"Session {session_count + 1}"
+
     if len(errors) == 0:
-        pass
+        if not class_repo.create_session(class_model, request_data):
+            errors.append("Failed to create a new session.")
 
-
-    return []
+    return errors
