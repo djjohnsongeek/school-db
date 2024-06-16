@@ -10,7 +10,6 @@ def post(category: str, action: str):
     print(test)
     print(category)
     print(action)
-
-
+    
     response = api_service.handle_post(category, action, request)
     return response.to_dict()
