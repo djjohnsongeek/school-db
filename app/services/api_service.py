@@ -1,9 +1,9 @@
 from flask import Request, current_app
 from app.services import staff_service, student_service, terms_service, class_service
-from app.models.view_models import AsyncJsResponseItem
+from app.models.dto import ApiResultItem
 from app.errors import NotSupportedError
 
-def handle_post(category: str, action: str, request: Request) -> AsyncJsResponseItem:
+def handle_post(category: str, action: str, request: Request) -> ApiResultItem:
     errors = []
     request_data = request.get_json()
     item_id = None
@@ -13,28 +13,27 @@ def handle_post(category: str, action: str, request: Request) -> AsyncJsResponse
     if request_data is None or item_id is None:
         errors.append("Invalid request.")
 
-    results = []
+    result = None
     if not errors:
         if action == "delete":
             if category == "staff":
-                results = staff_service.soft_delete(item_id)
+                result = staff_service.soft_delete(item_id)
             elif category == "student":
-                results = student_service.soft_delete(item_id)
+                result = student_service.soft_delete(item_id)
             elif category == "term":
-                results = terms_service.soft_delete(item_id)
+                result = terms_service.soft_delete(item_id)
             elif category == "session":
                 raise NotImplementedError("Delete Session Not Implemented")
             else:
-                results.append("Not Supported")
+                errors.append("Not Supported")
         if action == "create":
             if category == "session":
                 request_data["class_id"] = request_data["itemId"]
-                results = class_service.create_session(request_data)
+                result = class_service.create_session(request_data)
             else:
-                results.append("Not Supported.")
+                errors.append("Not Supported")
     
-    # update main errors object
-    for error in results:
-        errors.append(error)
+    if result is None:
+        result = ApiResultItem(errors, None)
 
-    return AsyncJsResponseItem(errors, {"itemId" : item_id})
+    return result

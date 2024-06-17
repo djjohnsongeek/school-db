@@ -2,12 +2,12 @@ from app.repo import class_repo, staff_repo, terms_repo
 from app.models.view_models import ClassItem, ClassCreateItem, ClassEditItem
 from app.models.db_models import SchoolClass
 from app.models.forms import ClassEditForm
+from app.models.dto import ApiResultItem
 from datetime import datetime
 
 def get_class_list() -> []:
     class_models = class_repo.retrieve_all()
     return [ClassItem(model) for model in class_models]
-
 
 def get_create_model() -> ClassCreateItem:
     errors = []
@@ -110,9 +110,14 @@ def update(form: ClassEditForm) -> ClassEditItem:
 
     return ClassEditItem(form, class_model, errors)
 
-def create_session(request_data: dict):
+def get_students(class_model: SchoolClass) -> []:
+    students = [roster_item.student for roster_item in class_model.roster]
+    return [{ "name": student.full_name(), "id": student.id } for student in students]
+
+def create_session(request_data: dict) -> ApiResultItem:
     errors = []
     class_model = None
+    payload = {}
 
     # Validate Class Id
     try:
@@ -136,7 +141,14 @@ def create_session(request_data: dict):
         request_data["session_name"] = f"Session {session_count + 1}"
 
     if len(errors) == 0:
-        if not class_repo.create_session(class_model, request_data):
+        class_session = class_repo.create_session(class_model, request_data)
+        if class_session is None:
             errors.append("Failed to create a new session.")
+        else:
+            payload["students"] = get_students(class_model)
+            payload["session_id"] = class_session.id
+            payload["session_name"] = class_session.name
+            payload["sessions_time"] = class_session.date
+            payload["cancelled"] = class_session.cancelled
 
-    return errors
+    return ApiResultItem(errors, payload)

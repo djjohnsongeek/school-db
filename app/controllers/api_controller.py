@@ -11,5 +11,5 @@ def post(category: str, action: str):
     print(category)
     print(action)
     
-    response = api_service.handle_post(category, action, request)
-    return response.to_dict()
+    result = api_service.handle_post(category, action, request)
+    return result.to_dict()

@@ -231,6 +231,7 @@ var AppApi = {
             data: Object.fromEntries(configObj.formData),
             successCallback: function(response)
             {
+                console.log(response);
                 Messages.addMessage(`${configObj.category} successfully created!`, "success")
             },
             errorCallback: function() {

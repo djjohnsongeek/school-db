@@ -51,21 +51,20 @@ def create_class(form: ClassEditForm, teacher: Staff, term: Term) -> bool:
 def session_count(class_id: int) -> int:
     return ClassSession.select().join(SchoolClass).where(ClassSession.school_class.id == class_id).count()
 
-def create_session(class_model: SchoolClass, request_data: dict) -> bool:
+def create_session(class_model: SchoolClass, request_data: dict) -> ClassSession:
     print(request_data)
     try:
-        primary_key = ClassSession.insert(
+        class_session = ClassSession.create(
             name = request_data["session_name"],
             date = request_data["session_time"],
             cancelled = False,
             school_class = class_model
-        ).execute()
-        return primary_key > -1
+        )
+        return class_session
     except Exception as e:
         print(e)
         # TODO LOG THIS ERROR
-        return False
-    pass
+        return None
 
 def update(form: ClassEditForm, class_model: SchoolClass) -> bool:
     class_model.name = form.name.data
