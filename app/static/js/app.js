@@ -13,7 +13,6 @@ for (let element of document.getElementsByClassName("delete"))
 // Hide, Reveal Logic
 for (let element of document.getElementsByClassName("toggle"))
 {
-    console.log(element);
     element.addEventListener("click", function(event) {
         const t = event.currentTarget.dataset.target;
         const targets = t.split(",");
@@ -73,7 +72,6 @@ var Modal = {
     close: function(element)
     {
         element.classList.remove("is-active");
-        delete element.dataset.itemId;
     },
     closeAll: function()
     {
@@ -196,6 +194,7 @@ var AppApi = {
     */
     deleteRequest: function(event, configObj) {
         AppApi.closeModal(event);
+        const modalElement = event.currentTarget.closest(".modal");
         const itemId = modalElement.dataset.itemId;
         let options = {
             category: configObj.category,
