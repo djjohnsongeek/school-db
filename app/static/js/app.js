@@ -84,7 +84,7 @@ var Modal = {
 
 // General Utilities
 var Util = {
-    elementsFromStr: function(html)
+    toHtml: function(html)
     {
         html = html.trim();
 
@@ -245,6 +245,7 @@ var AppApi = {
         {
             category: string
             formData : FormData 
+            successCallback: function
         }
     */
     createRequest: function(event, configObj) {
@@ -256,6 +257,7 @@ var AppApi = {
             successCallback: function(response)
             {
                 console.log(response);
+                configObj.successCallback(response);
                 Messages.addMessage(`${configObj.category} successfully created!`, "success")
             },
             errorCallback: function() {
