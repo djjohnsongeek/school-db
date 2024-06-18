@@ -82,6 +82,26 @@ var Modal = {
     },
 }
 
+// General Utilities
+var Util = {
+    elementsFromStr: function(html)
+    {
+        html = html.trim();
+
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        const result = template.content.children;
+
+        if (result.length == 1)
+        {
+            return result[0];
+        }
+        else {
+            return result;
+        }
+    }
+}
+
 // Messages Logic
 var Messages = {
     containerId: "app-messages-container",
@@ -129,6 +149,10 @@ var Messages = {
 
         return msgContainer;
     }
+}
+
+var Templating = {
+    
 }
 
 // Async Request logic
