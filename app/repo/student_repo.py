@@ -26,6 +26,18 @@ def email_exists(email: str) -> bool:
 def student_number_exists(student_num: str) -> bool:
     return retrieve_by_number(student_num) != None
 
+def retrieve_non_members(class_model: SchoolClass) -> []:
+    if class_model is None:
+        return []
+
+    roster_entries = (ClassRosterEntry
+        .select()
+        .join(Student)
+        .join_from(ClassRosterEntry, SchoolClass)
+        .where(ClassRosterEntry.school_class.id != class_model.id))
+
+    return [entry.student for entry in roster_entries]
+
 def update(student: Student, form: StudentEditForm):
     student.first_name = form.first_name.data
     student.last_name = form.last_name.data

@@ -1,4 +1,4 @@
-from app.repo import class_repo, staff_repo, terms_repo
+from app.repo import class_repo, staff_repo, terms_repo, student_repo
 from app.models.view_models import ClassItem, ClassCreateItem, ClassEditItem
 from app.models.db_models import SchoolClass
 from app.models.forms import ClassEditForm
@@ -28,12 +28,13 @@ def get_create_model() -> ClassCreateItem:
 def get_edit_model(class_id: int) -> ClassEditItem:
     errors = []
     school_class = class_repo.retrieve(class_id)
+    students_not_on_roster = student_repo.retrieve_non_members(school_class)
 
     if school_class is None:
         errors.append("No class found.")
 
     form = to_edit_form(school_class)
-    return to_edit_model(form, school_class, errors)
+    return to_edit_model(form, school_class, students_not_on_roster, errors)
 
 def to_create_model(form: ClassEditForm, errors: []) -> ClassCreateItem:
     form.teacher_id.choices = get_teacher_choices()
@@ -57,8 +58,8 @@ def to_edit_form(class_model: SchoolClass) -> ClassEditForm:
     return form if class_model is not None else None
 
 
-def to_edit_model(form: ClassEditForm, model: SchoolClass, errors: []) -> ClassEditItem:
-    return ClassEditItem(form, model, errors)
+def to_edit_model(form: ClassEditForm, model: SchoolClass, non_members: [], errors: []) -> ClassEditItem:
+    return ClassEditItem(form, model, non_members, errors)
 
 def get_teacher_choices() -> []:
     teachers = staff_repo.retrieve_teachers()
@@ -107,8 +108,9 @@ def update(form: ClassEditForm) -> ClassEditItem:
         result = class_repo.update(form, class_model)
         if not result:
             errors.append("Failed to update class info.")
+        non_members = student_repo.retrieve_non_members(class_model)
 
-    return ClassEditItem(form, class_model, errors)
+    return ClassEditItem(form, class_model, non_members, errors)
 
 def get_students(class_model: SchoolClass) -> []:
     students = [roster_item.student for roster_item in class_model.roster]

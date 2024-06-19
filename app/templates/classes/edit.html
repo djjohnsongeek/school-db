@@ -258,6 +258,21 @@
             <p class="modal-card-title">Add Student</p>
           </header>
           <section class="modal-card-body">
+            <form>
+                {% for student in class_model.non_roster %}
+                <label class="checkbox">
+                    <input type="checkbox" />
+                    {{ student.full_name() }}
+                  </label>
+                {% endfor %}
+                <div class="select">
+                    <select>
+                        {% for student in class_model.non_roster %}
+                        <option>{{student.full_name()}}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+            </form>
             <!-- Content ... -->
           </section>
           <footer class="modal-card-foot">
