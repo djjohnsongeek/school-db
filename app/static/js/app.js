@@ -1,19 +1,20 @@
 // Scripts to be run on each page
+var App = {
+    init: function()
+    {
+        // Remove the parent of .delete elements on click
+        for (let element of document.getElementsByClassName("delete"))
+        {
+            element.addEventListener("click", (event) => App.removeParent(event));
+        }
 
-// Remove the parent of .delete elements on click
-for (let element of document.getElementsByClassName("delete"))
-{
-    element.addEventListener("click", function(event) {
-        const notification = event.currentTarget.parentNode;
-        const container = notification.parentNode;
-        container.removeChild(notification)
-    });
-}
-
-// Hide, Reveal Logic
-for (let element of document.getElementsByClassName("toggle"))
-{
-    element.addEventListener("click", function(event) {
+        // Hide, Reveal Logic
+        for (let element of document.getElementsByClassName("toggle"))
+        {
+            element.addEventListener("click", (event) => App.toggleVisible(event));
+        }
+    },
+    toggleVisible: function(event) {
         const t = event.currentTarget.dataset.target;
         const targets = t.split(",");
         for (let target of targets)
@@ -27,12 +28,19 @@ for (let element of document.getElementsByClassName("toggle"))
                 targetElm.classList.add("is-hidden");
             }
         }
-    });
+    },
+    removeParent: function(event) {
+        const notification = event.currentTarget.parentNode;
+        const container = notification.parentNode;
+        container.removeChild(notification)
+    }
 }
+
+
 
 // Modals Logic
 var Modal = {
-    initialize: function()
+    init: function()
     {
         // trigger open logic
         for (let element of document.getElementsByClassName("modal-trigger"))
@@ -257,7 +265,7 @@ var AppApi = {
             successCallback: function(response)
             {
                 console.log(response);
-                configObj.successCallback(response);
+                configObj.successCallback(response.data);
                 Messages.addMessage(`${configObj.category} successfully created!`, "success")
             },
             errorCallback: function() {
@@ -274,4 +282,5 @@ var AppApi = {
     },
 }
 
-Modal.initialize();
+App.init();
+Modal.init();

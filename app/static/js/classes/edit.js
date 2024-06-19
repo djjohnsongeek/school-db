@@ -12,6 +12,7 @@ document.getElementById("class-add-session-btn").addEventListener("click", funct
 var classEdit = {
     addCreatedSession: function(response)
     {
+        // Generate HTML elements for the new session
         const block = Util.toHtml("<div class='block'></div")
         const card = Util.toHtml("<div class='card'></div");
         const cardHeader = Util.toHtml(`
@@ -42,21 +43,24 @@ var classEdit = {
             </footer>
         `);
 
-        // generate attendance html string
-        attendanceForms = this.generateAttendanceForms(response.students);
+        attendanceForms = classEdit.generateAttendanceForms(response.students);
         for (let element of attendanceForms)
         {
             cardContentContainer.append(element);
         }
         
+        // Link elements together
         block.append(card);
         card.append(cardHeader);
         card.append(cardContentContainer);
         card.append(cardFooter);
-        // TODO add event listeners
 
-        // add to DOM
-        document.getElementById(`session-attendance-${response.sessoin_id}`).append(block);
+        // Add elements to the DOM
+        document.getElementById("sessions-container").append(block);
+
+        // Add event listeners
+        cardHeader.addEventListener("click", (event) => App.toggleVisible(event));
+        // TODO: add session specific event listeners (cancel and delete buttons)
     },
     generateAttendanceForms: function(students)
     {
@@ -68,7 +72,7 @@ var classEdit = {
                 <div class='column is-4'>
                     ${student.name}
                 </div>
-                <div class-'column'>
+                <div class='column'>
                     <label class="radio">
                         <input type="radio" name="attendance${student.id}">
                         Present

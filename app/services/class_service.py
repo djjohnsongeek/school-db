@@ -148,7 +148,7 @@ def create_session(request_data: dict) -> ApiResultItem:
             payload["students"] = get_students(class_model)
             payload["session_id"] = class_session.id
             payload["session_name"] = class_session.name
-            payload["sessions_time"] = class_session.date
+            payload["session_time"] = class_session.date
             payload["cancelled"] = class_session.cancelled
 
     return ApiResultItem(errors, payload)
