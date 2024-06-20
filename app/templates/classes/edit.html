@@ -47,7 +47,7 @@
                         </div>
                         <div class="block" id="sessions-container">
                             {% if not class_model.sessions %}
-                            <div class="notification is-warning">
+                            <div class="notification is-warning is-light">
                                 No Sessions Found
                             </div>
                             {% endif %}
@@ -73,10 +73,15 @@
                                         </span>
                                     </header>
                                     <div class="card-content is-hidden" id="session-attendance-{{ session.id }}">
-                                        {% for roster_item in class_model.roster %}
+                                        {% if not class_model.roster %}
+                                        <div class="notification is-warning is-light">
+                                            No Students Found
+                                        </div>
+                                        {% endif %}
+                                        {% for student in class_model.roster %}
                                         <div class="columns">
                                             <div class="column is-4">
-                                                {{ roster_item.student.full_name() }}
+                                                {{ student.full_name() }}
                                             </div>
                                             <div class="column">
                                                 <label class="radio">
@@ -101,12 +106,20 @@
                                     </div>
                                     <footer class="card-footer is-hidden" id="session-footer-{{ session.id }}">
                                         {% if not session.cancelled %}
-                                        <a href="#" class="card-footer-item has-background-danger has-text-white">
+                                        <a href="#" class="card-footer-item has-background-warning has-text-black">
                                             <span class="icon-text">
                                                 <span class="icon">
                                                     <i class="fa fa-ban" aria-hidden="true"></i>
                                                 </span>
                                                 <span>Cancel</span>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="card-footer-item has-background-danger has-text-white">
+                                            <span class="icon-text">
+                                                <span class="icon">
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                </span>
+                                                <span>Delete</span>
                                             </span>
                                         </a>
                                         {% else %}
@@ -161,11 +174,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for roster_item in class_model.roster %}
+                                    {% for student in class_model.roster %}
                                     <tr>
                                         <td>
-                                            <a href="{{ url_for('students.edit', student_id=roster_item.student.id) }}">
-                                                {{ roster_item.student.full_name() }}
+                                            <a href="{{ url_for('students.edit', student_id=student.id) }}">
+                                                {{ student.full_name() }}
                                             </a>
                                         </td>
                                         <td>
@@ -195,7 +208,7 @@
                                 </tbody>
                             </table>
                             {% else %}
-                            <div class="notification is-warning">No Students Found</div>
+                            <div class="notification is-warning is-light">No Students Found</div>
                             {% endif %}
                         </div>
                     </div>

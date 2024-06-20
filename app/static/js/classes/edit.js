@@ -32,12 +32,20 @@ var classEdit = {
         `);
         const cardFooter = Util.toHtml(`
             <footer class="card-footer is-hidden" id="session-footer-${response.session_id}">
-                <a href="#" class="card-footer-item has-background-danger has-text-white">
+                <a href="#" class="card-footer-item has-background-warning has-text-black">
                     <span class="icon-text">
                         <span class="icon">
                             <i class="fa fa-ban" aria-hidden="true"></i>
                         </span>
                         <span>Cancel</span>
+                    </span>
+                </a>
+                <a href="#" class="card-footer-item has-background-danger has-text-white">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </span>
+                        <span>Delete</span>
                     </span>
                 </a>
             </footer>
@@ -65,42 +73,56 @@ var classEdit = {
     generateAttendanceForms: function(students)
     {
         let html = "";
-        for (const student of students)
+        if (students.length === 0)
         {
-            html += `
-            <div class='columns'>
-                <div class='column is-4'>
-                    ${student.name}
-                </div>
-                <div class='column'>
-                    <label class="radio">
-                        <input type="radio" name="attendance${student.id}">
-                        Present
-                    </label>
-                </div>
-                <div class='column'>
-                    <label class="radio">
-                        <input type="radio" name="attendance${student.id}">
-                        Absent
-                    </label>
-                </div>
-                <div class='column'>
-                    <label class="radio">
-                        <input type="radio" name="attendance${student.id}">
-                        Tardy
-                    </label>
-                </div>
-            </div>
-            `;
+            html = `<div class="notification is-warning is-light">No Students Found</div>`;
         }
+        else
+        {
+            for (const student of students)
+            {
+                html += `
+                <div class='columns'>
+                    <div class='column is-4'>
+                        ${student.name}
+                    </div>
+                    <div class='column'>
+                        <label class="radio">
+                            <input type="radio" name="attendance${student.id}">
+                            Present
+                        </label>
+                    </div>
+                    <div class='column'>
+                        <label class="radio">
+                            <input type="radio" name="attendance${student.id}">
+                            Absent
+                        </label>
+                    </div>
+                    <div class='column'>
+                        <label class="radio">
+                            <input type="radio" name="attendance${student.id}">
+                            Tardy
+                        </label>
+                    </div>
+                </div>`;
+            }
+        }
+        
 
         const result = Util.toHtml(html);
 
-        if (students.length > 0)
+        // we can use Array.from to convert HTMLCollection to an array, this helps with iterating over HtmlCollection.
+        // but it does not help when toHtml return an Element instead of a collection
+
+
+
+
+        if (Array.isArray(result) || result instanceof HTMLCollection)
         {
             return result;
         }
         else {
+            console.log("Is not iterable");
             return [result];
         }
     },
