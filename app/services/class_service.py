@@ -1,9 +1,74 @@
 from app.repo import class_repo, staff_repo, terms_repo, student_repo
-from app.models.view_models import ClassItem, ClassCreateItem, ClassEditItem
-from app.models.db_models import SchoolClass
+from app.models.db_models import SchoolClass, ClassSession, Student, SessionAttendance
 from app.models.forms import ClassEditForm
 from app.models.dto import ApiResultItem
 from datetime import datetime
+
+### View Models ###
+class ClassItem:
+    def __init__(self, class_model: SchoolClass):
+        self.id = class_model.id
+        self.name = class_model.name
+        self.term = class_model.term.name
+        self.teacher_name = class_model.teacher.full_english_name()
+        self.teacher_id = class_model.teacher.index
+        self.room_number = class_model.room_number
+        self.sessions_count = len(class_model.sessions)
+        self.remaining_sessions_count = class_model.remaining_sessions()
+        self.roster_count = len(class_model.roster)
+
+class ClassCreateItem():
+    def __init__(self, form: ClassEditForm, edit_errors: []):
+        self.form = form
+        self.edit_errors = edit_errors
+
+class ClassEditItem():
+    def __init__(self, form: ClassEditForm, class_model: SchoolClass, sessions: [], non_roster: [], edit_errors: []):
+        self.form = form
+        self.class_name = class_model.name
+        self.sessions = sessions
+        self.roster = [roster_item.student for roster_item in class_model.roster]
+        self.non_roster = non_roster
+        self.teacher = class_model.teacher
+        self.edit_errors = edit_errors
+
+class ClassSessionItem():
+    def __init__(self, session_model: ClassSession):
+        self.id = session_model.id,
+        self.name = session_model.name,
+        self.date = session_model.date,
+        self.cancelled = session_model.cancelled,
+        self.attendance = [] # list of SessionAttendanceItems
+
+class SessionAttendanceItem():
+    def __init__(self, student_model: Student, attendance_value: str = None):
+        self.student_name = student_model.name,
+        self.student_id = student_model.id,
+        self.attendance_value = attendance_value
+        # create and attendance look up table (backedn)
+            # provide session_id and student_id -> return attendance value
+        # loop though each session, and each student
+            # determin the attendanct value
+
+        # [
+        #     session {
+        #         id = ""
+        #         name = "",
+        #         time = "",
+        #         attendance = [
+        #           {
+        #             student_id = ""
+        #             student_name = "",
+        #             attendance_value = "",
+        #           },
+        #           {
+        #               ...
+        #           }
+        #         ]
+        #     }
+        # ]
+
+### Functions
 
 def get_class_list() -> []:
     class_models = class_repo.retrieve_all()
@@ -28,13 +93,41 @@ def get_create_model() -> ClassCreateItem:
 def get_edit_model(class_id: int) -> ClassEditItem:
     errors = []
     school_class = class_repo.retrieve(class_id)
-    students_not_on_roster = student_repo.retrieve_non_members(school_class)
-
     if school_class is None:
         errors.append("No class found.")
+        return ClassEditItem(None, None, [], [], [])
 
+    class_sessions = get_class_sessions(school_class)
+    students_not_on_roster = student_repo.retrieve_non_members(school_class)
     form = to_edit_form(school_class)
-    return to_edit_model(form, school_class, students_not_on_roster, errors)
+
+    return ClassEditItem(form, school_class, class_sessions, students_not_on_roster, errors)
+
+def get_class_sessions(class_model: SchoolClass):
+    att_lookup = create_attendance_lookup(class_repo.retrieve_attendance(school_class))
+    student_roster = [roster_item.student for roster_item in class_model.roster]
+    class_session_items = []
+    for session in class_model.sessions:
+        session_item = ClassSessionItem(session)
+
+        # add student attendance info
+        for student in student_roster:
+            att_lookup_key = f"{session.id}:{student.id}"
+            attendance_value = att_lookup.get(att_lookup_key, None)
+            session_item.attendance.append(
+                SessionAttendanceItem(student, attendance_value)
+            )
+
+        class_session_items.append(session_item)
+
+    return class_session_items
+
+def create_attendance_lookup(attendance: []) -> {}:
+    attendance_lookup = {}
+    for record in attendance:
+        key = f"{record.session.id}:{record.student.id}"
+        attendance_lookup[key] = record.value
+    return attendance_lookup
 
 def to_create_model(form: ClassEditForm, errors: []) -> ClassCreateItem:
     form.teacher_id.choices = get_teacher_choices()
@@ -56,10 +149,6 @@ def to_edit_form(class_model: SchoolClass) -> ClassEditForm:
         form.term_id.choices = get_term_choices()
     
     return form if class_model is not None else None
-
-
-def to_edit_model(form: ClassEditForm, model: SchoolClass, non_members: [], errors: []) -> ClassEditItem:
-    return ClassEditItem(form, model, non_members, errors)
 
 def get_teacher_choices() -> []:
     teachers = staff_repo.retrieve_teachers()
