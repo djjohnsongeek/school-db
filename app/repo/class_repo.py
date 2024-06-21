@@ -44,6 +44,17 @@ def retrieve_attendance_record(student_id: int, session_id: int) -> SessionAtten
 
     return query
 
+def retrieve_attendance(class_model: SchoolClass) -> []:
+    if class_model is None:
+        return []
+    
+    return (SessionAttendance
+        .select()
+        .join(ClassSession)
+        .join(SchoolClass)
+        .join_from(SessionAttendance, Student)
+        .where(SessionAttendance.session.school_class.id == class_model.id))
+
 def create_class(form: ClassEditForm, teacher: Staff, term: Term) -> bool:
     try:
         primary_key = SchoolClass.insert(
