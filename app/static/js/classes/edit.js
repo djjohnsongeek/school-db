@@ -107,9 +107,13 @@ var classEdit = {
                 </div>`;
             }
         }
-        
 
-        const result = Util.toHtml(html);
+        // this is either an HTML element, or and HTMLCollection
+        let result = Util.toHtml(html);
+        if (result instanceof HTMLCollection)
+        {
+            result = Array.from(result);
+        }
 
         // we can use Array.from to convert HTMLCollection to an array, this helps with iterating over HtmlCollection.
         // but it does not help when toHtml return an Element instead of a collection
@@ -117,7 +121,7 @@ var classEdit = {
 
 
 
-        if (Array.isArray(result) || result instanceof HTMLCollection)
+        if (Array.isArray(result))
         {
             return result;
         }

@@ -99,16 +99,6 @@ var Util = {
         const template = document.createElement("template");
         template.innerHTML = html;
         const result = template.content.children;
-
-
-        console.log(result);
-
-        for (let item of result)
-        {
-            console.log("item:");
-            console.log(result);
-        }
-
         if (result.length == 1)
         {
             return result[0];

@@ -101,9 +101,16 @@ def init_db(no_populate):
             term=term
         )
 
-        SchoolClass.insert(
+        physics = SchoolClass.create(
             name="Physics",
             room_number=12,
+            teacher=teacher,
+            term=term_2
+        )
+
+        SchoolClass.insert(
+            name="English",
+            room_number=9,
             teacher=teacher,
             term=term_2
         ).execute()
@@ -117,6 +124,11 @@ def init_db(no_populate):
         ClassRosterEntry.insert(
             student = student_2,
             school_class = algebra,
+        ).execute()
+
+        ClassRosterEntry.insert(
+            student = student_1,
+            school_class = physics
         ).execute()
 
         # Create class sessions
