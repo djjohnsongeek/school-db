@@ -1,7 +1,10 @@
-from app.models.db_models import SchoolClass, Staff, Student, ClassRosterEntry, Term, SchoolClass
+from app.models.db_models import SchoolClass, Staff, Student, ClassRosterEntry, Term, SchoolClass, ClassSession, SessionAttendance
 from app.models.base_models import Person
 from app.models.enums import PersonGender, StaffRole
 from app.models.forms import StaffEditForm, StudentEditForm, TermEditForm, ClassEditForm
+
+# This is becoming too much.
+# TODO: Move relevant view models to their related service
 
 class ClassItem:
     def __init__(self, class_model: SchoolClass):
@@ -99,8 +102,45 @@ class ClassEditItem():
     def __init__(self, form: ClassEditForm, class_model: SchoolClass, non_roster: [], edit_errors: []):
         self.form = form
         self.class_name = class_model.name
-        self.sessions = class_model.sessions
+        self.sessions = class_model.sessions # TODO move to list of ClassSessionItems
         self.roster = [roster_item.student for roster_item in class_model.roster]
         self.non_roster = non_roster
         self.teacher = class_model.teacher
         self.edit_errors = edit_errors
+
+class ClassSessionItem():
+    def __init__(self, session_model: ClassSession):
+        self.id = session_model.id,
+        self.name = session_model.name,
+        self.date = session_model.date,
+        self.cancelled = session_model.cancelled,
+        self.attendance = [] # list of SessionAttendanceItems
+
+
+class SessionAttendanceItem():
+    def __init__(self, student_model: Student, attendance: SessionAttendance = None):
+        self.student_name = student_model.name,
+        self.student_id = student_model.id,
+        self.attendance_value = attendance.value if attendance is not None else None
+        # create and attendance look up table (backedn)
+            # provide session_id and student_id -> return attendance value
+        # loop though each session, and each student
+            # determin the attendanct value
+
+        # [
+        #     session {
+        #         id = ""
+        #         name = "",
+        #         time = "",
+        #         attendance = [
+        #           {
+        #             student_id = ""
+        #             student_name = "",
+        #             attendance_value = "",
+        #           },
+        #           {
+        #               ...
+        #           }
+        #         ]
+        #     }
+        # ]

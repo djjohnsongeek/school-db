@@ -1,4 +1,4 @@
-from app.models.db_models import SchoolClass, ClassSession, Staff, Student, Term
+from app.models.db_models import SchoolClass, ClassSession, Staff, Student, Term, SessionAttendance
 from app.models.forms import ClassEditForm
 from datetime import datetime
 
@@ -33,6 +33,17 @@ def retrieve_by_term(term: Term) -> []:
 
     return query
 
+def session_count(class_id: int) -> int:
+    return ClassSession.select().join(SchoolClass).where(ClassSession.school_class.id == class_id).count()
+
+def retrieve_attendance_record(student_id: int, session_id: int) -> SessionAttendance:
+    query = (SessionAttendance
+        .select()
+        .where((SessionAttendance.student.id == student_id) & (SessionAttendance.session.id == session_id))
+        .get())
+
+    return query
+
 def create_class(form: ClassEditForm, teacher: Staff, term: Term) -> bool:
     try:
         primary_key = SchoolClass.insert(
@@ -48,9 +59,6 @@ def create_class(form: ClassEditForm, teacher: Staff, term: Term) -> bool:
         # TODO LOG THIS ERROR
         return False
 
-def session_count(class_id: int) -> int:
-    return ClassSession.select().join(SchoolClass).where(ClassSession.school_class.id == class_id).count()
-
 def create_session(class_model: SchoolClass, request_data: dict) -> ClassSession:
     print(request_data)
     try:
@@ -65,6 +73,19 @@ def create_session(class_model: SchoolClass, request_data: dict) -> ClassSession
         print(e)
         # TODO LOG THIS ERROR
         return None
+
+def create_attendance_record(session: ClassSession, student: Student, staff: Staff, value: str) -> bool:
+    try:
+        SessionAttendance.insert(
+            student=student,
+            session=session,
+            recorded_by=staff,
+            value=vale
+        ).execute()
+    except Exception as e:
+        return False
+
+    return True
 
 def update(form: ClassEditForm, class_model: SchoolClass) -> bool:
     class_model.name = form.name.data
