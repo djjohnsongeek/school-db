@@ -93,7 +93,7 @@ def init_db(no_populate):
             end_date=date.fromisoformat("2025-05-01")
         )
 
-        # Insert classes
+        # Insert classes, store a few for later
         algebra = SchoolClass.create(
             name='Algebra 1',
             room_number=5,
@@ -139,13 +139,6 @@ def init_db(no_populate):
             school_class=algebra
         )
 
-        SessionAttendance.insert(
-            session=first_session,
-            student=student_1,
-            value="P",
-            recorded_by=teacher
-        ).execute()
-
         ClassSession.insert(
             name="Session 2",
             date=date.fromisoformat("2024-08-08"),
@@ -172,6 +165,21 @@ def init_db(no_populate):
             date=date.fromisoformat("2024-09-08"),
             cancelled=True,
             school_class=algebra
+        ).execute()
+
+        # Add some attendance records
+        SessionAttendance.insert(
+            session=first_session,
+            student=student_1,
+            value="P",
+            recorded_by=teacher
+        ).execute()
+
+        SessionAttendance.insert(
+            session=first_session,
+            student=student_2,
+            value="A",
+            recorded_by=teacher
         ).execute()
 
     # TODO: grading system
