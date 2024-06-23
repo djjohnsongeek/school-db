@@ -34,39 +34,17 @@ class ClassEditItem():
 
 class ClassSessionItem():
     def __init__(self, session_model: ClassSession):
-        self.id = session_model.id,
-        self.name = session_model.name,
-        self.date = session_model.date,
-        self.cancelled = session_model.cancelled,
+        self.id = session_model.id
+        self.name = session_model.name
+        self.date = session_model.date
+        self.cancelled = session_model.cancelled
         self.attendance = [] # list of SessionAttendanceItems
 
 class SessionAttendanceItem():
     def __init__(self, student_model: Student, attendance_value: str = None):
-        self.student_name = student_model.name,
-        self.student_id = student_model.id,
+        self.student_name = student_model.full_name()
+        self.student_id = student_model.id
         self.attendance_value = attendance_value
-        # create and attendance look up table (backedn)
-            # provide session_id and student_id -> return attendance value
-        # loop though each session, and each student
-            # determin the attendanct value
-
-        # [
-        #     session {
-        #         id = ""
-        #         name = "",
-        #         time = "",
-        #         attendance = [
-        #           {
-        #             student_id = ""
-        #             student_name = "",
-        #             attendance_value = "",
-        #           },
-        #           {
-        #               ...
-        #           }
-        #         ]
-        #     }
-        # ]
 
 ### Functions
 
@@ -104,7 +82,7 @@ def get_edit_model(class_id: int) -> ClassEditItem:
     return ClassEditItem(form, school_class, class_sessions, students_not_on_roster, errors)
 
 def get_class_sessions(class_model: SchoolClass):
-    att_lookup = create_attendance_lookup(class_repo.retrieve_attendance(school_class))
+    att_lookup = create_attendance_lookup(class_repo.retrieve_attendance(class_model))
     student_roster = [roster_item.student for roster_item in class_model.roster]
     class_session_items = []
     for session in class_model.sessions:

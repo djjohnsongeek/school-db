@@ -78,27 +78,42 @@
                                             No Students Found
                                         </div>
                                         {% endif %}
-                                        {% for student in class_model.roster %}
+                                        {% for attendance_item in session.attendance %}
                                         <div class="columns">
                                             <div class="column is-4">
-                                                {{ student.full_name() }}
+                                                {{ attendance_item.student_name }}
                                             </div>
                                             <div class="column">
                                                 <label class="radio">
-                                                    <input type="radio" name="attendance1">
-                                                    Present
+                                                    {% if attendance_item.attendance_value == "P" %}
+                                                        <input type="radio" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance" checked>
+                                                        Present
+                                                    {% else %}
+                                                        <input type="radio" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance">
+                                                        Present
+                                                    {% endif %}
                                                 </label>
                                             </div>
                                             <div class="column">
                                                 <label class="radio">
-                                                    <input type="radio" name="attendance1">
-                                                    Absent
+                                                    {% if attendance_item.attendance_value == "A" %}
+                                                        <input type="radio" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance" checked>
+                                                        Absent
+                                                    {% else %}
+                                                        <input type="radio" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance">
+                                                        Absent
+                                                    {% endif %}
                                                 </label>
                                             </div>
                                             <div class="column">
                                                 <label class="radio">
-                                                    <input type="radio" name="attendance1">
-                                                    Tardy
+                                                    {% if attendance_item.attendance_value == "T" %}
+                                                        <input type="radio" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance" checked>
+                                                        Tardy
+                                                    {% else %}
+                                                        <input type="radio" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance">
+                                                        Tardy
+                                                    {% endif %}
                                                 </label>
                                             </div>
                                         </div>
