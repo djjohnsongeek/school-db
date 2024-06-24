@@ -86,10 +86,10 @@
                                             <div class="column">
                                                 <label class="radio">
                                                     {% if attendance_item.attendance_value == "P" %}
-                                                        <input type="radio" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance" checked>
+                                                        <input type="radio" value="P" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance" checked>
                                                         Present
                                                     {% else %}
-                                                        <input type="radio" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance">
+                                                        <input type="radio" value="P" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance">
                                                         Present
                                                     {% endif %}
                                                 </label>
@@ -97,10 +97,10 @@
                                             <div class="column">
                                                 <label class="radio">
                                                     {% if attendance_item.attendance_value == "A" %}
-                                                        <input type="radio" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance" checked>
+                                                        <input type="radio" value="A" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance" checked>
                                                         Absent
                                                     {% else %}
-                                                        <input type="radio" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance">
+                                                        <input type="radio" value="A" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance">
                                                         Absent
                                                     {% endif %}
                                                 </label>
@@ -108,10 +108,10 @@
                                             <div class="column">
                                                 <label class="radio">
                                                     {% if attendance_item.attendance_value == "T" %}
-                                                        <input type="radio" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance" checked>
+                                                        <input type="radio" value="T" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance" checked>
                                                         Tardy
                                                     {% else %}
-                                                        <input type="radio" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance">
+                                                        <input type="radio" value="T" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance">
                                                         Tardy
                                                     {% endif %}
                                                 </label>
