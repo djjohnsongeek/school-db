@@ -65,13 +65,6 @@ def get_edit_model(class_id: int) -> ClassEditItem:
 
     return ClassEditItem(form, school_class, att_summary, students_not_on_roster, errors)
 
-def create_attendance_lookup(attendance: []) -> {}:
-    attendance_lookup = {}
-    for record in attendance:
-        key = f"{record.session.id}:{record.student.id}"
-        attendance_lookup[key] = record.value
-    return attendance_lookup
-
 def to_create_model(form: ClassEditForm, errors: []) -> ClassCreateItem:
     form.teacher_id.choices = get_teacher_choices()
     form.term_id.choices = get_term_choices()
@@ -147,42 +140,3 @@ def update(form: ClassEditForm) -> ClassEditItem:
 def get_students(class_model: SchoolClass) -> []:
     students = [roster_item.student for roster_item in class_model.roster]
     return [{ "name": student.full_name(), "id": student.id } for student in students]
-
-def create_session(request_data: dict) -> ApiResultItem:
-    errors = []
-    class_model = None
-    payload = {}
-
-    # Validate Class Id
-    try:
-        class_id = int(request_data.get("class_id", None))
-        class_model = class_repo.retrieve(class_id)
-    except (ValueError, TypeError):
-        pass
-
-    if not class_model:
-        errors.append("Could not find class.")
-
-    # validate date
-    try:
-        request_data["session_time"] = datetime.strptime(request_data["session_time"], '%Y-%m-%dT%H:%M')
-    except ValueError:
-        errors.append("Invalid session date and time format")
-    
-    # Validate Session Name
-    if not request_data.get("session_name") and class_model:
-        session_count = class_repo.session_count(class_model.id)
-        request_data["session_name"] = f"Session {session_count + 1}"
-
-    if len(errors) == 0:
-        class_session = class_repo.create_session(class_model, request_data)
-        if class_session is None:
-            errors.append("Failed to create a new session.")
-        else:
-            payload["students"] = get_students(class_model)
-            payload["session_id"] = class_session.id
-            payload["session_name"] = class_session.name
-            payload["session_time"] = class_session.date
-            payload["cancelled"] = class_session.cancelled
-
-    return ApiResultItem(errors, payload)

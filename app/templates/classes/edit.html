@@ -35,16 +35,6 @@
                         <h1 class="card-header-title title is-3">Sessions & Attendance</h1>
                     </div>
                     <div class="card-content">
-                        <div class="block">
-                            <button class="button is-primary modal-trigger" data-target="add-session-modal" data-item-id="{{ class_model.form.class_id.data }}">
-                                <span class="icon-text">
-                                    <span class="icon">
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
-                                    </span>
-                                    <span>Add a Session</span>
-                                </span>
-                            </button>
-                        </div>
                         <div class="block" id="sessions-container">
                             {% if not class_model.attendance_summary %}
                             <div class="notification is-warning is-light">

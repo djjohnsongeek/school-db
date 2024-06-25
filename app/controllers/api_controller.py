@@ -6,10 +6,6 @@ api_blueprint = Blueprint("api", __name__)
 def post(category: str, action: str):
     # csrf token?
     # automatically calls jsonify
-    test = request.get_json()
-    print(test)
-    print(category)
-    print(action)
-    
+    test = request.get_json()  
     result = api_service.handle_post(category, action, request)
     return result.to_dict()
