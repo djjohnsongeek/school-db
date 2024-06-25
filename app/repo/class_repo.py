@@ -1,6 +1,8 @@
 from app.models.db_models import SchoolClass, Staff, Student, Term, Attendance
 from app.models.forms import ClassEditForm
 from datetime import datetime
+import pymysql
+from flask import current_app
 
 def retrieve_all() -> []:
     return SchoolClass.select(SchoolClass, Staff, Term).join(Staff).switch(SchoolClass).join(Term)
@@ -41,15 +43,24 @@ def retrieve_attendance_record(attendance_id: int) -> Attendance:
 
     return query
 
-def retrieve_attendance(class_model: SchoolClass) -> []:
-    if class_model is None:
-        return []
-    
-    return (Attendance
-        .select()
-        .join(SchoolClass)
-        .join_from(Attendance, Student)
-        .where(Attendance.school_class.id == class_model.id))
+def retrieve_attendance_summary(class_id: int) -> []:
+    config = current_app.config
+    connection = pymysql.connect(
+        host=config["DB_HOST"],
+        user=config["DB_USER"],
+        password=config["DB_PASSWORD"],
+        database=config["DB_NAME"],
+        charset='utf8mb4',
+        port=config["DB_PORT"],
+        cursorclass=pymysql.cursors.DictCursor
+    )
+
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "SELECT `value`, count(*) AS `count` FROM `school_db`.`attendance` WHERE `school_class_id` = %s GROUP BY `value`"
+            cursor.execute(sql, (class_id,))
+            result = cursor.fetchall()
+            return result
 
 def create_class(form: ClassEditForm, teacher: Staff, term: Term) -> bool:
     try:

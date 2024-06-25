@@ -13,8 +13,6 @@ class ClassItem:
         self.teacher_name = class_model.teacher.full_english_name()
         self.teacher_id = class_model.teacher.index
         self.room_number = class_model.room_number
-        self.sessions_count = len(class_model.sessions)
-        self.remaining_sessions_count = class_model.remaining_sessions()
         self.roster_count = len(class_model.roster)
 
 class ClassCreateItem():
@@ -23,20 +21,14 @@ class ClassCreateItem():
         self.edit_errors = edit_errors
 
 class ClassEditItem():
-    def __init__(self, form: ClassEditForm, class_model: SchoolClass, sessions: [], non_roster: [], edit_errors: []):
+    def __init__(self, form: ClassEditForm, class_model: SchoolClass, attendance_summary: [], non_roster: [], edit_errors: []):
         self.form = form
         self.class_name = class_model.name
-        self.sessions = sessions
+        self.attendance_summary = attendance_summary
         self.roster = [roster_item.student for roster_item in class_model.roster]
         self.non_roster = non_roster
         self.teacher = class_model.teacher
         self.edit_errors = edit_errors
-
-class SessionAttendanceItem():
-    def __init__(self, student_model: Student, attendance_value: str = None):
-        self.student_name = student_model.full_name()
-        self.student_id = student_model.id
-        self.attendance_value = attendance_value
 
 ### Functions
 
@@ -65,17 +57,13 @@ def get_edit_model(class_id: int) -> ClassEditItem:
     school_class = class_repo.retrieve(class_id)
     if school_class is None:
         errors.append("No class found.")
-        return ClassEditItem(None, None, [], [], [])
+        return ClassEditItem(None, None, [], [], errors)
 
-    class_sessions = get_class_sessions(school_class)
+    att_summary = class_repo.retrieve_attendance_summary(school_class.id)
     students_not_on_roster = student_repo.retrieve_non_members(school_class)
     form = to_edit_form(school_class)
 
-    return ClassEditItem(form, school_class, class_sessions, students_not_on_roster, errors)
-
-def get_class_sessions(class_model: SchoolClass):
-    class_session_items = []
-    return class_session_items
+    return ClassEditItem(form, school_class, att_summary, students_not_on_roster, errors)
 
 def create_attendance_lookup(attendance: []) -> {}:
     attendance_lookup = {}

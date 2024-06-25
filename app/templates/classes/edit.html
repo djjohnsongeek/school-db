@@ -46,108 +46,18 @@
                             </button>
                         </div>
                         <div class="block" id="sessions-container">
-                            {% if not class_model.sessions %}
+                            {% if not class_model.attendance_summary %}
                             <div class="notification is-warning is-light">
-                                No Sessions Found
+                                No Attedance Records Found
                             </div>
                             {% endif %}
-                            {% for session in class_model.sessions %}
-                            <div class="block">
-                                <div class="card">
-                                    <header class="card-header is-clickable toggle" data-target="session-attendance-{{ session.id }},session-footer-{{ session.id }}">
-                                        <p class="card-header-title">
-                                            {% if session.cancelled %}
-                                            <s>
-                                            {% endif %}
-
-                                            {{ session.name }}: {{ session.date }}
-
-                                            {% if session.cancelled %}
-                                            </s>
-                                            {% endif %}
-                                        </p>
-                                        <span class="card-header-icon" aria-label="more options">
-                                            <span class="icon">
-                                                <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                            </span>
-                                        </span>
-                                    </header>
-                                    <div class="card-content is-hidden" id="session-attendance-{{ session.id }}">
-                                        {% if not class_model.roster %}
-                                        <div class="notification is-warning is-light">
-                                            No Students Found
-                                        </div>
-                                        {% endif %}
-                                        {% for attendance_item in session.attendance %}
-                                        <div class="columns">
-                                            <div class="column is-4">
-                                                {{ attendance_item.student_name }}
-                                            </div>
-                                            <div class="column">
-                                                <label class="radio">
-                                                    {% if attendance_item.attendance_value == "P" %}
-                                                        <input type="radio" value="P" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance" checked>
-                                                        Present
-                                                    {% else %}
-                                                        <input type="radio" value="P" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance">
-                                                        Present
-                                                    {% endif %}
-                                                </label>
-                                            </div>
-                                            <div class="column">
-                                                <label class="radio">
-                                                    {% if attendance_item.attendance_value == "A" %}
-                                                        <input type="radio" value="A" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance" checked>
-                                                        Absent
-                                                    {% else %}
-                                                        <input type="radio" value="A" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance">
-                                                        Absent
-                                                    {% endif %}
-                                                </label>
-                                            </div>
-                                            <div class="column">
-                                                <label class="radio">
-                                                    {% if attendance_item.attendance_value == "T" %}
-                                                        <input type="radio" value="T" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance" checked>
-                                                        Tardy
-                                                    {% else %}
-                                                        <input type="radio" value="T" name="session{{ session.id }}-student{{ attendance_item.student_id }}-attendance">
-                                                        Tardy
-                                                    {% endif %}
-                                                </label>
-                                            </div>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                    <footer class="card-footer is-hidden" id="session-footer-{{ session.id }}">
-                                        {% if not session.cancelled %}
-                                        <a href="#" class="card-footer-item has-background-warning has-text-black">
-                                            <span class="icon-text">
-                                                <span class="icon">
-                                                    <i class="fa fa-ban" aria-hidden="true"></i>
-                                                </span>
-                                                <span>Cancel</span>
-                                            </span>
-                                        </a>
-                                        <a href="#" class="card-footer-item has-background-danger has-text-white">
-                                            <span class="icon-text">
-                                                <span class="icon">
-                                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                                </span>
-                                                <span>Delete</span>
-                                            </span>
-                                        </a>
-                                        {% else %}
-                                        <a href="#" class="card-footer-item has-background-primary has-text-black">
-                                            <span class="icon-text">
-                                                <span class="icon">
-                                                    <i class="fa fa-ban" aria-hidden="true"></i>
-                                                </span>
-                                                <span>Restore</span>
-                                            </span>
-                                        </a>
-                                        {% endif %}
-                                    </footer>
+                            {% for record in class_model.attendance_summary %}
+                            <div class="columns">
+                                <div class="column">
+                                    {{ record["value"] }}
+                                </div>
+                                <div class="column">
+                                    {{ record["count"] }}
                                 </div>
                             </div>
                             {% endfor %}
