@@ -45,14 +45,6 @@ class SchoolClass(BaseModel):
     teacher = ForeignKeyField(Staff, backref="classes")
     term = ForeignKeyField(Term, backref="classes")
 
-    def remaining_sessions(self) -> int:
-        i = len(self.sessions)
-        for session in self.sessions:
-            if date.today() > session.date:
-                i -= 1
-
-        return i
-
     class Meta:
         table_name = "classes"
 
@@ -63,22 +55,11 @@ class ClassRosterEntry(BaseModel):
     class Meta:
         table_name = "class_rosters"
 
-class ClassSession(BaseModel):
-    name = CharField(max_length=64)
+class Attendance(BaseModel):
+    student = ForeignKeyField(Student, backref="attendance")
+    school_class = ForeignKeyField(SchoolClass, backref="attendance")
+    recorded_by = ForeignKeyField(Staff)
     date = DateField()
-    cancelled = BooleanField()
-    school_class = ForeignKeyField(SchoolClass, backref="sessions")
-
-    class Meta:
-        table_name = "sessions"
-
-class SessionAttendance(BaseModel):
-    student = ForeignKeyField(Student, backref="session_attendance")
-    session = ForeignKeyField(ClassSession, backref="attendance")
-    recorded_by = ForeignKeyField(Staff, backref="recorded_attendance")
     value = CharField(max_length=1)
-
-    class Meta:
-        table_name = "attendance"
 
 ## To Do talk to steve about grading

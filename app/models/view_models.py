@@ -1,4 +1,4 @@
-from app.models.db_models import SchoolClass, Staff, Student, ClassRosterEntry, Term, SchoolClass, ClassSession, SessionAttendance
+from app.models.db_models import SchoolClass, Staff, Student, ClassRosterEntry, Term, SchoolClass, Attendance
 from app.models.base_models import Person
 from app.models.enums import PersonGender, StaffRole
 from app.models.forms import StaffEditForm, StudentEditForm, TermEditForm, ClassEditForm

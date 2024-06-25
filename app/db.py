@@ -2,7 +2,7 @@ from flask import current_app, g
 from peewee import MySQLDatabase
 from app.models.db_models import *
 
-db_models = [Student, Staff, Term, SchoolClass, ClassRosterEntry, ClassSession, SessionAttendance]
+db_models = [Student, Staff, Term, SchoolClass, ClassRosterEntry, Attendance]
 
 def get_db() -> MySQLDatabase:
     if 'db' not in g:

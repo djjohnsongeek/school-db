@@ -1,5 +1,5 @@
 from app.repo import class_repo, staff_repo, terms_repo, student_repo
-from app.models.db_models import SchoolClass, ClassSession, Student, SessionAttendance
+from app.models.db_models import SchoolClass, Student, Attendance
 from app.models.forms import ClassEditForm
 from app.models.dto import ApiResultItem
 from datetime import datetime
@@ -31,14 +31,6 @@ class ClassEditItem():
         self.non_roster = non_roster
         self.teacher = class_model.teacher
         self.edit_errors = edit_errors
-
-class ClassSessionItem():
-    def __init__(self, session_model: ClassSession):
-        self.id = session_model.id
-        self.name = session_model.name
-        self.date = session_model.date
-        self.cancelled = session_model.cancelled
-        self.attendance = [] # list of SessionAttendanceItems
 
 class SessionAttendanceItem():
     def __init__(self, student_model: Student, attendance_value: str = None):
@@ -82,22 +74,7 @@ def get_edit_model(class_id: int) -> ClassEditItem:
     return ClassEditItem(form, school_class, class_sessions, students_not_on_roster, errors)
 
 def get_class_sessions(class_model: SchoolClass):
-    att_lookup = create_attendance_lookup(class_repo.retrieve_attendance(class_model))
-    student_roster = [roster_item.student for roster_item in class_model.roster]
     class_session_items = []
-    for session in class_model.sessions:
-        session_item = ClassSessionItem(session)
-
-        # add student attendance info
-        for student in student_roster:
-            att_lookup_key = f"{session.id}:{student.id}"
-            attendance_value = att_lookup.get(att_lookup_key, None)
-            session_item.attendance.append(
-                SessionAttendanceItem(student, attendance_value)
-            )
-
-        class_session_items.append(session_item)
-
     return class_session_items
 
 def create_attendance_lookup(attendance: []) -> {}:
