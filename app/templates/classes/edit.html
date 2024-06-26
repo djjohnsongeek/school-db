@@ -187,18 +187,18 @@
           </header>
           <section class="modal-card-body">
             <form>
-                {% for student in class_model.non_roster %}
-                <label class="checkbox">
-                    <input type="checkbox" />
-                    {{ student.full_name() }}
-                  </label>
-                {% endfor %}
                 <div class="select">
-                    <select>
+                    <select id="add-student-select">
+                        <option value="" selected>Select a Student</option>
                         {% for student in class_model.non_roster %}
-                        <option>{{student.full_name()}}</option>
+                        <option value="{{student['id']}}" id="student-option-{{student['id']}}">
+                            {{student["first_name_lao"]}} {{student["last_name_lao"]}} ({{student["first_name"]}} {{student["last_name"]}})
+                        </option>
                         {% endfor %}
                     </select>
+                  </div>
+                  <div id="add-student-selected-students" class="tags are-medium mt-2">
+
                   </div>
             </form>
             <!-- Content ... -->
