@@ -125,6 +125,7 @@ def update(form: ClassEditForm) -> ClassEditItem:
 
     form.teacher_id.choices = get_teacher_choices()
     form.term_id.choices = get_term_choices()
+    att_summary = class_repo.retrieve_attendance_summary(class_model.id)
 
     if not form.validate():
         errors.append("Invalid data detected, no changes were saved.")
@@ -133,9 +134,11 @@ def update(form: ClassEditForm) -> ClassEditItem:
         result = class_repo.update(form, class_model)
         if not result:
             errors.append("Failed to update class info.")
-        non_members = student_repo.retrieve_non_members(class_model)
+        non_members = student_repo.retrieve_non_roster_students(class_model.id)
+    
+    # TODO need to populate
 
-    return ClassEditItem(form, class_model, non_members, errors)
+    return ClassEditItem(form, class_model, att_summary, non_members, errors)
 
 def get_students(class_model: SchoolClass) -> []:
     students = [roster_item.student for roster_item in class_model.roster]
