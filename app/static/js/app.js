@@ -2,8 +2,8 @@
 var App = {
     init: function()
     {
-        // Remove the parent of .delete elements on click
-        for (let element of document.getElementsByClassName("delete"))
+        // Remove the parent of .delete-message elements on click
+        for (let element of document.getElementsByClassName("delete-message"))
         {
             element.addEventListener("click", (event) => App.removeParent(event));
         }
