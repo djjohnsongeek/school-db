@@ -80,6 +80,38 @@ def init_db(no_populate):
             occupation="None"
         )
 
+        Student.insert(
+            first_name_lao="ເອນ",
+            last_name_lao="ຍະວົງ",
+            first_name="KEvin",
+            last_name="Ser",
+            nick_name="Romble",
+            gender=int(PersonGender.Male.value),
+            phone_number="000 000 0000",
+            birthday=date.fromisoformat("1999-07-03"),
+            email="rombie@gmail.com",
+            address="SOme Rd",
+            student_number="03022024",
+            application_date=date.fromisoformat("2024-01-22"),
+            occupation="None"
+        ).execute()
+
+        Student.insert(
+            first_name_lao="ເກສ",
+            last_name_lao="ໄຊຍະ",
+            first_name="Kent",
+            last_name="Sungman",
+            nick_name="Rin",
+            gender=int(PersonGender.Male.value),
+            phone_number="000 000 0000",
+            birthday=date.fromisoformat("2005-04-10"),
+            email="rin@gmail.com",
+            address="Unknown",
+            student_number="04022024",
+            application_date=date.fromisoformat("2024-02-01"),
+            occupation="None"
+        ).execute()
+
         # Insert terms
         term = Term.create(
             name="Fall 2024",
