@@ -1,4 +1,5 @@
 var classEdit = {
+    selectedStudentIds: new Set(),
     selectedStudents: [],
     init: function() {
         document.getElementById("add-student-select").addEventListener("change", classEdit.addStudent);
@@ -16,25 +17,49 @@ var classEdit = {
     },
     createStudentTag: function(student)
     {
-        const tag = document.createElement("span");
-        tag.dataset.studentId = student.id;
-        tag.classList.add("tag", "is-light");
-        const text = document.createTextNode(student.name);
-        tag.appendChild(text);
+        const htmlStr = `
+            <span class="tag is-light" data-student-id="${student.id}">
+                ${student.name}
+                <button class="delete is-small" type="button" value="${student.id}"></button>
+            </span>`;
 
-        return tag;
+        const span = Util.toHtml(htmlStr);
+        span.firstElementChild.addEventListener("click", classEdit.removeStudent);
+
+        return span;
     },
     addStudent: function(event)
     {
-        const selectValue = event.currentTarget.value;
-        if (selectValue !== "")
+        const studentId = parseInt(event.currentTarget.value);
+        if (!isNaN(studentId))
         {
-            const selectedOption = document.getElementById(`student-option-${selectValue}`);
+            const selectedOption = document.getElementById(`student-option-${studentId}`);
             const studentName = selectedOption.innerText.trim();
-            classEdit.selectedStudents.push({ name: studentName, id: selectValue});
+            if (!classEdit.selectedStudentIds.has(studentId))
+            {
+                classEdit.selectedStudentIds.add(studentId);
+                classEdit.selectedStudents.push({ name: studentName, id: studentId});
+            }
+            else {
+                event.currentTarget.value = "";
+            }
+
             classEdit.drawSelectedStudents();
         }
-    }
+    },
+    removeStudent: function(event) {
+        const studentId = parseInt(event.currentTarget.value);
+        if (!isNaN(studentId))
+        {
+            classEdit.selectedStudentIds.delete(studentId);
+            const i = classEdit.selectedStudents.findIndex((item) => item.id === studentId);
+            classEdit.selectedStudents.splice(i, 1);
+        }
+
+        classEdit.drawSelectedStudents();
+    },
+
+
 }
 
 
