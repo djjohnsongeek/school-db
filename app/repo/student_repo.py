@@ -1,5 +1,7 @@
 from app.models.db_models import Student, ClassRosterEntry, SchoolClass, Term
 from app.models.forms import StudentEditForm
+from .base_repo import Database
+from flask import current_app
 
 def retrieve_all() -> []:
     return Student.select().where(Student.deleted == False)
@@ -26,17 +28,19 @@ def email_exists(email: str) -> bool:
 def student_number_exists(student_num: str) -> bool:
     return retrieve_by_number(student_num) != None
 
-def retrieve_non_members(class_model: SchoolClass) -> []:
-    if class_model is None:
-        return []
+def retrieve_non_roster_students(class_id: int) -> []:
+    sql = """SELECT *
+            FROM `school_db`.`students`
+            WHERE `deleted` = 0
+            AND `id` NOT IN
+                (SELECT S.`id`
+                FROM `school_db`.`class_rosters` AS R
+                INNER JOIN `school_db`.`students` AS S ON R.`student_id` = S.`id`
+                WHERE R.`school_class_id` = %s)"""
 
-    roster_entries = (ClassRosterEntry
-        .select()
-        .join(Student)
-        .join_from(ClassRosterEntry, SchoolClass)
-        .where(ClassRosterEntry.school_class.id != class_model.id))
-
-    return [entry.student for entry in roster_entries]
+    with Database(current_app.config) as db:
+        db.execute(sql, (class_id,))
+        return db.fetchall()
 
 def update(student: Student, form: StudentEditForm):
     student.first_name = form.first_name.data
