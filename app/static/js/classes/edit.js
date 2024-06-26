@@ -57,6 +57,12 @@ var classEdit = {
         }
 
         classEdit.drawSelectedStudents();
+
+        if (classEdit.selectedStudents.length === 0)
+        {
+            const noSelection = Util.toHtml(`<span class="has-text-grey-light">No Students Selected</span>`);
+            document.getElementById("add-student-selected-students").replaceChildren(...[noSelection])
+        }
     },
 
 

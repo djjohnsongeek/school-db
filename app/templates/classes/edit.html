@@ -187,19 +187,23 @@
           </header>
           <section class="modal-card-body">
             <form>
-                <div class="select">
+                <div class="select block">
                     <select id="add-student-select">
                         <option value="" selected>Select a Student</option>
                         {% for student in class_model.non_roster %}
                         <option value="{{student['id']}}" id="student-option-{{student['id']}}">
-                            {{student["first_name_lao"]}} {{student["last_name_lao"]}} ({{student["first_name"]}} {{student["last_name"]}})
+                            {{student["first_name_lao"]}} {{student["last_name_lao"]}} ({{student["first_name"]}}
+                            {{student["last_name"]}})
                         </option>
                         {% endfor %}
                     </select>
-                  </div>
-                  <div id="add-student-selected-students" class="tags are-medium mt-2">
-
-                  </div>
+                </div>
+                <div class="block">
+                    <span class="title is-6">Selected Students</span>
+                    <div id="add-student-selected-students" class="tags are-medium">
+                        <span class="has-text-grey-light">No Students Selected</span>
+                    </div>
+                </div>
             </form>
             <!-- Content ... -->
           </section>
