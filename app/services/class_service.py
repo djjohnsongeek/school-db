@@ -60,7 +60,7 @@ def get_edit_model(class_id: int) -> ClassEditItem:
         return ClassEditItem(None, None, [], [], errors)
 
     att_summary = class_repo.retrieve_attendance_summary(school_class.id)
-    students_not_on_roster = student_repo.retrieve_non_members(school_class)
+    students_not_on_roster = student_repo.retrieve_non_roster_students(school_class.id)
     form = to_edit_form(school_class)
 
     return ClassEditItem(form, school_class, att_summary, students_not_on_roster, errors)
