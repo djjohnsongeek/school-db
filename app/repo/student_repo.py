@@ -9,6 +9,9 @@ def retrieve_all() -> []:
 def retrieve(id: int) -> Student:
     return Student.get_or_none(Student.id == id)
 
+def retrieve_many(ids: []) -> []:
+    return Student.select().where(Student.id.in_(ids))
+
 def retrieve_by_email(email: str) -> Student:
     return Student.get_or_none(Student.email == email)
 
