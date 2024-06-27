@@ -3,6 +3,7 @@ var classEdit = {
     selectedStudents: [],
     init: function() {
         document.getElementById("add-student-select").addEventListener("change", classEdit.addStudent);
+        document.getElementById("add-student-save-btn").addEventListener("click", classEdit.addStudentsToRoster);
     },
     drawSelectedStudents: function()
     {
@@ -64,6 +65,32 @@ var classEdit = {
             document.getElementById("add-student-selected-students").replaceChildren(...[noSelection])
         }
     },
+    addStudentsToRoster: function()
+    {
+        const classId = parseInt(document.getElementById("add-student-class-id-input").value);
+        const options = {
+            category: "class",
+            action: "create",
+            data: {
+                student_ids: Array.from(classEdit.selectedStudentIds),
+                itemId: classId
+            },
+            successCallback: function(responseData) {
+                console.log("Custom success callback called");
+            },
+            errorCallback: function() {
+                console.log("Custom error callback called");
+            }
+        }
+
+        AsyncApi.postRequest(options);
+    },
+    clearSelectedStudents: function()
+    {
+        classEdit.selectedStudents.length = 0;
+        classEdit.selectedStudentIds.clear();
+        classEdit.drawSelectedStudents();
+    }
 
 
 }
