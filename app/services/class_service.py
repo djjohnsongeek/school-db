@@ -116,17 +116,16 @@ def create_class(form: ClassEditForm) -> ClassCreateItem:
 
     return to_create_model(form, errors)
 
-def create_roster_entries(request_data: {}) -> []:
-
-    class_id = 0
-    student_ids = []
+def create_roster_entries(request_data: {}) -> ApiResultItem:
+    class_id = request_data.get("item_id", None)
+    student_ids = request_data.get("student_ids", [])
     errors = []
-    
+
     students = student_repo.retrieve_many(student_ids)
     class_model = class_repo.retrieve(class_id)
 
     # Make sure students and class exist
-    if students.count() != len(student_ids) or class_model is None:
+    if students.count() != len(student_ids) or len(student_ids) == 0 or class_model is None:
         errors.append("Class or Students were not found.")
 
     # make sure this student is not already on the roster
@@ -147,7 +146,7 @@ def create_roster_entries(request_data: {}) -> []:
             errors.append("Failed to add students to the roster")
 
     # needs to return an ApiResult
-    return errors
+    return ApiResultItem(errors, {})
 
 def update(form: ClassEditForm) -> ClassEditItem:
     errors = []
