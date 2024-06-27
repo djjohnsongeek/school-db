@@ -1,5 +1,5 @@
 from app.repo import class_repo, staff_repo, terms_repo, student_repo
-from app.models.db_models import SchoolClass, Student, Attendance
+from app.models.db_models import SchoolClass, Student, Attendance, ClassRosterEntry
 from app.models.forms import ClassEditForm
 from app.models.dto import ApiResultItem
 from datetime import datetime
@@ -117,7 +117,7 @@ def create_class(form: ClassEditForm) -> ClassCreateItem:
     return to_create_model(form, errors)
 
 def create_roster_entries(request_data: {}) -> ApiResultItem:
-    class_id = request_data.get("item_id", None)
+    class_id = request_data.get("itemId", None)
     student_ids = request_data.get("student_ids", [])
     errors = []
 
