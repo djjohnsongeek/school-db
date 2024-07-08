@@ -235,12 +235,19 @@ var AppApi = {
             },
             successCallback: function(response)
             {
-                const id = response.data.itemId;
-                let rowEl = document.getElementById(`${configObj.rowToRemoveIdPrefix}${id}`);
-                rowEl.remove();
-                delete rowEl;
-    
-                Messages.addMessage(`${configObj.itemName} successfully deleted.`, "success");
+                if (!response.errors)
+                {
+                    const id = response.data.itemId;
+                    let rowEl = document.getElementById(`${configObj.rowToRemoveIdPrefix}${id}`);
+                    rowEl.remove();
+                    delete rowEl;
+        
+                    Messages.addMessage(`${configObj.itemName} successfully deleted.`, "success");
+                }
+                else {
+                    Messages.addMessages(response.errors, "dagner");
+                }
+
             },
             errorCallback: function() {
                 console.log("Called error call back");

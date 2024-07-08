@@ -22,6 +22,8 @@ def handle_post(category: str, action: str, request: Request) -> ApiResultItem:
                 result = student_service.soft_delete(item_id)
             elif category == "term":
                 result = terms_service.soft_delete(item_id)
+            elif category == "class":
+                result = class_service.delete_roster_entry(item_id)
             else:
                 errors.append("Not Supported")
         elif action == "create":

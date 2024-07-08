@@ -4,6 +4,7 @@ var classEdit = {
     init: function() {
         document.getElementById("add-student-select").addEventListener("change", classEdit.addStudent);
         document.getElementById("add-student-save-btn").addEventListener("click", classEdit.addStudentsToRoster);
+        document.getElementById("")
     },
     drawSelectedStudents: function()
     {
@@ -76,10 +77,20 @@ var classEdit = {
                 itemId: classId
             },
             successCallback: function(responseData) {
-                console.log("Custom success callback called");
+                if (!responseData.errors)
+                {
+                    const modalElement = document.getElementById("add-student-modal");
+                    Modal.close(modalElement);
+                    Messages.addMessage("Student(s) successfully added!", "success");
+                    // we need to add the students
+                }
+                else {
+                    Messages.addMessages(responseData.errors, "danger");
+                }
+
             },
             errorCallback: function() {
-                console.log("Custom error callback called");
+                Messages.addMessage("A server error occured.");
             }
         }
 

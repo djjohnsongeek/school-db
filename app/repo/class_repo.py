@@ -60,12 +60,20 @@ def create_roster_entries(class_roster_records: []) -> bool:
 
     return True
 
+def retrieve_roster_entry(class_model: SchoolClass, student: Student) -> ClassRosterEntry:
+    return (ClassRosterEntry
+        .select()
+        .join(Student)
+        .join_from(ClassRosterEntry, SchoolClass)
+        .where((SchoolClass.id == class_model.id) & (Student.id == student.id))
+        .first())
+
 def students_in_roster(students: [], class_id: int) -> bool:
     query = (ClassRosterEntry
-            .select()
-            .join(Student)
-            .join_from(ClassRosterEntry, SchoolClass)
-            .where((ClassRosterEntry.school_class.id == class_id) & (ClassRosterEntry.student.in_(students))))
+        .select()
+        .join(Student)
+        .join_from(ClassRosterEntry, SchoolClass)
+        .where((ClassRosterEntry.school_class.id == class_id) & (ClassRosterEntry.student.in_(students))))
 
     return query.count() > 0
 
@@ -105,3 +113,6 @@ def update(form: ClassEditForm, class_model: SchoolClass) -> bool:
     class_model.term = form.term_id.data
 
     return class_model.save() > 0
+
+def delete_roster_entry(roster_entry: ClassRosterEntry) -> bool:
+    return ClassRosterEntry.delete_instance() == 1

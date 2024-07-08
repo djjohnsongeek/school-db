@@ -148,6 +148,29 @@ def create_roster_entries(request_data: {}) -> ApiResultItem:
     # needs to return an ApiResult
     return ApiResultItem(errors, {})
 
+def delete_roster_entry(request_data) -> ApiResultItem:
+    errors = []
+    class_id = request_data.get("itemId", None)
+    student_id = request_data.get("student_id", None)
+
+    student = student_repo.retrieve(student_id)
+    class_model = class_repo.retrieve(class_id)
+
+    if student is None or class_model is None:
+        errors.append("Invalid data recieved.")
+
+    roster_item = class_repo.retrieve_roster_entry(class_model, student)
+
+    if roster_item is None:
+        errors.append("Roster entry not found.")
+
+    if not errors:
+        success = class_repo.delete_roster_entry(roster_item)
+        if not success:
+            errors.append("Failed to delete student from the roster")
+
+    return ApiResultItem(errors, { student_id: student_id})
+
 def update(form: ClassEditForm) -> ClassEditItem:
     errors = []
     class_model = class_repo.retrieve(form.class_id.data)
