@@ -60,13 +60,8 @@ def create_roster_entries(class_roster_records: []) -> bool:
 
     return True
 
-def retrieve_roster_entry(class_model: SchoolClass, student: Student) -> ClassRosterEntry:
-    return (ClassRosterEntry
-        .select()
-        .join(Student)
-        .join_from(ClassRosterEntry, SchoolClass)
-        .where((SchoolClass.id == class_model.id) & (Student.id == student.id))
-        .first())
+def retrieve_roster_entry(id: int) -> ClassRosterEntry:
+    return ClassRosterEntry.get_or_none(ClassRosterEntry.id == id)
 
 def students_in_roster(students: [], class_id: int) -> bool:
     query = (ClassRosterEntry
@@ -115,4 +110,4 @@ def update(form: ClassEditForm, class_model: SchoolClass) -> bool:
     return class_model.save() > 0
 
 def delete_roster_entry(roster_entry: ClassRosterEntry) -> bool:
-    return ClassRosterEntry.delete_instance() == 1
+    return roster_entry.delete_instance() == 1

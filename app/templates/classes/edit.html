@@ -88,11 +88,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for student in class_model.roster %}
-                                    <tr>
+                                    {% for roster_item in class_model.roster %}
+                                    <tr id="roster-item-row-{{roster_item.id}}">
                                         <td>
-                                            <a href="{{ url_for('students.edit', student_id=student.id) }}">
-                                                {{ student.full_name() }}
+                                            <a href="{{ url_for('students.edit', student_id=roster_item.student.id) }}">
+                                                {{ roster_item.student.full_name() }}
                                             </a>
                                         </td>
                                         <td>
@@ -107,7 +107,7 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <button class="button is-danger" data-student-id="{{ student.id }}" data-class-id="{{ class_model.form.class_id.data }}">
+                                            <button class="button is-danger modal-trigger" data-item-id="{{roster_item.id}}" data-target="confirm-delete-modal">
                                                 <span class="icon-text">
                                                     <span class="icon">
                                                         <i class="fa fa-ban" aria-hidden="true"></i>

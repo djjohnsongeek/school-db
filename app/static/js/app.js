@@ -235,17 +235,20 @@ var AppApi = {
             },
             successCallback: function(response)
             {
-                if (!response.errors)
+                if (response.errors.length == 0)
                 {
                     const id = response.data.itemId;
                     let rowEl = document.getElementById(`${configObj.rowToRemoveIdPrefix}${id}`);
                     rowEl.remove();
                     delete rowEl;
-        
-                    Messages.addMessage(`${configObj.itemName} successfully deleted.`, "success");
+
+                    if (configObj.successMsg)
+                    {
+                        Messages.addMessage(configObj.successMsg, "success");
+                    }
                 }
                 else {
-                    Messages.addMessages(response.errors, "dagner");
+                    Messages.addMessages(response.errors, "danger");
                 }
 
             },

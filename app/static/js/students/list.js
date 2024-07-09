@@ -1,6 +1,6 @@
 let deleteRequestConfig = {
     category: "student",
-    itemName : "Student",
+    successMsg : "The student was successfully deleted.",
     rowToRemoveIdPrefix: "student-row-",
 }
 

@@ -25,10 +25,15 @@ class ClassEditItem():
         self.form = form
         self.class_name = class_model.name
         self.attendance_summary = attendance_summary
-        self.roster = [roster_item.student for roster_item in class_model.roster]
+        self.roster = [RosterItem(roster_item.id, roster_item.student) for roster_item in class_model.roster]
         self.non_roster = non_roster
         self.teacher = class_model.teacher
         self.edit_errors = edit_errors
+
+class RosterItem():
+    def __init__(self, roster_item_id: int, student: Student):
+        self.id = roster_item_id
+        self.student = student
 
 ### Functions
 
@@ -148,28 +153,19 @@ def create_roster_entries(request_data: {}) -> ApiResultItem:
     # needs to return an ApiResult
     return ApiResultItem(errors, {})
 
-def delete_roster_entry(request_data) -> ApiResultItem:
+def delete_roster_entry(itemId) -> ApiResultItem:
     errors = []
-    class_id = request_data.get("itemId", None)
-    student_id = request_data.get("student_id", None)
 
-    student = student_repo.retrieve(student_id)
-    class_model = class_repo.retrieve(class_id)
-
-    if student is None or class_model is None:
-        errors.append("Invalid data recieved.")
-
-    roster_item = class_repo.retrieve_roster_entry(class_model, student)
-
+    roster_item = class_repo.retrieve_roster_entry(itemId)
     if roster_item is None:
-        errors.append("Roster entry not found.")
+        errors.append("Roster entry not found")
 
     if not errors:
         success = class_repo.delete_roster_entry(roster_item)
         if not success:
             errors.append("Failed to delete student from the roster")
 
-    return ApiResultItem(errors, { student_id: student_id})
+    return ApiResultItem(errors, { "itemId": roster_item.id })
 
 def update(form: ClassEditForm) -> ClassEditItem:
     errors = []

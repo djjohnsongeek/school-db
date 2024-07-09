@@ -4,7 +4,14 @@ var classEdit = {
     init: function() {
         document.getElementById("add-student-select").addEventListener("change", classEdit.addStudent);
         document.getElementById("add-student-save-btn").addEventListener("click", classEdit.addStudentsToRoster);
-        document.getElementById("")
+
+        const options = {
+            category: "class",
+            rowToRemoveIdPrefix: "roster-item-row-",
+            successMsg: "The student was successfully removed from the class roster.",
+            itemName: null,
+        };
+        document.getElementById("confirm-delete-btn").addEventListener("click", (event) => AppApi.deleteRequest(event, options));
     },
     drawSelectedStudents: function()
     {
