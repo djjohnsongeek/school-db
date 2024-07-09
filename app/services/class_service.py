@@ -159,7 +159,11 @@ def delete_roster_entry(itemId) -> ApiResultItem:
     roster_item = class_repo.retrieve_roster_entry(itemId)
     if roster_item is None:
         errors.append("Roster entry not found")
-
+    else:
+        attendance_count = class_repo.retrieve_attendance_count(roster_item.school_class.id, roster_item.student.id)
+        if attendance_count != 0:
+            errors.append("Student has attendance records for this class, and cannot be removed.")
+        
     if not errors:
         success = class_repo.delete_roster_entry(roster_item)
         if not success:

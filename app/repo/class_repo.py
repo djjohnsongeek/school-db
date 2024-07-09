@@ -49,6 +49,15 @@ def retrieve_attendance_summary(class_id: int) -> []:
         db.execute(sql, (class_id,))
         return db.fetchall()
 
+def retrieve_attendance_count(class_id: int, student_id: int) -> int:
+    query = (Attendance
+        .select()
+        .join(SchoolClass)
+        .join_from(Attendance, Student)
+        .where((Attendance.school_class.id == class_id) & (Attendance.student.id == student_id)))
+
+    return query.count()
+
 def create_roster_entries(class_roster_records: []) -> bool:
     try:
         # TODO: We should probably write this as a transaction
@@ -61,7 +70,7 @@ def create_roster_entries(class_roster_records: []) -> bool:
     return True
 
 def retrieve_roster_entry(id: int) -> ClassRosterEntry:
-    return ClassRosterEntry.get_or_none(ClassRosterEntry.id == id)
+    return ClassRosterEntry.select().join(Student).join_from(ClassRosterEntry, SchoolClass).where(ClassRosterEntry.id == id).first()
 
 def students_in_roster(students: [], class_id: int) -> bool:
     query = (ClassRosterEntry
