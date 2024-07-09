@@ -108,6 +108,47 @@ var classEdit = {
         classEdit.selectedStudents.length = 0;
         classEdit.selectedStudentIds.clear();
         classEdit.drawSelectedStudents();
+    },
+    createStudentRow: function()
+    {
+        data = {
+            rosterItemId: 1,
+            studentEditUrl: "",
+            studentFullName: "",
+        }
+        const htmlStr = `
+        <tr id="roster-item-row-${rosterItemId}">
+            <td>
+                <a href="${studentEditUrl}">
+                    ${studentFullName}
+                </a>
+            </td>
+            <td>
+                <span class="tag is-success">
+                    P: ?
+                </span>
+                <span class="tag is-danger">
+                    A: ?
+                </span>
+                <span class="tag is-warning">
+                    T: ?
+                </span>
+            </td>
+            <td>
+                <button class="button is-danger modal-trigger" data-item-id="${rosterItemId}" data-target="confirm-delete-modal">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-ban" aria-hidden="true"></i>
+                        </span>
+                        <span>Remove</span>
+                    </span>
+                </button>
+            </td>
+        </tr>`;
+
+        const html = Util.toHtml(htmlStr);
+
+        return ;
     }
 
 
