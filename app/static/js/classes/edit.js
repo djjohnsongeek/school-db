@@ -84,12 +84,12 @@ var classEdit = {
                 itemId: classId
             },
             successCallback: function(responseData) {
-                if (!responseData.errors)
+                if (responseData.errors.length == 0)
                 {
                     const modalElement = document.getElementById("add-student-modal");
                     Modal.close(modalElement);
+                    classEdit.addNewRosterEntries(responseData.data.roster);
                     Messages.addMessage("Student(s) successfully added!", "success");
-                    // we need to add the students
                 }
                 else {
                     Messages.addMessages(responseData.errors, "danger");
@@ -103,24 +103,34 @@ var classEdit = {
 
         AsyncApi.postRequest(options);
     },
+    addNewRosterEntries: function(roster) {
+        const rosterTableBody = document.getElementById("roster-table-body");
+        // TODO this is going to fail if the table does not exists yet (if the class starts with no roster)
+        for (let item of roster)
+        {
+            data = {
+                studentEditUrl: `/students/edit/${item.student.id}`,
+                rosterItemId: item.id,
+                studentFullName: item.student.name,
+            }
+
+            const rowElement = classEdit.createStudentRow(data);
+            rosterTableBody.appendChild(rowElement);
+        }
+    },
     clearSelectedStudents: function()
     {
         classEdit.selectedStudents.length = 0;
         classEdit.selectedStudentIds.clear();
         classEdit.drawSelectedStudents();
     },
-    createStudentRow: function()
+    createStudentRow: function(data)
     {
-        data = {
-            rosterItemId: 1,
-            studentEditUrl: "",
-            studentFullName: "",
-        }
         const htmlStr = `
-        <tr id="roster-item-row-${rosterItemId}">
+        <tr id="roster-item-row-${data.rosterItemId}">
             <td>
-                <a href="${studentEditUrl}">
-                    ${studentFullName}
+                <a href="${data.studentEditUrl}">
+                    ${data.studentFullName}
                 </a>
             </td>
             <td>
@@ -134,21 +144,29 @@ var classEdit = {
                     T: ?
                 </span>
             </td>
-            <td>
-                <button class="button is-danger modal-trigger" data-item-id="${rosterItemId}" data-target="confirm-delete-modal">
-                    <span class="icon-text">
-                        <span class="icon">
-                            <i class="fa fa-ban" aria-hidden="true"></i>
-                        </span>
-                        <span>Remove</span>
-                    </span>
-                </button>
-            </td>
         </tr>`;
 
-        const html = Util.toHtml(htmlStr);
+        const removeBtnHtmlStr = `
+        <button class="button is-danger modal-trigger" data-item-id="${data.rosterItemId}" data-target="confirm-delete-modal">
+            <span class="icon-text">
+                <span class="icon">
+                    <i class="fa fa-ban" aria-hidden="true"></i>
+                </span>
+                <span>Remove</span>
+            </span>
+        </button>`
 
-        return ;
+
+        const htmlRow = Util.toHtml(htmlStr);
+        const lastCell = document.createElement("td");
+        const removeBtn = Util.toHtml(removeBtnHtmlStr);
+        lastCell.append(removeBtn);
+        htmlRow.append(lastCell);
+
+        removeBtn.addEventListener("click", Modal._openAndSetItemId);
+
+
+        return htmlRow;
     }
 
 

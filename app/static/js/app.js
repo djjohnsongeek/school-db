@@ -45,13 +45,7 @@ var Modal = {
         // trigger open logic
         for (let element of document.getElementsByClassName("modal-trigger"))
         {
-            element.addEventListener("click", function(event) {
-                const targetId = event.currentTarget.dataset.target;
-                const itemId = event.currentTarget.dataset.itemId;
-                const targetElement = document.getElementById(targetId);
-                targetElement.dataset.itemId = itemId;
-                Modal.open(targetElement);
-            });
+            element.addEventListener("click", Modal._openAndSetItemId);
         }
         
         // escape keyboard shortcut
@@ -64,13 +58,22 @@ var Modal = {
         // cancel button logic
         for (let element of document.getElementsByClassName("close-modal"))
         {
-            element.addEventListener("click", function(event) {
-                const modalElement = event.currentTarget.closest(".modal")
-                if (modalElement)
-                {
-                    Modal.close(modalElement);
-                }
-            });
+            element.addEventListener("click", Modal._close);
+        }
+    },
+    _openAndSetItemId: function(event)
+    {
+        const targetId = event.currentTarget.dataset.target;
+        const itemId = event.currentTarget.dataset.itemId;
+        const targetElement = document.getElementById(targetId);
+        targetElement.dataset.itemId = itemId;
+        Modal.open(targetElement);
+    },
+    _close: function(event) {
+        const modalElement = event.currentTarget.closest(".modal");
+        if (modalElement)
+        {
+            Modal.close(modalElement);
         }
     },
     open: function(element)

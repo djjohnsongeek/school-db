@@ -35,6 +35,15 @@ class RosterItem():
         self.id = roster_item_id
         self.student = student
 
+    def to_dict(self) -> {}:
+        return {
+            "id": self.id,
+            "student": {
+                "name": self.student.full_name(),
+                "id": self.student.id
+            }
+        }
+
 ### Functions
 
 def get_class_list() -> []:
@@ -124,7 +133,10 @@ def create_class(form: ClassEditForm) -> ClassCreateItem:
 def create_roster_entries(request_data: {}) -> ApiResultItem:
     class_id = request_data.get("itemId", None)
     student_ids = request_data.get("student_ids", [])
+
+    # our return payload
     errors = []
+    roster_items = []
 
     students = student_repo.retrieve_many(student_ids)
     class_model = class_repo.retrieve(class_id)
@@ -133,7 +145,7 @@ def create_roster_entries(request_data: {}) -> ApiResultItem:
     if students.count() != len(student_ids) or len(student_ids) == 0 or class_model is None:
         errors.append("Class or Students were not found.")
 
-    # make sure this student is not already on the roster
+    # Make sure this student is not already on the roster
     if class_repo.students_in_roster(students, class_id):
         errors.append("Some students are already part of this roster")
     
@@ -149,9 +161,17 @@ def create_roster_entries(request_data: {}) -> ApiResultItem:
         result = class_repo.create_roster_entries(roster_entries)
         if not result:
             errors.append("Failed to add students to the roster")
+        else:
+            # return newly created roster data
+            new_ids = [student.id for student in students]
+            for item in class_model.roster:
+                if item.student.id in new_ids:
+                    roster_item = RosterItem(item.id, item.student)
+                    roster_items.append(roster_item.to_dict())
 
     # needs to return an ApiResult
-    return ApiResultItem(errors, {})
+    print(roster_items);
+    return ApiResultItem(errors, { "roster": roster_items })
 
 def delete_roster_entry(itemId) -> ApiResultItem:
     errors = []
