@@ -104,8 +104,12 @@ var classEdit = {
         AsyncApi.postRequest(options);
     },
     addNewRosterEntries: function(roster) {
-        const rosterTableBody = document.getElementById("roster-table-body");
-        // TODO this is going to fail if the table does not exists yet (if the class starts with no roster)
+        let rosterTableBody = document.getElementById("class-roster-table-body");
+        if (rosterTableBody === null)
+        {
+            rosterTableBody = classEdit.createRosterTableBody();
+        }
+        
         for (let item of roster)
         {
             data = {
@@ -117,6 +121,26 @@ var classEdit = {
             const rowElement = classEdit.createStudentRow(data);
             rosterTableBody.appendChild(rowElement);
         }
+    },
+    createRosterTableBody: function()
+    {
+        const rosterContainer = document.getElementById("class-roster-container");
+        const tableHtmlString = `
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Attendance</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="class-roster-table-body">
+                </tbody>
+            </table>`;
+
+        const table = Util.toHtml(tableHtmlString);
+        rosterContainer.replaceChildren(...[table]);
+        return document.getElementById("class-roster-table-body");
     },
     clearSelectedStudents: function()
     {
