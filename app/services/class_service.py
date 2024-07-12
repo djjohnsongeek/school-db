@@ -170,7 +170,6 @@ def create_roster_entries(request_data: {}) -> ApiResultItem:
                     roster_items.append(roster_item.to_dict())
 
     # needs to return an ApiResult
-    print(roster_items);
     return ApiResultItem(errors, { "roster": roster_items })
 
 def delete_roster_entry(itemId) -> ApiResultItem:
