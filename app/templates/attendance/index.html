@@ -16,7 +16,58 @@
                             <div id="calendar"></div>
                         </div>
                         <div class="column">
-                            <p>Why hello there!</p>
+                            <div class="field">
+                                <label class="label">Date</label>
+                                <div class="control has-icons-left">
+                                    <input class="input" id="selected-date-input" type="text" placeholder="Select a Date" readonly/>
+                                    <span class="icon is-left">
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                                <p class="help">Use the calendar on the left to select a date.</p>
+                            </div>
+                            <div class="field">
+                                <label class="label">Class</label>
+                                <div class="control has-icons-left">
+                                    <div class="select">
+                                        <select>
+                                          <option>Select a Class</option>
+                                          <option>Class 1</option>
+                                          <option>Class 2</option>
+                                          <option>Class 3</option>
+                                        </select>
+                                    </div>
+                                    <span class="icon is-left">
+                                        <i class="fa fa-book" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="block">
+                                <div class="columns">
+                                    <div class="column">
+                                        <div>Student Name 1</div>
+                                        <div>Student Name 2</div>
+                                        <div>Student Name 3</div>
+                                    </div>
+                                    <div class="column">
+                                        <div class="buttons has-addons mb-1">
+                                            <button class="button is-selected is-success">Present</button>
+                                            <button class="button">Tardy</button>
+                                            <button class="button">Absent</button>
+                                        </div>
+                                        <div class="buttons has-addons mb-1">
+                                            <button class="button">Present</button>
+                                            <button class="button">Tardy</button>
+                                            <button class="button is-selected is-danger">Absent</button>
+                                        </div>
+                                        <div class="buttons has-addons mb-1">
+                                            <button class="button">Present</button>
+                                            <button class="button is-selected is-warning">Tardy</button>
+                                            <button class="button">Absent</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -37,8 +88,10 @@
     calendar.render();
 
     function selectDate(info) {
-        console.log(info);
+        // console.log(info);
         calendar.select(info.dateStr);
+        const dateInput = document.getElementById("selected-date-input");
+        dateInput.value = info.dateStr;
     }
 
     // testing events
