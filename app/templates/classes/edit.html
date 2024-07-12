@@ -35,6 +35,16 @@
                         <h1 class="card-header-title title is-3">Attendance Summary</h1>
                     </div>
                     <div class="card-content">
+                        <div class="block">
+                            <a class="button is-primary" href="{{ url_for('attendance.home') }}">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                                    </span>
+                                    <span>Take Attendance</span>
+                                </span> 
+                            </a>
+                        </div>
                         <div class="block" id="sessions-container">
                             {% if not class_model.attendance_summary %}
                             <div class="notification is-warning is-light">
@@ -75,7 +85,7 @@
                                 </span> 
                             </button>
                         </div>
-                        <div class="block">
+                        <div class="block" id="class-roster-container">
                             {% if class_model.roster %}
                             <table class="table is-fullwidth">
                                 <thead>
@@ -87,7 +97,7 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="roster-table-body">
+                                <tbody id="class-roster-table-body">
                                     {% for roster_item in class_model.roster %}
                                     <tr id="roster-item-row-{{roster_item.id}}">
                                         <td>
