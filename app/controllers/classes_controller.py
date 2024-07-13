@@ -31,7 +31,7 @@ def create():
             return redirect(url_for("classes.home"))
 
 @classes_blueprint.route("/classes/edit/<int:class_id>", methods=["GET", "POST"])
-def edit(class_id: id):
+def edit(class_id: int):
     if request.method == "GET":
         edit_model = class_service.get_edit_model(class_id)
         if edit_model.edit_errors:

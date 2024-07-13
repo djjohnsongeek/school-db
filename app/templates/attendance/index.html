@@ -17,24 +17,18 @@
                         </div>
                         <div class="column">
                             <div class="field">
-                                <label class="label">Date</label>
-                                <div class="control has-icons-left">
-                                    <input class="input" id="selected-date-input" type="text" placeholder="Select a Date" readonly/>
-                                    <span class="icon is-left">
-                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                                <p class="help">Use the calendar on the left to select a date.</p>
-                            </div>
-                            <div class="field">
                                 <label class="label">Class</label>
                                 <div class="control has-icons-left">
                                     <div class="select">
-                                        <select>
+                                        <select id="attendance-class-select">
                                           <option>No Class Selected</option>
-                                          <option>Class 1</option>
-                                          <option>Class 2</option>
-                                          <option>Class 3</option>
+                                          {% for class in model.classes %}
+                                            {% if class.id == model.selected_class.id %}
+                                                <option selected value="{{class.id}}">{{class.name}}</option>
+                                            {% else %}
+                                                <option value="{{class.id}}">{{class.name}}</option>
+                                            {% endif %}
+                                          {% endfor %}
                                         </select>
                                     </div>
                                     <span class="icon is-left">
@@ -44,37 +38,28 @@
                                 <p class="help">Select the class you want to take Attendance for.</p>
                             </div>
                             <div class="field">
-                                <label class="label">Class Roster</label>
+                                <label class="label">Selected Date</label>
+                                <div class="control has-icons-left">
+                                    <input class="input" id="selected-date-input" type="text" placeholder="Select a Date" readonly/>
+                                    <span class="icon is-left">
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                                <p class="help">Use the calendar on the left to select a date.</p>
                             </div>
                             <div class="block">
                                 <div class="columns">
-                                    <div class="column">
-                                        <div class="mb-1">
-                                            <span class="button is-static">Student Name 1</span>
-                                        </div>
-                                        <div class="mb-1">
-                                            <span class="button is-static">Student Name 1</span>
-                                        </div>
-                                        <div class="mb-1">
-                                            <span class="button is-static">Student Name 1</span>
-                                        </div>
+                                    <div class="column" id="student-info-container">
+                                        <!-- <div class="mb-1">
+                                            <span class="button is-static">....</span>
+                                        </div> -->
                                     </div>
-                                    <div class="column">
-                                        <div class="buttons has-addons mb-1">
-                                            <button class="button is-selected is-success">Present</button>
-                                            <button class="button">Tardy</button>
-                                            <button class="button">Absent</button>
-                                        </div>
-                                        <div class="buttons has-addons mb-1">
+                                    <div class="column" id="student-attendance-container">
+                                        <!-- <div class="buttons has-addons mb-1">
                                             <button class="button">Present</button>
                                             <button class="button">Tardy</button>
-                                            <button class="button is-selected is-danger">Absent</button>
-                                        </div>
-                                        <div class="buttons has-addons mb-1">
-                                            <button class="button">Present</button>
-                                            <button class="button is-selected is-warning">Tardy</button>
                                             <button class="button">Absent</button>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -97,34 +82,55 @@
 {% block scripts %}
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
 <script>
+    const attendancePage = {
+        calendar: null,
+        calendarElement: null,
+        init: function() {
+            attendancePage.calendarElement = document.getElementById('calendar');
+            attendancePage.calendar = new FullCalendar.Calendar(attendancePage.calendarElement, {
+                initialView: 'dayGridMonth',
+                dateClick: attendancePage.onDateClicked
+            });
+            
+            attendancePage.calendar.render();
+            attendancePage.selectDate(attendancePage.currentDateStr());
+        },
+        onDateClicked: function(info) {
+            attendancePage.selectDate(info.dateStr);
 
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        dateClick: selectDate
-    });
-    calendar.render();
-
-    function selectDate(info) {
-        // console.log(info);
-        calendar.select(info.dateStr);
-        const dateInput = document.getElementById("selected-date-input");
-        dateInput.value = info.dateStr;
+            const classSelect = document.getElementById("attendance-class-select");
+            console.log(classSelect.value);
+        },
+        selectDate: function(dateStr) {
+            attendancePage.calendar.select(dateStr);
+            const dateInput = document.getElementById("selected-date-input");
+            dateInput.value = dateStr;
+        },
+        currentDateStr: function() {
+            const date = new Date();
+            let day = date.getDate();
+            let month = date.getMonth() + 1;
+            let year = date.getFullYear();
+            return `${year}-${month}-${day}`;
+        }
     }
 
-    // testing events
-    calendar.addEvent({
-        title: "Event",
-        start: "2024-07-12",
-        end: "2024-07-12",
-        backgroundColor: "green",
-    });
+    attendancePage.init();
 
-    calendar.addEvent({
-        title: "Event",
-        start: "2024-07-12",
-        end: "2024-07-12",
-        backgroundColor: "red",
-    });
+
+    // testing events
+    // calendar.addEvent({
+    //     title: "Event",
+    //     start: "2024-07-12",
+    //     end: "2024-07-12",
+    //     backgroundColor: "green",
+    // });
+
+    // calendar.addEvent({
+    //     title: "Event",
+    //     start: "2024-07-12",
+    //     end: "2024-07-12",
+    //     backgroundColor: "red",
+    // });
 </script>
 {% endblock %}

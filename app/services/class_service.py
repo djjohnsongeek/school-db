@@ -24,6 +24,7 @@ class ClassEditItem():
     def __init__(self, form: ClassEditForm, class_model: SchoolClass, attendance_summary: [], non_roster: [], edit_errors: []):
         self.form = form
         self.class_name = class_model.name
+        self.class_id = class_model.id
         self.attendance_summary = attendance_summary
         self.roster = [RosterItem(roster_item.id, roster_item.student) for roster_item in class_model.roster]
         self.non_roster = non_roster
