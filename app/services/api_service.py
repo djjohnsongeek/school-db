@@ -1,5 +1,5 @@
 from flask import Request, current_app
-from app.services import staff_service, student_service, terms_service, class_service
+from app.services import staff_service, student_service, terms_service, class_service, attendance_service
 from app.models.dto import ApiResultItem
 from app.errors import NotSupportedError
 
@@ -34,6 +34,23 @@ def handle_post(category: str, action: str, request: Request) -> ApiResultItem:
         else:
             errors.append("Not Supported")
     
+    if result is None:
+        result = ApiResultItem(errors, None)
+
+    return result
+
+def handle_get(category: str, action: str, request: Request) -> ApiResultItem:
+    errors = []
+
+    result = None
+    if action == "load":
+        if category == "attendance":
+            result = attendance_service.get_attendance_info(request)
+        else:
+            errors.append("Not supported")
+    else:
+        errors.append("Not Supported")
+
     if result is None:
         result = ApiResultItem(errors, None)
 

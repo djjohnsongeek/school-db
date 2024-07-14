@@ -81,56 +81,5 @@
 {% endblock %}
 {% block scripts %}
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
-<script>
-    const attendancePage = {
-        calendar: null,
-        calendarElement: null,
-        init: function() {
-            attendancePage.calendarElement = document.getElementById('calendar');
-            attendancePage.calendar = new FullCalendar.Calendar(attendancePage.calendarElement, {
-                initialView: 'dayGridMonth',
-                dateClick: attendancePage.onDateClicked
-            });
-            
-            attendancePage.calendar.render();
-            attendancePage.selectDate(attendancePage.currentDateStr());
-        },
-        onDateClicked: function(info) {
-            attendancePage.selectDate(info.dateStr);
-
-            const classSelect = document.getElementById("attendance-class-select");
-            console.log(classSelect.value);
-        },
-        selectDate: function(dateStr) {
-            attendancePage.calendar.select(dateStr);
-            const dateInput = document.getElementById("selected-date-input");
-            dateInput.value = dateStr;
-        },
-        currentDateStr: function() {
-            const date = new Date();
-            let day = date.getDate();
-            let month = date.getMonth() + 1;
-            let year = date.getFullYear();
-            return `${year}-${month}-${day}`;
-        }
-    }
-
-    attendancePage.init();
-
-
-    // testing events
-    // calendar.addEvent({
-    //     title: "Event",
-    //     start: "2024-07-12",
-    //     end: "2024-07-12",
-    //     backgroundColor: "green",
-    // });
-
-    // calendar.addEvent({
-    //     title: "Event",
-    //     start: "2024-07-12",
-    //     end: "2024-07-12",
-    //     backgroundColor: "red",
-    // });
-</script>
+<script src="{{ url_for('static', filename='js/attendance/edit.js') }}"></script>
 {% endblock %}

@@ -109,6 +109,11 @@ var Util = {
         else {
             return result;
         }
+    },
+    padNumber: function(n, target_len)
+    {
+        let nStr = n.toString();
+        return nStr.padStart(target_len, "0");
     }
 }
 
@@ -191,6 +196,39 @@ var AsyncApi = {
             body: JSON.stringify(requestObj.data),
         }
      
+        fetch(url, options)
+            .then((response) => {
+                if (response.ok)
+                {
+                    response.json().then((responseData) => {
+                        if (responseData.errors.length > 0)
+                        {
+                            Messages.addMessages(responseData.errors, "danger");
+                        }
+                        else {
+                            requestObj.successCallback(responseData);
+                        }
+                    });
+                }
+                else {
+                    Messages.addMessage(`A server error occured: ${response.status} `, "danger");
+                    requestObj.errorCallback();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                Messages.addMessage("An unknown error occured.", "danger");
+            });
+    },
+    getRequest: async function(requestObj) {
+        const paramStr = new URLSearchParams(requestObj.data).toString();
+        const url = `${this.baseURL}/${requestObj.category}/${requestObj.action}?${paramStr}`;
+        options = {
+            method: "GET",
+            headers: {
+                "X-CSRFToken": csrf_token,
+            },
+        }
         fetch(url, options)
             .then((response) => {
                 if (response.ok)
