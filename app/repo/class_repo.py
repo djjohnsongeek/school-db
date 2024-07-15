@@ -3,6 +3,7 @@ from app.models.forms import ClassEditForm
 from .base_repo import Database
 from datetime import datetime
 from flask import current_app
+from peewee import fn
 
 def retrieve_all() -> []:
     return SchoolClass.select(SchoolClass, Staff, Term).join(Staff).switch(SchoolClass).join(Term)
@@ -57,6 +58,9 @@ def retrieve_attendance_count(class_id: int, student_id: int) -> int:
         .where((Attendance.school_class.id == class_id) & (Attendance.student.id == student_id)))
 
     return query.count()
+
+def retrieve_attendance(class_id: int, month: int):
+    return Attendance.select().join(SchoolClass).where((Attendance.school_class.id == class_id) & (fn.MONTH(Attendance.date) == month))
 
 def create_roster_entries(class_roster_records: []) -> bool:
     try:

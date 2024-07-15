@@ -1,6 +1,7 @@
 from flask import Request
 from app.repo import class_repo, terms_repo
 from app.models.dto import ApiResultItem
+from datetime import date
 
 ## View Models ##
 class AttendancePageModel:
@@ -22,17 +23,11 @@ def get_attendance_info(request: Request) -> ApiResultItem:
     class_id = request.args.get("class_id")
     date_str = request.args.get("date")
 
-    # convert date_str to date
-    # convert class_id to int
-    # valdiate tehse results
+    selected_date = date.fromisoformat(date_str)
+    class_id = int(class_id)
+    class_model = class_repo.retrieve(class_id)
 
-    # fetch class
-    # fetch class's attendance records for the selected date (month)
-        # build a list of 'events' to summerize that month's attendance information
-            # Each event should count the number of Presents, Tardys, or Absents
-            # { title: "P:1", start: "2024-07-14" }
-            # { title: "T:2", start: "2024-07-14" }
-            # { title: "A:0", start: "2024-07-14" }
+    calendar_events = get_calendar_events(class_model.id, selected_date.month)
     # fetch class's roster of students
         # build a representation of the class rosters attendance for the selected date
         # [
@@ -42,4 +37,43 @@ def get_attendance_info(request: Request) -> ApiResultItem:
         # ]
 
 
-    return ApiResultItem([], { "test": "testing the api endpoint", "date": date_str, "class_id": class_id })
+    return ApiResultItem([], { "calendar_events": calendar_events })
+
+def get_calendar_events(class_id: int, month: int) -> []:
+    # This just helps us organize db data
+    daily_att_summary = {}
+
+    # Keeps track of keys for the above dict for easier looping later
+    keys = []
+
+    # The list of calender events that we are going to return
+    calendar_events = []
+
+    # The only valid attendance values
+    attendance_vals = ["P", "T", "A"]
+
+    # Colors that match those attendance values
+    colors =  {"P": "#4258FF", "T": "#FFB70F", "A": "#FF6685" }
+
+    months_attendance = class_repo.retrieve_attendance(class_id, month)
+
+    # Organize attendance records, summerize values by date
+    for record in months_attendance:
+        date_key = record.date.strftime("%Y-%m-%d")
+        if date_key not in daily_att_summary:
+            daily_att_summary[date_key] = { "A": 0, "P": 0, "T": 0}
+            keys.append(date_key)
+
+        daily_att_summary[date_key][record.value.upper()] += 1
+
+    # Convert the daily summeries into 'calendar events' (based on front end calendar lib)
+    for date_key in keys:
+        for v in attendance_vals:
+            calendar_events.append({
+                "title": f"{v}:{daily_att_summary[date_key][v]}",
+                "start": date_key,
+                "backgroundColor": colors[v],
+                "borderColor": colors[v]
+            })
+
+    return calendar_events

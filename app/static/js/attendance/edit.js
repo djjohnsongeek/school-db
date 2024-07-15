@@ -46,6 +46,11 @@ const attendancePage = {
             successCallback: function(responseData) {
                 console.log("Success");
                 console.log(responseData);
+
+                for (let event of responseData.data.calendar_events)
+                {
+                    attendancePage.calendar.addEvent(event);
+                }
             },
             errorCallback: function() {
                 console.log("ERROR!");

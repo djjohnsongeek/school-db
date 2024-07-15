@@ -166,7 +166,7 @@ def init_db(no_populate):
         # Student 1 Attendance Records
         Attendance.insert(
             school_class=algebra,
-            date=date.fromisoformat("2024-06-24"),
+            date=date.fromisoformat("2024-07-24"),
             student=student_1,
             value="P",
             recorded_by=teacher
@@ -174,7 +174,7 @@ def init_db(no_populate):
 
         Attendance.insert(
             school_class=algebra,
-            date=date.fromisoformat("2024-06-25"),
+            date=date.fromisoformat("2024-07-25"),
             student=student_1,
             value="T",
             recorded_by=teacher
@@ -182,7 +182,7 @@ def init_db(no_populate):
 
         Attendance.insert(
             school_class=algebra,
-            date=date.fromisoformat("2024-06-26"),
+            date=date.fromisoformat("2024-07-26"),
             student=student_1,
             value="A",
             recorded_by=teacher
@@ -191,7 +191,7 @@ def init_db(no_populate):
         # Student 2 Attendance Records
         Attendance.insert(
             school_class=algebra,
-            date=date.fromisoformat("2024-06-24"),
+            date=date.fromisoformat("2024-07-24"),
             student=student_2,
             value="P",
             recorded_by=teacher
@@ -199,7 +199,7 @@ def init_db(no_populate):
 
         Attendance.insert(
             school_class=algebra,
-            date=date.fromisoformat("2024-06-25"),
+            date=date.fromisoformat("2024-07-25"),
             student=student_2,
             value="P",
             recorded_by=teacher
@@ -207,7 +207,7 @@ def init_db(no_populate):
 
         Attendance.insert(
             school_class=algebra,
-            date=date.fromisoformat("2024-06-26"),
+            date=date.fromisoformat("2024-07-26"),
             student=student_2,
             value="P",
             recorded_by=teacher
@@ -215,7 +215,7 @@ def init_db(no_populate):
 
         Attendance.insert(
             school_class=physics,
-            date=date.fromisoformat("2024-06-24"),
+            date=date.fromisoformat("2024-07-24"),
             student=student_2,
             value="P",
             recorded_by=teacher
@@ -223,7 +223,7 @@ def init_db(no_populate):
 
         Attendance.insert(
             school_class=physics,
-            date=date.fromisoformat("2024-06-25"),
+            date=date.fromisoformat("2024-07-25"),
             student=student_2,
             value="T",
             recorded_by=teacher
@@ -231,7 +231,7 @@ def init_db(no_populate):
 
         Attendance.insert(
             school_class=physics,
-            date=date.fromisoformat("2024-06-26"),
+            date=date.fromisoformat("2024-07-26"),
             student=student_2,
             value="A",
             recorded_by=teacher
