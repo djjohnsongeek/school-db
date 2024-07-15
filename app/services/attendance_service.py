@@ -37,7 +37,7 @@ def get_attendance_info(request: Request) -> ApiResultItem:
         # ]
 
 
-    return ApiResultItem([], { "calendar_events": calendar_events })
+    return ApiResultItem([], { "calendarEvents": calendar_events })
 
 def get_calendar_events(class_id: int, month: int) -> []:
     # This just helps us organize db data

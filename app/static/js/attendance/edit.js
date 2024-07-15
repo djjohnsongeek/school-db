@@ -18,6 +18,7 @@ const attendancePage = {
 
         const classSelect = document.getElementById("attendance-class-select");
         console.log(classSelect.value);
+        attendancePage.loadClassAttendance();
     },
     selectDate: function(dateStr) {
         attendancePage.calendar.select(dateStr);
@@ -30,6 +31,13 @@ const attendancePage = {
         let month = date.getMonth() + 1;
         let year = date.getFullYear();
         return `${year}-${Util.padNumber(month, 2)}-${Util.padNumber(day, 2)}`;
+    },
+    removeAllCalendarEvents: function() {
+        const events = attendancePage.calendar.getEvents();
+        for (const e of events)
+        {
+            e.remove();
+        }
     },
     loadClassAttendance: function()
     {
@@ -47,7 +55,8 @@ const attendancePage = {
                 console.log("Success");
                 console.log(responseData);
 
-                for (let event of responseData.data.calendar_events)
+                attendancePage.removeAllCalendarEvents();
+                for (let event of responseData.data.calendarEvents)
                 {
                     attendancePage.calendar.addEvent(event);
                 }
