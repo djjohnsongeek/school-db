@@ -44,8 +44,10 @@ def handle_get(category: str, action: str, request: Request) -> ApiResultItem:
 
     result = None
     if action == "load":
-        if category == "attendance":
-            result = attendance_service.get_attendance_info(request)
+        if category == "attendanceEvents":
+            result = attendance_service.get_attendance_events(request)
+        elif category == "attendanceRoster":
+            result = attendance_service.get_attendance_roster(request)
         else:
             errors.append("Not supported")
     else:

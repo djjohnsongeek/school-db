@@ -62,6 +62,15 @@ def retrieve_attendance_count(class_id: int, student_id: int) -> int:
 def retrieve_attendance(class_id: int, month: int):
     return Attendance.select().join(SchoolClass).where((Attendance.school_class.id == class_id) & (fn.MONTH(Attendance.date) == month))
 
+def retrieve_roster(class_id: int) -> []:
+    query = (ClassRosterEntry
+                .select()
+                .join(Student)
+                .join_from(ClassRosterEntry, SchoolClass)
+                .where(ClassRosterEntry.school_class.id == class_id))
+
+    return [roster_item.student for roster_item in query]
+
 def create_roster_entries(class_roster_records: []) -> bool:
     try:
         # TODO: We should probably write this as a transaction

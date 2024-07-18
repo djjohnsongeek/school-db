@@ -5,20 +5,21 @@ const attendancePage = {
         attendancePage.calendarElement = document.getElementById('calendar');
         attendancePage.calendar = new FullCalendar.Calendar(attendancePage.calendarElement, {
             initialView: 'dayGridMonth',
-            dateClick: attendancePage.onDateClicked
+            dateClick: attendancePage.onDateClicked,
+            datesSet: attendancePage.onDatesSet
         });
-        
-        attendancePage.calendar.render();
+
         attendancePage.selectDate(attendancePage.currentDateStr());
 
-        attendancePage.loadClassAttendance();
+        attendancePage.loadRosterAttendance();
+        // render() calls the datesSet callback
+        attendancePage.calendar.render();
+    },
+    onDatesSet: function(info) {
+        attendancePage.loadAttendanceEvents();
     },
     onDateClicked: function(info) {
         attendancePage.selectDate(info.dateStr);
-
-        const classSelect = document.getElementById("attendance-class-select");
-        console.log(classSelect.value);
-        attendancePage.loadClassAttendance();
     },
     selectDate: function(dateStr) {
         attendancePage.calendar.select(dateStr);
@@ -39,21 +40,21 @@ const attendancePage = {
             e.remove();
         }
     },
-    loadClassAttendance: function()
+    loadAttendanceEvents: function()
     {
-        // TODO LOADING ANIMATION
+        console.log("Fetching attendance evnets");
         const classId = parseInt(document.getElementById("attendance-class-select").value);
         const date = document.getElementById("selected-date-input").value;
         requestObj = {
-            category: "attendance",
+            category: "attendanceEvents",
             action: "load",
             data: {
                 class_id: classId,
                 date: date
             },
             successCallback: function(responseData) {
-                console.log("Success");
-                console.log(responseData);
+                // console.log("Success");
+                // console.log(responseData);
 
                 attendancePage.removeAllCalendarEvents();
                 for (let event of responseData.data.calendarEvents)
@@ -65,7 +66,54 @@ const attendancePage = {
                 console.log("ERROR!");
             }
         }
+        AsyncApi.getRequest(requestObj);
+    },
+    loadRosterAttendance: function()
+    {
+        console.log("Fetching roster attendance");
+        const classId = parseInt(document.getElementById("attendance-class-select").value);
+        const date = document.getElementById("selected-date-input").value;
+        requestObj = {
+            category: "attendanceRoster",
+            action: "load",
+            data: {
+                class_id: classId,
+                date: date
+            },
+            successCallback: function(responseData) {
+                console.log("attendance roster info:");
+                console.log(responseData);
 
+                // Render student names
+                const studentInfoContainer = document.getElementById("student-info-container");
+                for (const item of responseData.data.rosterAttendance)
+                {
+                    const studentSpan = Util.toHtml(`<div class='mb-1'><span class="button is-static">${item.student.name}</span></div>`);
+                    studentInfoContainer.appendChild(studentSpan);
+                }
+                
+                // Render student attedance
+                const studentAttendanceContainer = document.getElementById("student-attendance-container");
+                for (const item of responseData.data.rosterAttendance)
+                {
+                    // is-selected is-success|is-danger|is-warning
+                    const presentSelectedClasses = item.attendance_value == "P" ? " is-selected is-success" : "";
+                    const tardySelectedClasses = item.attendance_value == "T" ? " is-selected is-warning" : "";
+                    const absentSelectedClasses = item.attendance_value == "A" ? " is-selected is-danger" : "";
+                    const htmlStr = `
+                        <div class="buttons has-addons mb-1">
+                            <button class="button${presentSelectedClasses}">Present</button>
+                            <button class="button${tardySelectedClasses}">Tardy</button>
+                            <button class="button${absentSelectedClasses}">Absent</button>
+                        </div>`;
+                    const attendanceBtns = Util.toHtml(htmlStr);
+                    studentAttendanceContainer.appendChild(attendanceBtns);
+                }
+            },
+            errorCallback: function() {
+                console.log("ERROR!");
+            }
+        }
         AsyncApi.getRequest(requestObj);
     }
 }

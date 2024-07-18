@@ -2,6 +2,7 @@ from flask import Request
 from app.repo import class_repo, terms_repo
 from app.models.dto import ApiResultItem
 from datetime import date
+import random
 
 ## View Models ##
 class AttendancePageModel:
@@ -18,26 +19,56 @@ def get_attendance_model(class_id: int):
 
     return AttendancePageModel(selected_class, classes)
 
-def get_attendance_info(request: Request) -> ApiResultItem:
-
+def get_attendance_events(request: Request) -> ApiResultItem:
     class_id = request.args.get("class_id")
     date_str = request.args.get("date")
 
     selected_date = date.fromisoformat(date_str)
     class_id = int(class_id)
     class_model = class_repo.retrieve(class_id)
+    # TODO WE NEED SOME VALIDATIN HERE
 
     calendar_events = get_calendar_events(class_model.id, selected_date.month)
-    # fetch class's roster of students
-        # build a representation of the class rosters attendance for the selected date
-        # [
-        #   { student: student_obj, attendance_value: "P", attendance_id: 1 }
-            # include attendance_id in case the user decides to update a previously set attendance value
-            # this means an update or insert
-        # ]
 
 
     return ApiResultItem([], { "calendarEvents": calendar_events })
+
+def get_attendance_roster(request: Request) -> ApiResultItem:
+    class_id = request.args.get("class_id")
+    date_str = request.args.get("date")
+
+    selected_date = date.fromisoformat(date_str)
+    class_id = int(class_id)
+    class_model = class_repo.retrieve(class_id)
+    # TODO WE NEED SOME VALIDATIN HERE
+
+    roster_attendance = get_roster_attendance(class_model.id, selected_date)
+
+    return ApiResultItem([], { "rosterAttendance": roster_attendance })
+
+def get_roster_attendance(class_id: int, selected_date: date) -> []:
+    # fetch class's roster of students
+    # build a representation of the class rosters attendance for the selected date
+    # [
+    #   { student: student_obj, attendance_value: "P", attendance_id: 1 }
+        # include attendance_id in case the user decides to update a previously set attendance value
+        # this means an update or insert
+    # ]
+    roster_attendance = []
+    student_roster = class_repo.retrieve_roster(class_id)
+
+    for student in student_roster:
+        attendance = {
+            "student": {
+                "name": student.full_name(),
+                "id": student.id
+            },
+            "attendance_value": random.choice(["P", "T", "A", ""]),
+            "attendance_id": 0
+        }
+        roster_attendance.append(attendance)
+
+    return roster_attendance
 
 def get_calendar_events(class_id: int, month: int) -> []:
     # This just helps us organize db data
