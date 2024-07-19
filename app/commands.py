@@ -130,7 +130,7 @@ def init_db(no_populate):
             name='Algebra 1',
             room_number=5,
             teacher=teacher,
-            term=term
+            term=term_2
         )
 
         physics = SchoolClass.create(
@@ -160,6 +160,11 @@ def init_db(no_populate):
 
         ClassRosterEntry.insert(
             student = student_1,
+            school_class = physics
+        ).execute()
+
+        ClassRosterEntry.insert(
+            student = student_2,
             school_class = physics
         ).execute()
 
