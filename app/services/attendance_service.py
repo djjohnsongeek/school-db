@@ -10,7 +10,7 @@ class AttendancePageModel:
         self.classes = classes
         self.selected_class = selected_class
 
-## Buisness Logic ##
+## Business Logic ##
 def get_attendance_model(class_id: int):
     # TODO: set up some way to actually get the current term
     selected_class = class_repo.retrieve(class_id)
