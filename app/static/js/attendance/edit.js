@@ -1,6 +1,7 @@
 const attendancePage = {
     calendar: null,
     calendarElement: null,
+    formData: new FormData(),
     init: function() {
         // Handle changes to the currently selected class
         document.getElementById("attendance-class-select").addEventListener("change", function() {
@@ -91,17 +92,18 @@ const attendancePage = {
 
                 // Show or hide no students message
                 const msgContainer = document.getElementById("student-attendance-messages-container");
+                const saveBtn = document.getElementById("student-attendance-saveBtn");
                 msgContainer.replaceChildren();
                 if (responseData.data.rosterAttendance.length === 0)
                 {
                     msgContainer.append(document.createTextNode("No students found in the roster."));
                     msgContainer.classList.remove("is-hidden");
+                    saveBtn.classList.add("is-hidden");
                 }
                 else {
                     msgContainer.classList.add("is-hidden");
+                    saveBtn.classList.remove("is-hidden");
                 }
-
-
 
                 // Render student names
                 const studentInfoContainer = document.getElementById("student-info-container");
@@ -117,18 +119,22 @@ const attendancePage = {
                 studentAttendanceContainer.replaceChildren();
                 for (const item of responseData.data.rosterAttendance)
                 {
+                    console.log(item);
                     // is-selected is-success|is-danger|is-warning
                     const presentSelectedClasses = item.attendance_value == "P" ? " is-selected is-success" : "";
                     const tardySelectedClasses = item.attendance_value == "T" ? " is-selected is-warning" : "";
                     const absentSelectedClasses = item.attendance_value == "A" ? " is-selected is-danger" : "";
-                    const htmlStr = `
-                        <div class="buttons has-addons mb-1">
-                            <button class="button${presentSelectedClasses}">Present</button>
-                            <button class="button${tardySelectedClasses}">Tardy</button>
-                            <button class="button${absentSelectedClasses}">Absent</button>
-                        </div>`;
-                    const attendanceBtns = Util.toHtml(htmlStr);
-                    studentAttendanceContainer.appendChild(attendanceBtns);
+
+                    const presentBtn = Util.toHtml(`<button class="button${presentSelectedClasses}" data-student-id="${item.student.id}" data-attendance-id="${item.attendance_id}" data-payload="P">Present</button>`);
+                    const tardyBtn = Util.toHtml(`<button class="button${tardySelectedClasses}" data-student-id="${item.student.id}" data-attendance-id="${item.attendance_id}" data-payload="T">Tardy</button>`);
+                    const absentBtn = Util.toHtml(`<button class="button${absentSelectedClasses}" data-student-id="${item.student.id}" data-attendance-id="${item.attendance_id}" data-payload="A">Absent</button>`);
+
+                    const buttonsContainer = Util.toHtml(`<div class="buttons has-addons mb-1"></div>`);
+                    buttonsContainer.appendChild(presentBtn);
+                    buttonsContainer.appendChild(tardyBtn);
+                    buttonsContainer.appendChild(absentBtn);
+
+                    studentAttendanceContainer.appendChild(buttonsContainer);
                 }
             },
             errorCallback: function() {
