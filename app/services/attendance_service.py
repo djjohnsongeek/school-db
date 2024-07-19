@@ -47,24 +47,29 @@ def get_attendance_roster(request: Request) -> ApiResultItem:
     return ApiResultItem([], { "rosterAttendance": roster_attendance })
 
 def get_roster_attendance(class_id: int, selected_date: date) -> []:
-    # fetch class's roster of students
-    # build a representation of the class rosters attendance for the selected date
-    # [
-    #   { student: student_obj, attendance_value: "P", attendance_id: 1 }
-        # include attendance_id in case the user decides to update a previously set attendance value
-        # this means an update or insert
-    # ]
     roster_attendance = []
     student_roster = class_repo.retrieve_roster(class_id)
-
+    student_attendance = class_repo.retrieve_attendance_date(class_id, selected_date)
+    
+    # If a student has attendance records, they cannot be deleted, so they are guarenteed to be in the roster
+    # However a student can be in the roster and not have attedance data
+    # There should only be one record for each student on a particular date
     for student in student_roster:
+        student_attendance_record = None
+
+        # Simple linear search should suffice
+        for attendance_record in student_attendance:
+            if attendance_record.student.id == student.id:
+                student_attendance_record = attendance_record
+                break
+
         attendance = {
             "student": {
                 "name": student.full_name(),
                 "id": student.id
             },
-            "attendance_value": random.choice(["P", "T", "A", ""]),
-            "attendance_id": 0
+            "attendance_value": student_attendance_record.value if student_attendance_record is not None else "",
+            "attendance_id": student_attendance_record.id if student_attendance_record is not None else 0
         }
         roster_attendance.append(attendance)
 
@@ -84,7 +89,7 @@ def get_calendar_events(class_id: int, month: int) -> []:
     attendance_vals = ["P", "T", "A"]
 
     # Colors that match those attendance values
-    colors =  {"P": "#4258FF", "T": "#FFB70F", "A": "#FF6685" }
+    colors =  {"P": "#3ABB81", "T": "#FFB70F", "A": "#FF6685" }
 
     months_attendance = class_repo.retrieve_attendance(class_id, month)
 

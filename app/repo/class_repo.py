@@ -1,7 +1,7 @@
 from app.models.db_models import SchoolClass, Staff, Student, Term, Attendance, ClassRosterEntry
 from app.models.forms import ClassEditForm
 from .base_repo import Database
-from datetime import datetime
+from datetime import datetime, date
 from flask import current_app
 from peewee import fn
 
@@ -59,15 +59,27 @@ def retrieve_attendance_count(class_id: int, student_id: int) -> int:
 
     return query.count()
 
-def retrieve_attendance(class_id: int, month: int):
-    return Attendance.select().join(SchoolClass).where((Attendance.school_class.id == class_id) & (fn.MONTH(Attendance.date) == month))
+def retrieve_attendance(class_id: int, month: int) -> []:
+    return (Attendance
+        .select()
+        .join(SchoolClass)
+        .where((Attendance.school_class.id == class_id) & (fn.MONTH(Attendance.date) == month)))
+
+def retrieve_attendance_date(class_id: int, date: date) -> []:
+    query = (Attendance
+        .select()
+        .join(SchoolClass)
+        .join_from(Attendance, Student)
+        .where((Attendance.school_class.id == class_id) & (Attendance.date == date)))
+
+    return query
 
 def retrieve_roster(class_id: int) -> []:
     query = (ClassRosterEntry
-                .select()
-                .join(Student)
-                .join_from(ClassRosterEntry, SchoolClass)
-                .where(ClassRosterEntry.school_class.id == class_id))
+        .select()
+        .join(Student)
+        .join_from(ClassRosterEntry, SchoolClass)
+        .where(ClassRosterEntry.school_class.id == class_id))
 
     return [roster_item.student for roster_item in query]
 

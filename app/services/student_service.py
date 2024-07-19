@@ -92,6 +92,7 @@ def soft_delete(student_id: int) -> ApiResultItem:
     student = student_repo.retrieve(student_id)
 
     # TODO dicussion needs to be had about how to handle a student's data
+    # TODO validate: if student had attendance or school work data, don't allow for deletion
 
     if student is None:
         errors.append("Student was not found.")
