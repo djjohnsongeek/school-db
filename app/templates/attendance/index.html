@@ -1,5 +1,13 @@
 {% extends "/layouts/layout.html" %}
 
+{% block stylesheets %}
+<style>
+    .selected-cell {
+        border: solid 2px green !important;
+    }
+</style>
+{% endblock %}
+
 {% block main %}
 <div class="container">
     <div class="columns">
@@ -21,7 +29,6 @@
                                 <div class="control has-icons-left">
                                     <div class="select">
                                         <select id="attendance-class-select">
-                                          <option>No Class Selected</option>
                                           {% for class in model.classes %}
                                             {% if class.id == model.selected_class.id %}
                                                 <option selected value="{{class.id}}">{{class.name}}</option>
@@ -60,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="field">
-                                <button class="button is-primary" id="student-attendance-saveBtn">
+                                <button class="button is-primary" type="button" id="student-attendance-saveBtn">
                                     <span class="icon">
                                         <i class="fa fa-floppy-o" aria-hidden="true"></i>
                                     </span>
