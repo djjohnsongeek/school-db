@@ -130,6 +130,7 @@ const attendancePage = {
         const msgContainer = document.getElementById("student-attendance-messages-container");
         const saveBtn = document.getElementById("student-attendance-saveBtn");
 
+        // with no date we cannot lookup or set attendance records
         if (date === "")
         {
             msgContainer.replaceChildren();
@@ -155,8 +156,6 @@ const attendancePage = {
             },
             successCallback: function(responseData) {
                 // Show or hide no students message
-                //const msgContainer = document.getElementById("student-attendance-messages-container");
-               // const saveBtn = document.getElementById("student-attendance-saveBtn");
                 msgContainer.replaceChildren();
                 if (responseData.data.rosterAttendance.length === 0)
                 {
