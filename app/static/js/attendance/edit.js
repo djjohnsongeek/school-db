@@ -116,9 +116,6 @@ const attendancePage = {
                 date: date
             },
             successCallback: function(responseData) {
-                // console.log("Success");
-                // console.log(responseData);
-
                 attendancePage.removeAllCalendarEvents();
                 for (let event of responseData.data.calendarEvents)
                 {
