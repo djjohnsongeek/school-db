@@ -114,6 +114,13 @@ var Util = {
     {
         let nStr = n.toString();
         return nStr.padStart(target_len, "0");
+    },
+    formatDate: function(date)
+    {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        return `${year}-${Util.padNumber(month, 2)}-${Util.padNumber(day, 2)}`;
     }
 }
 

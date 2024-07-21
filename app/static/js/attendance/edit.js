@@ -26,10 +26,6 @@ const attendancePage = {
         attendancePage.calendar.render();
     },
     onDatesSet: function(info) {
-        // TODO BUG:
-        // when moving to a new month, if the selected date is not part of that month
-        // that months' events do not show up
-        // we need to load events based on the current month of the calendar. Not based on the selected date field.
         attendancePage.loadAttendanceEvents();
     },
     onDateClicked: function(info) {
@@ -54,10 +50,7 @@ const attendancePage = {
     },
     currentDateStr: function() {
         const date = new Date();
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        return `${year}-${Util.padNumber(month, 2)}-${Util.padNumber(day, 2)}`;
+        return Util.formatDate(date);
     },
     removeAllCalendarEvents: function() {
         const events = attendancePage.calendar.getEvents();
@@ -108,7 +101,7 @@ const attendancePage = {
     loadAttendanceEvents: function() {
         console.log("Fetching attendance events");
         const classId = parseInt(document.getElementById("attendance-class-select").value);
-        const date = document.getElementById("selected-date-input").value;
+        const date = Util.formatDate(attendancePage.calendar.getDate());
         requestObj = {
             category: "attendanceEvents",
             action: "load",
