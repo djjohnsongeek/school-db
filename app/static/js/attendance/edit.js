@@ -228,19 +228,3 @@ const attendancePage = {
 }
 
 attendancePage.init();
-
-
-// testing events
-// calendar.addEvent({
-//     title: "Event",
-//     start: "2024-07-12",
-//     end: "2024-07-12",
-//     backgroundColor: "green",
-// });
-
-// calendar.addEvent({
-//     title: "Event",
-//     start: "2024-07-12",
-//     end: "2024-07-12",
-//     backgroundColor: "red",
-// });
