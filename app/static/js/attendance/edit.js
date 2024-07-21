@@ -19,34 +19,40 @@ const attendancePage = {
             datesSet: attendancePage.onDatesSet
         });
         // TODO: need to check url attributes for date string
-        attendancePage.selectDate(attendancePage.currentDateStr());
         attendancePage.loadRosterAttendance();
 
         // render() calls the datesSet callback
         attendancePage.calendar.render();
     },
+    // This is called everytime the month is changed
     onDatesSet: function(info) {
+        // TODO: Selection visual does not persist between month views
+        console.log(info);
+        document.getElementById("selected-date-input").value = "";
+
+
         attendancePage.loadAttendanceEvents();
+        attendancePage.loadRosterAttendance();
+
     },
     onDateClicked: function(info) {
-        // style selected cell
-        // TODO: selected stylign is lost when moving between months
+        attendancePage.selectDate(info.dateStr);
+        attendancePage.markCellSelected(info.dayEl);
+        attendancePage.loadRosterAttendance();
+    },
+    markCellSelected: function(cellElement)
+    {
         if (attendancePage.selectedDateElement !== null)
         {
             attendancePage.selectedDateElement.classList.remove("selected-cell");
         }
-        attendancePage.selectedDateElement = info.dayEl;
+        attendancePage.selectedDateElement = cellElement;
         attendancePage.selectedDateElement.classList.add("selected-cell");
-
-
-        attendancePage.selectDate(info.dateStr);
     },
     selectDate: function(dateStr) {
         attendancePage.calendar.select(dateStr);
         const dateInput = document.getElementById("selected-date-input");
         dateInput.value = dateStr;
-
-        attendancePage.loadRosterAttendance();
     },
     currentDateStr: function() {
         const date = new Date();
@@ -129,6 +135,25 @@ const attendancePage = {
         console.log("Fetching roster attendance");
         const classId = parseInt(document.getElementById("attendance-class-select").value);
         const date = document.getElementById("selected-date-input").value;
+        const msgContainer = document.getElementById("student-attendance-messages-container");
+        const saveBtn = document.getElementById("student-attendance-saveBtn");
+
+        if (date === "")
+        {
+            msgContainer.replaceChildren();
+            msgContainer.append(document.createTextNode("No date has been selected."));
+            msgContainer.classList.remove("is-hidden");
+            saveBtn.classList.add("is-hidden");
+
+            let attendanceContainer = document.getElementById("student-attendance-container");
+            let infoContainer = document.getElementById("student-info-container");
+
+            attendanceContainer.replaceChildren();
+            infoContainer.replaceChildren();
+
+            return;
+        }
+
         requestObj = {
             category: "attendanceRoster",
             action: "load",
@@ -138,8 +163,8 @@ const attendancePage = {
             },
             successCallback: function(responseData) {
                 // Show or hide no students message
-                const msgContainer = document.getElementById("student-attendance-messages-container");
-                const saveBtn = document.getElementById("student-attendance-saveBtn");
+                //const msgContainer = document.getElementById("student-attendance-messages-container");
+               // const saveBtn = document.getElementById("student-attendance-saveBtn");
                 msgContainer.replaceChildren();
                 if (responseData.data.rosterAttendance.length === 0)
                 {
