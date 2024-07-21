@@ -217,13 +217,25 @@ const attendancePage = {
             attendance.push(value);
         }
 
-        const postData = {
-            classId,
-            date,
-            attendance
+        requestObj = {
+            category: "attendance",
+            action: "create",
+            data: {
+                classId,
+                date,
+                attendance
+            },
+            successCallback: function(response)
+            {
+                console.log("Success!");
+            },
+            errorCallback: function(response)
+            {
+                console.log("ERROR!");
+            }
         }
 
-        console.log(postData);
+        AsyncApi.postRequest(requestObj);
     }
 }
 

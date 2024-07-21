@@ -3,6 +3,7 @@ from app.repo import class_repo, terms_repo
 from app.models.dto import ApiResultItem
 from datetime import date
 import random
+import pprint
 
 ## View Models ##
 class AttendancePageModel:
@@ -113,3 +114,13 @@ def get_calendar_events(class_id: int, month: int) -> []:
             })
 
     return calendar_events
+
+def record_attendance(request_data: dict) -> ApiResultItem:
+
+    class_id = request_data.get("classId")
+    date_str = request_data.get("date")
+
+    date = date.fromisoformat(date_str)
+
+    pprint.pp(request_data)
+    return ApiResultItem([], None)

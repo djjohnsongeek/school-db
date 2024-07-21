@@ -173,10 +173,6 @@ var Messages = {
     }
 }
 
-var Templating = {
-    
-}
-
 // Async Request logic
 
 /*

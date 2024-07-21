@@ -10,7 +10,7 @@ def handle_post(category: str, action: str, request: Request) -> ApiResultItem:
     if request_data:
         item_id = request_data.get("itemId", None)
 
-    if request_data is None or item_id is None:
+    if request_data is None:
         errors.append("Invalid request.")
 
     result = None
@@ -29,6 +29,8 @@ def handle_post(category: str, action: str, request: Request) -> ApiResultItem:
         elif action == "create":
             if category == "class":
                 result = class_service.create_roster_entries(request_data)
+            elif category == "attendance":
+                result = attendance_service.record_attendance(request_data)
             else:
                 errors.append("Not Supported")
         else:
