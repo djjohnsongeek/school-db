@@ -18,7 +18,6 @@ const attendancePage = {
             dateClick: attendancePage.onDateClicked,
             datesSet: attendancePage.onDatesSet
         });
-        // TODO: need to check url attributes for date string
         attendancePage.loadRosterAttendance();
 
         // render() calls the datesSet callback
@@ -26,11 +25,7 @@ const attendancePage = {
     },
     // This is called everytime the month is changed
     onDatesSet: function(info) {
-        // TODO: Selection visual does not persist between month views
-        console.log(info);
         document.getElementById("selected-date-input").value = "";
-
-
         attendancePage.loadAttendanceEvents();
         attendancePage.loadRosterAttendance();
 
