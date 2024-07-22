@@ -225,9 +225,16 @@ const attendancePage = {
                 date,
                 attendance
             },
-            successCallback: function(response)
+            successCallback: function(responseData)
             {
-                console.log("Success!");
+                if (responseData.errors.length === 0)
+                {
+                    Messages.addMessage("Attendance saved!", "success");
+                }
+
+                attendancePage.loadAttendanceEvents();
+                attendancePage.loadRosterAttendance();
+
             },
             errorCallback: function(response)
             {

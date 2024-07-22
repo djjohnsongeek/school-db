@@ -1,9 +1,13 @@
 from flask import Request
-from app.repo import class_repo, terms_repo
+from app.repo import class_repo, terms_repo, student_repo, staff_repo
 from app.models.dto import ApiResultItem
+from app.models.db_models import SchoolClass
 from datetime import date
 import random
 import pprint
+
+
+permitted_attendance_values = ['P', 'T', 'A']
 
 ## View Models ##
 class AttendancePageModel:
@@ -116,11 +120,92 @@ def get_calendar_events(class_id: int, month: int) -> []:
     return calendar_events
 
 def record_attendance(request_data: dict) -> ApiResultItem:
+    errors = []
+    # Validating class
+    class_model = extract_class(request_data)
+    if class_model is None:
+        return errors.append("Class not found.")
 
-    class_id = request_data.get("classId")
-    date_str = request_data.get("date")
+    # Validate date
+    selected_date = extract_date(request_data)
+    if selected_date is None:
+        errors.append("Invalid data.")
 
-    date = date.fromisoformat(date_str)
+    # Validate attendance
+    attendance = request_data.get("attendance", [])
+    if len(attendance) == 0:
+        errors.append("No attendance data recieved.")
 
-    pprint.pp(request_data)
-    return ApiResultItem([], None)
+    # TODO GET STAFF FROM SESSION
+    staff = staff_repo.retrieve(1)
+    if staff is None:
+        errors.append("Staff not found.")
+
+    if len(errors) == 0:
+        for item in attendance:
+            attendance_id, student_id, attendance_value = extract_attendance_info(item)
+
+            if None in [attendance_id, student_id, attendance_value]:
+                errors.append("Invalid Data.")
+                break
+
+            # Attendance does not already exist
+            if attendance_id == 0:
+                student = student_repo.retrieve(student_id)
+                attendance_created = class_repo.create_attendance_record(
+                    class_model, student, staff, attendance_value, selected_date
+                )
+            # Attendance record already exists
+            else:
+                attendance_record = class_repo.retrieve_attendance_record(attendance_id)
+                if attendance_record is None:
+                    errors.append("Existing attendnace record not found.")
+                    break
+
+                # verfit existing info
+                # date, student, class_model
+
+                attendance_record.recorded_by = staff
+                attendance_record.value = attendance_value
+                attendance_updated = class_repo.update_attendance_record(attendance_record)
+
+    return ApiResultItem(errors, {})
+
+
+def extract_class(request_data: dict) -> SchoolClass:
+    class_model = None
+
+    try:
+        class_id = int(request_data.get("classId", "0"))
+    except ValueError:
+        class_id = 0
+
+    if class_id != 0:
+        class_model = class_repo.retrieve(class_id)
+
+    return class_model
+
+def extract_date(request_data: dict) -> date:
+    date_str = request_data.get("date", "")
+    selected_date = None
+    try:
+        selected_date = date.fromisoformat(date_str)
+    except ValueError:
+        selected_date = None
+
+    return selected_date
+
+def extract_attendance_info(attendance_data: dict) -> ():
+    try:
+        attendance_id = int(attendance_data.get("attendanceId"))
+        student_id = int(attendance_data.get("studentId"))
+        attendance_value = attendance_data.get("attendanceValue")
+    except ValueError:
+        attendance_id = None
+        student_id = None
+        attendance_value = None
+
+    if attendance_value not in permitted_attendance_values:
+        attendance_value = None
+
+    return (attendance_id, student_id, attendance_value)

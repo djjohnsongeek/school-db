@@ -121,19 +121,22 @@ def create_class(form: ClassEditForm, teacher: Staff, term: Term) -> bool:
         # TODO LOG THIS ERROR
         return False
 
-def create_attendance_record(school_class: SchoolClass, student: Student, staff: Staff, value: str) -> bool:
+def create_attendance_record(school_class: SchoolClass, student: Student, staff: Staff, value: str, date: date) -> bool:
     try:
         Attendance.insert(
             student=student,
             school_class=school_class,
             recorded_by=staff,
             value=value,
-            date=datetime.now().date,
+            date=date,
         ).execute()
     except Exception as e:
         return False
 
     return True
+
+def update_attendance_record(attendance_record: Attendance) -> bool:
+    return attendance_record.save() == 1
 
 def update(form: ClassEditForm, class_model: SchoolClass) -> bool:
     class_model.name = form.name.data
