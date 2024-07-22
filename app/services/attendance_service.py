@@ -162,7 +162,7 @@ def record_attendance(request_data: dict) -> ApiResultItem:
                     errors.append("Existing attendnace record not found.")
                     break
 
-                # verfit existing info
+                # TODO verfit existing info
                 # date, student, class_model
 
                 attendance_record.recorded_by = staff
