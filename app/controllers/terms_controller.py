@@ -3,15 +3,18 @@ from app.services import terms_service, controller_service
 from app.models.forms import TermEditForm
 from app.models.view_models import TermEditItem
 from app.models.enums import MessageCategory
+from app.auth import login_required
 
 terms_blueprint = Blueprint("terms", __name__)
 
 @terms_blueprint.route("/terms", methods=["GET"])
+@login_required
 def home():
     terms = terms_service.get_list()
     return render_template("terms/list.html", terms=terms)
 
 @terms_blueprint.route("/terms/create", methods=["GET", "POST"])
+@login_required
 def create():
     form = TermEditForm()
     if request.method == "GET":
@@ -27,6 +30,7 @@ def create():
 
 
 @terms_blueprint.route("/terms/edit/<int:term_id>", methods=["GET", "POST"])
+@login_required
 def edit(term_id: int):
     if request.method == "GET":
         term_edit_model = terms_service.retrieve_term(term_id)

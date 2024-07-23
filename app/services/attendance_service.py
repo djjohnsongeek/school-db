@@ -159,10 +159,10 @@ def record_attendance(request_data: dict) -> ApiResultItem:
             else:
                 attendance_record = class_repo.retrieve_attendance_record(attendance_id)
                 if attendance_record is None:
-                    errors.append("Existing attendnace record not found.")
+                    errors.append("Existing attendance record not found.")
                     break
 
-                # TODO verfit existing info
+                # TODO verfy existing info
                 # date, student, class_model
 
                 attendance_record.recorded_by = staff

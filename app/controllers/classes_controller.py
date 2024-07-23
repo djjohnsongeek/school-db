@@ -2,16 +2,20 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from app.services import class_service, controller_service
 from app.models.forms import ClassEditForm
 from app.models.enums import MessageCategory
+from app.auth import login_required
 
 classes_blueprint = Blueprint("classes", __name__)
 
+
 @classes_blueprint.route("/classes", methods=["GET"])
+@login_required
 def home():
     classes = class_service.get_class_list()
     return render_template("/classes/list.html", classes=classes)
 
 
 @classes_blueprint.route("/classes/create", methods=["GET", "POST"])
+@login_required
 def create():
     if request.method == "GET":
         class_create_model = class_service.get_create_model()
@@ -31,6 +35,7 @@ def create():
             return redirect(url_for("classes.home"))
 
 @classes_blueprint.route("/classes/edit/<int:class_id>", methods=["GET", "POST"])
+@login_required
 def edit(class_id: int):
     if request.method == "GET":
         edit_model = class_service.get_edit_model(class_id)

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>School Database</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app-styles.css') }}">
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/database.png')}}">
+    {% block early_scripts %}{% endblock %}
+    <script>
+        var csrf_token = "{{ csrf_token() }}";
+    </script>
+</head>
+<body>
+    <section class="mb-3">
+        <div class="container is-max-desktop">
+            {% include "/includes/messages.html" %}
+        </div>
+    </section>
+    <main>
+        {% block main %}
+        {% endblock %}
+    </main>
+    <script src="{{ url_for('static', filename='js/app.js')}}" type="text/javascript"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

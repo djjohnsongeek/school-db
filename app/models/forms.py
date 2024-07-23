@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, DateField, EmailField, SelectField, HiddenField
+from wtforms import StringField, IntegerField, DateField, EmailField, SelectField, HiddenField, PasswordField
 from wtforms.validators import DataRequired, Email, Length
 from app.models.validators import StudentNumber
 
@@ -38,3 +38,7 @@ class ClassEditForm(FlaskForm):
     room_number = IntegerField("Room Number", validators=[DataRequired()])
     teacher_id = SelectField("Teacher", validators=[DataRequired()], coerce=int, choices=[])
     term_id = SelectField("Term", validators=[DataRequired()], coerce=int, choices=[])
+
+class LoginForm(FlaskForm):
+    username = StringField(validators=[DataRequired()])
+    password = PasswordField(validators=[DataRequired()])

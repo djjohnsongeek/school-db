@@ -1,7 +1,10 @@
 from flask import Blueprint, render_template
+from app.auth import login_required
+
 index_blueprint = Blueprint("index", __name__)
 
 @index_blueprint.route("/", methods=["GET"])
+@login_required
 def home():
     return render_template("index.html")
 
