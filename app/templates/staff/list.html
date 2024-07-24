@@ -81,6 +81,7 @@
                                         <span>Details</span>
                                     </span>
                                 </a>
+                                {% if session["user"]["is_admin"] %}
                                 <button class="button is-warning modal-trigger" data-target="confirm-pwreset-modal" data-item-id="{{ staff_member.id }}">
                                     <span class="icon-text">
                                         <span class="icon">
@@ -97,6 +98,7 @@
                                         <span>Delete</span>
                                     </span>
                                 </button>
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
@@ -140,7 +142,13 @@
                 <p class="modal-card-title">Reset Password</p>
               </header>
               <section class="modal-card-body">
-                <span>Are sure you want to reset this Staff Member's password?</span>
+                <div class="field">
+                    <label class="label">New Password</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Must be at least 8 characters long" id="pwreset-password">
+                    </div>
+                    <p class="help is-success">As an admin, you can set this user's password if they forget it.</p>
+                </div>
               </section>
               <footer class="modal-card-foot">
                 <div class="buttons">
@@ -149,10 +157,10 @@
                         <span class="icon">
                             <i class="fa fa-key" aria-hidden="true"></i>
                         </span>
-                        <span>Yes</span>
+                        <span>Reset Password</span>
                     </span>
                   </button>
-                  <button class="button is-secondary close-modal">No</button>
+                  <button class="button is-secondary close-modal">Cancel</button>
                 </div>
               </footer>
             </div>
