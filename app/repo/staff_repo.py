@@ -45,6 +45,11 @@ def update(form: StaffEditForm, staff: Staff) -> bool:
     rows_updated = staff.save()
     return rows_updated == 1
 
+def update_password(staff: Staff, hashed_pw: str) -> bool:
+    staff.hashed_password = hashed_pw
+    rows_updated = staff.save()
+    return rows_updated == 1
+
 def soft_delete(staff: Staff) -> bool:
     staff.deleted = True
     rows_updated = staff.save()
