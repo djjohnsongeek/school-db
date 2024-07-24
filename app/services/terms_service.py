@@ -2,6 +2,7 @@ from app.repo import terms_repo, class_repo
 from app.models.view_models import TermItem, TermEditItem
 from app.models.forms import TermEditForm
 from app.models.db_models import Term
+from app.models.dto import ApiResultItem
 
 def get_list() -> []:
     return [TermItem(model) for model in terms_repo.retrieve_all()]
@@ -61,7 +62,7 @@ def to_term_form(term_model: Term) -> TermEditForm:
     
     return form
 
-def soft_delete(term_id: int) -> []:
+def soft_delete(term_id: int) -> ApiResultItem:
     errors = []
     term = terms_repo.retrieve(term_id)
 
@@ -77,4 +78,4 @@ def soft_delete(term_id: int) -> []:
         if not result:
             errors.append("Failed to delete Term.")
 
-    return errors
+    return ApiResultItem(errors, { "itemId": term_id})

@@ -47,7 +47,7 @@
                             {# TODO: accessing the term model like this creats an n+1 problem? #}
                             {% for staff_class in staff_model.classes %}
                             <tr>
-                                <td><a href="#">{{ staff_class.name }}</a></td>
+                                <td><a href="{{ url_for('classes.edit', class_id=staff_class.id )}}">{{ staff_class.name }}</a></td>
                                 <td>{{ staff_class.term.name }}</td>
                             </tr>
                             {% endfor %}

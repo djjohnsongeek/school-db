@@ -3,6 +3,7 @@ from app.models.view_models import StaffItem, StaffEditItem
 from app.models.db_models import Staff
 from app.models.forms import StaffEditForm
 from werkzeug.security import generate_password_hash
+from app.models.dto import ApiResultItem
 
 def get_staff_list() -> []:
     staff_models = staff_repo.retrieve_all()
@@ -86,7 +87,7 @@ def create_staff(form: StaffEditForm) -> []:
 # Removes staff from the dropdown list when assigning a class to a teacher
 # Removes staff from the main list of staff
 # Can later be restored (TODO)
-def soft_delete(staff_id: int) -> []:
+def soft_delete(staff_id: int) -> ApiResultItem:
     errors = []
     staff = staff_repo.retrieve(staff_id)
 
@@ -102,4 +103,4 @@ def soft_delete(staff_id: int) -> []:
         if not result:
             errors.append("Failed to delete staff memeber")
 
-    return errors
+    return ApiResultItem(errors, { "itemId": staff_id })

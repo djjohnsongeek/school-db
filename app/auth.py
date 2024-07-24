@@ -5,7 +5,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if session.get("user", None) is None:
-            flash("You do not have permission to access this resource.", "warning")
+            flash("You must login to access this resource.", "is-warning")
             return redirect(url_for('auth.login'))
 
         return view(**kwargs)

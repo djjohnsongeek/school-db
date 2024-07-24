@@ -1,5 +1,5 @@
 from app.db import get_db, db_models
-from app.models.db_models import Staff, Student, Term, SchoolClass, ClassRosterEntry, Session
+from app.models.db_models import Staff, Student, Term, SchoolClass, ClassRosterEntry, Attendance
 from app.models.enums import StaffRole, PersonGender
 from datetime import date
 from werkzeug.security import generate_password_hash
@@ -80,6 +80,38 @@ def init_db(no_populate):
             occupation="None"
         )
 
+        Student.insert(
+            first_name_lao="ເອນ",
+            last_name_lao="ຍະວົງ",
+            first_name="KEvin",
+            last_name="Ser",
+            nick_name="Romble",
+            gender=int(PersonGender.Male.value),
+            phone_number="000 000 0000",
+            birthday=date.fromisoformat("1999-07-03"),
+            email="rombie@gmail.com",
+            address="SOme Rd",
+            student_number="03022024",
+            application_date=date.fromisoformat("2024-01-22"),
+            occupation="None"
+        ).execute()
+
+        Student.insert(
+            first_name_lao="ເກສ",
+            last_name_lao="ໄຊຍະ",
+            first_name="Kent",
+            last_name="Sungman",
+            nick_name="Rin",
+            gender=int(PersonGender.Male.value),
+            phone_number="000 000 0000",
+            birthday=date.fromisoformat("2005-04-10"),
+            email="rin@gmail.com",
+            address="Unknown",
+            student_number="04022024",
+            application_date=date.fromisoformat("2024-02-01"),
+            occupation="None"
+        ).execute()
+
         # Insert terms
         term = Term.create(
             name="Fall 2024",
@@ -93,17 +125,24 @@ def init_db(no_populate):
             end_date=date.fromisoformat("2025-05-01")
         )
 
-        # Insert classes
+        # Insert classes, store a few for later
         algebra = SchoolClass.create(
             name='Algebra 1',
             room_number=5,
             teacher=teacher,
-            term=term
+            term=term_2
+        )
+
+        physics = SchoolClass.create(
+            name="Physics",
+            room_number=12,
+            teacher=teacher,
+            term=term_2
         )
 
         SchoolClass.insert(
-            name="Physics",
-            room_number=12,
+            name="English",
+            room_number=9,
             teacher=teacher,
             term=term_2
         ).execute()
@@ -119,43 +158,90 @@ def init_db(no_populate):
             school_class = algebra,
         ).execute()
 
-        # Create class sessions
-        Session.insert(
-            name="Session 1",
-            date=date.fromisoformat("2024-08-01"),
-            cancelled=False,
-            school_class=algebra
+        ClassRosterEntry.insert(
+            student = student_1,
+            school_class = physics
         ).execute()
 
-        Session.insert(
-            name="Session 2",
-            date=date.fromisoformat("2024-08-08"),
-            cancelled=False,
-            school_class=algebra
+        ClassRosterEntry.insert(
+            student = student_2,
+            school_class = physics
         ).execute()
 
-        Session.insert(
-            name="Session 3",
-            date=date.fromisoformat("2024-08-15"),
-            cancelled=False,
-            school_class=algebra
+        # Student 1 Attendance Records
+        Attendance.insert(
+            school_class=algebra,
+            date=date.fromisoformat("2024-07-24"),
+            student=student_1,
+            value="P",
+            recorded_by=teacher
         ).execute()
 
-        Session.insert(
-            name="Session 4",
-            date=date.fromisoformat("2024-09-01"),
-            cancelled=False,
-            school_class=algebra
+        Attendance.insert(
+            school_class=algebra,
+            date=date.fromisoformat("2024-07-25"),
+            student=student_1,
+            value="T",
+            recorded_by=teacher
         ).execute()
 
-        Session.insert(
-            name="Session 5",
-            date=date.fromisoformat("2024-09-08"),
-            cancelled=False,
-            school_class=algebra
+        Attendance.insert(
+            school_class=algebra,
+            date=date.fromisoformat("2024-07-26"),
+            student=student_1,
+            value="A",
+            recorded_by=teacher
         ).execute()
 
-    # TODO: grading system
+        # Student 2 Attendance Records
+        Attendance.insert(
+            school_class=algebra,
+            date=date.fromisoformat("2024-07-24"),
+            student=student_2,
+            value="P",
+            recorded_by=teacher
+        ).execute()
+
+        Attendance.insert(
+            school_class=algebra,
+            date=date.fromisoformat("2024-07-25"),
+            student=student_2,
+            value="P",
+            recorded_by=teacher
+        ).execute()
+
+        Attendance.insert(
+            school_class=algebra,
+            date=date.fromisoformat("2024-07-26"),
+            student=student_2,
+            value="P",
+            recorded_by=teacher
+        ).execute()
+
+        Attendance.insert(
+            school_class=physics,
+            date=date.fromisoformat("2024-07-24"),
+            student=student_2,
+            value="P",
+            recorded_by=teacher
+        ).execute()
+
+        Attendance.insert(
+            school_class=physics,
+            date=date.fromisoformat("2024-07-25"),
+            student=student_2,
+            value="T",
+            recorded_by=teacher
+        ).execute()
+
+        Attendance.insert(
+            school_class=physics,
+            date=date.fromisoformat("2024-07-26"),
+            student=student_2,
+            value="A",
+            recorded_by=teacher
+        ).execute()
+
     db.close()
 
 def init_app_commands(app):

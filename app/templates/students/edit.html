@@ -45,7 +45,7 @@
                         <tbody>
                             {% for student_class in student_model.classes %}
                             <tr>
-                                <td><a href="#">{{ student_class.name }}</a></td>
+                                <td><a href="{{ url_for('classes.edit', class_id=student_class.class_id) }}">{{ student_class.name }}</a></td>
                                 <td>{{ student_class.term }}</td>
                             </tr>
                             {% endfor %}

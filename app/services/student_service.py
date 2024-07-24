@@ -2,6 +2,7 @@ from app.repo import student_repo
 from app.models.db_models import Student
 from app.models.view_models import StudentItem, StudentEditItem, StudentCreateItem, StudentClassItem
 from app.models.forms import StudentEditForm
+from app.models.dto import ApiResultItem
 
 def get_student_list() -> []:
     students = student_repo.retrieve_all()
@@ -86,11 +87,12 @@ def create_student(form: StudentEditForm) -> []:
 # Removes student from the dropdown list adding students to a class
 # Removes student from the main list of students
 # Can later be restored (TODO)
-def soft_delete(student_id: int) -> []:
+def soft_delete(student_id: int) -> ApiResultItem:
     errors = []
     student = student_repo.retrieve(student_id)
 
     # TODO dicussion needs to be had about how to handle a student's data
+    # TODO validate: if student had attendance or school work data, don't allow for deletion
 
     if student is None:
         errors.append("Student was not found.")
@@ -100,4 +102,4 @@ def soft_delete(student_id: int) -> []:
         if not result:
             errors.append("Failed to delete student.")
 
-    return errors
+    return ApiResultItem(errors, { "itemId": student_id })

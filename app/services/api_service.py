@@ -1,34 +1,69 @@
-from flask import Request, current_app
-from app.services import staff_service, student_service, terms_service
-from app.models.view_models import AsyncJsResponseItem
+from flask import Request, current_app, session
+from app.services import staff_service, student_service, terms_service, class_service, attendance_service
+from app.models.dto import ApiResultItem
+from app.errors import NotSupportedError
 
-def delete_item(category: str, action: str, request: Request) -> AsyncJsResponseItem:
+def handle_post(category: str, action: str, request: Request) -> ApiResultItem:
     errors = []
     request_data = request.get_json()
+    item_id = None
+
+    if request_data is None:
+        errors.append("Invalid request.")
+
+    if session.get("user") is None:
+        errors.append("You are not authorized to access this resource.")
+    
     if request_data:
         item_id = request_data.get("itemId", None)
 
-    if not valid_category(category) or not valid_action(action) or request_data is None or item_id is None:
-        errors.append("Invalid request.")
-
-    results = []
+    result = None
     if not errors:
         if action == "delete":
             if category == "staff":
-                results = staff_service.soft_delete(item_id)
+                result = staff_service.soft_delete(item_id)
             elif category == "student":
-                results = student_service.soft_delete(item_id)
+                result = student_service.soft_delete(item_id)
             elif category == "term":
-                results = terms_service.soft_delete(item_id)
+                result = terms_service.soft_delete(item_id)
+            elif category == "class":
+                result = class_service.delete_roster_entry(item_id)
+            else:
+                errors.append("Not Supported")
+        elif action == "create":
+            if category == "class":
+                result = class_service.create_roster_entries(request_data)
+            elif category == "attendance":
+                result = attendance_service.record_attendance(request_data)
+            else:
+                errors.append("Not Supported")
+        else:
+            errors.append("Not Supported")
     
-    # update main errors object
-    for error in results:
-        errors.append(error)
+    if result is None:
+        result = ApiResultItem(errors, None)
 
-    return AsyncJsResponseItem(errors, {"itemId" : item_id})
+    return result
 
-def valid_category(category: str) -> bool:
-    return category.lower() in current_app.config["ALLOWED_CATEGORIES"]
+def handle_get(category: str, action: str, request: Request) -> ApiResultItem:
+    errors = []
+    result = None
 
-def valid_action(action: str) -> bool:
-    return action.lower() in current_app.config["ALLOWED_ACTIONS"]
+    if session.get("user") is None:
+        errors.append("You are not authorized to access this resource.")
+
+    if len(errors) == 0:
+        if action == "load":
+            if category == "attendanceEvents":
+                result = attendance_service.get_attendance_events(request)
+            elif category == "attendanceRoster":
+                result = attendance_service.get_attendance_roster(request)
+            else:
+                errors.append("Not supported")
+        else:
+            errors.append("Not Supported")
+
+    if result is None:
+        result = ApiResultItem(errors, None)
+
+    return result

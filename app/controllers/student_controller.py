@@ -3,16 +3,19 @@ from app.services import student_service, controller_service
 from app.models.view_models import StudentCreateItem
 from app.models.forms import StudentEditForm
 from app.models.enums import MessageCategory
+from app.auth import login_required
 
 student_blueprint = Blueprint("students", __name__)
 
 @student_blueprint.route("/students", methods=["GET"])
+@login_required
 def home():
     students = student_service.get_student_list()
     return render_template("/students/list.html", students=students)
 
 
 @student_blueprint.route("/students/edit/<int:student_id>", methods=["GET", "POST"])
+@login_required
 def edit(student_id: int):
     if request.method == "GET":
         student_edit_model = student_service.get_student(student_id)
@@ -33,6 +36,7 @@ def edit(student_id: int):
             return render_template("/students/edit.html", student_model=student_edit_model)
 
 @student_blueprint.route("/students/create", methods=["GET", "POST"])
+@login_required
 def create():
     student_form = StudentEditForm()
     if request.method == "GET":

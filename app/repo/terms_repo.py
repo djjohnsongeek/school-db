@@ -5,6 +5,10 @@ from datetime import datetime
 def retrieve_all():
     return Term.select().where(Term.deleted == False)
 
+def retrieve_current():
+    now = datetime.now()
+    return Term.select().where((Term.deleted == False) & (Term.end_date > now))
+
 def retrieve(id: int):
     return Term.get_or_none(Term.id == id)
 

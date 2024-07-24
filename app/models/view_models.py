@@ -1,19 +1,10 @@
-from app.models.db_models import SchoolClass, Staff, Student, ClassRosterEntry, Term
+from app.models.db_models import SchoolClass, Staff, Student, ClassRosterEntry, Term, SchoolClass, Attendance
 from app.models.base_models import Person
 from app.models.enums import PersonGender, StaffRole
-from app.models.forms import StaffEditForm, StudentEditForm, TermEditForm
+from app.models.forms import StaffEditForm, StudentEditForm, TermEditForm, ClassEditForm
 
-class ClassItem:
-    def __init__(self, class_model: SchoolClass):
-        self.id = class_model.id
-        self.name = class_model.name
-        self.term = class_model.term.name
-        self.teacher_name = class_model.teacher.full_english_name()
-        self.teacher_id = class_model.teacher.index
-        self.room_number = class_model.room_number
-        self.sessions_count = len(class_model.sessions)
-        self.remaining_sessions_count = class_model.remaining_sessions()
-        self.roster_count = len(class_model.roster)
+# This is becoming too much.
+# TODO: Move relevant view models to their related service
 
 class PersonItem:
     def __init__(self, person_model: Person):
@@ -63,6 +54,7 @@ class StudentCreateItem():
 
 class StudentClassItem():
     def __init__(self, class_info: ClassRosterEntry):
+        self.class_id = class_info.school_class.id
         self.term = class_info.school_class.term.name
         self.name = class_info.school_class.name
 
@@ -88,3 +80,4 @@ class TermEditItem():
     def __init__(self, form: TermEditForm, edit_errors: []):
         self.form = form
         self.edit_errors = edit_errors
+
