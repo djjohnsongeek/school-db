@@ -29,6 +29,7 @@ def init_db(no_populate):
             birthday=date.fromisoformat("1992-05-25"),
             address="Midway, NC 27107",
             role=StaffRole.Staff.value,
+            is_admin=True
         ).execute()
 
         teacher = Staff.create(

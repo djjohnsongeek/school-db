@@ -16,6 +16,7 @@ class Staff(Person):
     username = CharField(max_length=64)
     hashed_password = CharField(max_length=256)
     role = IntegerField()
+    is_admin = BooleanField(default=False)
 
     def full_name(self) -> str:
         if self.role == StaffRole.Teacher.value:
