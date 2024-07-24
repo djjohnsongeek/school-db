@@ -1,3 +1,5 @@
+from flask import session
+from werkzeug.security import generate_password_hash
 from app.repo import staff_repo, class_repo
 from app.models.view_models import StaffItem, StaffEditItem
 from app.models.db_models import Staff
@@ -61,6 +63,37 @@ def update_staff(form: StaffEditForm) -> StaffEditItem:
         form = to_staff_form(staff_model)
 
     return StaffEditItem(staff_model, form, errors)
+
+def reset_password(request_data: {}) -> ApiResultItem:
+    errors = []
+    new_password = request_data.get("password")
+    try:
+        staff_id = int(request_data.get("staff_id"))
+    except (ValueError, TypeError):
+        staff_id = None
+
+    if None in [new_password, staff_id]:
+        errors.append("Invalid data.")
+
+    if len(new_password) < 8:
+        errors.append("Password must be at least 8 characters.")
+
+    if len(errors) == 0:
+        staff = staff_repo.retrieve(staff_id)
+
+        if staff is None:
+            errors.append("Staff not found.")
+
+        if not session["user"]["is_admin"]:
+            errors.append("You are not authorized to perform this action.")
+
+        if len(errors) == 0:
+            hashed_password = generate_password_hash(new_password)
+            result = staff_repo.update_password(staff, hashed_password)
+            if not result:
+                errors.app("Failed to update password.")
+
+    return ApiResultItem(errors, {})
 
 def create_staff(form: StaffEditForm) -> []:
     errors = []
