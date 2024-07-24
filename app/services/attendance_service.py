@@ -17,7 +17,6 @@ class AttendancePageModel:
 
 ## Business Logic ##
 def get_attendance_model(class_id: int):
-    # TODO: set up some way to actually get the current term
     selected_class = class_repo.retrieve(class_id)
     current_term = selected_class.term
     classes = class_repo.retrieve_by_term(current_term)
@@ -25,31 +24,36 @@ def get_attendance_model(class_id: int):
     return AttendancePageModel(selected_class, classes)
 
 def get_attendance_events(request: Request) -> ApiResultItem:
+    errors = []
     class_id = request.args.get("class_id")
     date_str = request.args.get("date")
 
-    selected_date = date.fromisoformat(date_str)
-    class_id = int(class_id)
-    class_model = class_repo.retrieve(class_id)
-    # TODO WE NEED SOME VALIDATIN HERE
+    try:
+        selected_date = date.fromisoformat(date_str)
+        class_id = int(class_id)
+        class_model = class_repo.retrieve(class_id)
+        calendar_events = get_calendar_events(class_model.id, selected_date.month)
+    except (TypeError, ValueError):
+        errors.append("Invalid data.")
+        calendar_events = {}
 
-    calendar_events = get_calendar_events(class_model.id, selected_date.month)
-
-
-    return ApiResultItem([], { "calendarEvents": calendar_events })
+    return ApiResultItem(errors, { "calendarEvents": calendar_events })
 
 def get_attendance_roster(request: Request) -> ApiResultItem:
+    errors = []
     class_id = request.args.get("class_id")
     date_str = request.args.get("date")
 
-    selected_date = date.fromisoformat(date_str)
-    class_id = int(class_id)
-    class_model = class_repo.retrieve(class_id)
-    # TODO WE NEED SOME VALIDATIN HERE
+    try:
+        selected_date = date.fromisoformat(date_str)
+        class_id = int(class_id)
+        class_model = class_repo.retrieve(class_id)
+        roster_attendance = get_roster_attendance(class_model.id, selected_date)
+    except (TypeError, ValueError):
+        errors.append("Invalid data.")
+        roster_attendance = []
 
-    roster_attendance = get_roster_attendance(class_model.id, selected_date)
-
-    return ApiResultItem([], { "rosterAttendance": roster_attendance })
+    return ApiResultItem(errors, { "rosterAttendance": roster_attendance })
 
 def get_roster_attendance(class_id: int, selected_date: date) -> []:
     roster_attendance = []

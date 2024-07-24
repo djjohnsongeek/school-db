@@ -6,9 +6,6 @@ api_blueprint = Blueprint("api", __name__)
 
 @api_blueprint.route("/api/<category>/<action>", methods=["POST", "GET"])
 def api_endpoint(category: str, action: str):
-    if session.get("user") is None:
-        return ApiResultItem(["You are not authorized to access this resource"], {})
-
     if request.method == "GET":
         result = api_service.handle_get(category, action, request)
     else:
