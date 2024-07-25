@@ -3,9 +3,6 @@ from app.models.base_models import Person
 from app.models.enums import PersonGender, StaffRole
 from app.models.forms import StaffEditForm, StudentEditForm, TermEditForm, ClassEditForm
 
-# This is becoming too much.
-# TODO: Move relevant view models to their related service
-
 class PersonItem:
     def __init__(self, person_model: Person):
         self.id = person_model.id
