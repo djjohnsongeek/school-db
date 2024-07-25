@@ -1,0 +1,8 @@
+TODO: email steve and kevin about the progress
+TODO: make sure the UI accurately reflects which fields are required
+TODO: check steve's email to implement the things he was talking about
+TODO: get search and filtering working for all list pages?
+TODO: Check if the system actually generates a student number correctly
+TODO: allow user to change their passwords
+TODO: let the system generate student number?
+TODO: handle other todos

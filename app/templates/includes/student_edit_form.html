@@ -40,7 +40,9 @@
                 {% endfor %}
             </div>
             <div class="field">
-                <label class="label">{{ student_model.form.birthday.label }}</label>
+                <label class="label">
+                    {{ student_model.form.birthday.label }}
+                </label>
                 <div class="control">
                     {{ student_model.form.birthday(class="input") }}
                 </div>
@@ -69,7 +71,10 @@
         </div>
         <div class="column">
             <div class="field">
-                <label class="label">{{ student_model.form.first_name.label }}</label>
+                <label class="label">
+                    {{ student_model.form.first_name.label }}
+                    <span class="has-text-danger">*</span>
+                </label>
                 <div class="control">
                     {{ student_model.form.first_name(class="input") }}
                 </div>
@@ -78,7 +83,10 @@
                 {% endfor %}
             </div>
             <div class="field">
-                <label class="label">{{ student_model.form.last_name.label }}</label>
+                <label class="label">
+                    {{ student_model.form.last_name.label }}
+                    <span class="has-text-danger">*</span>
+                </label>
                 <div class="control">
                     {{ student_model.form.last_name(class="input") }}
                 </div>
@@ -114,7 +122,10 @@
                 {% endfor %}
             </div>
             <div class="field">
-                <label class="label">{{ student_model.form.gender.label }}</label>
+                <label class="label">
+                    {{ student_model.form.gender.label }}
+                    <span class="has-text-danger">*</span>
+                </label>
                 <div class="select">
                     {{ student_model.form.gender() }}
                 </div>

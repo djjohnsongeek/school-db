@@ -10,6 +10,7 @@ class BaseModel(Model):
 class SoftDelete(BaseModel):
     deleted = BooleanField(null=False, default=False)
 
+# Only first_name, last_name, and gender
 class Person(SoftDelete):
     first_name_lao = CharField(max_length=128, null=True)
     last_name_lao = CharField(max_length=128, null=True)
@@ -17,10 +18,10 @@ class Person(SoftDelete):
     last_name = CharField(max_length=128)
     nick_name = CharField(max_length=128, null=True)
     gender = IntegerField(null=False)
-    phone_number = CharField(max_length=32)
-    birthday = DateField()
-    email = CharField(max_length=64, unique=True)
-    address = CharField(max_length=128)
+    phone_number = CharField(max_length=32, null=True)
+    birthday = DateField(null=True)
+    email = CharField(max_length=64, null=True)
+    address = CharField(max_length=128, null=True)
 
     def full_english_name(self) -> str:
         return f"{self.first_name} {self.last_name}"
