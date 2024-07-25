@@ -89,7 +89,7 @@ def create_roster_entries(class_roster_records: []) -> bool:
         ClassRosterEntry.bulk_create(class_roster_records)
     except Exception as e:
         print(e)
-        # TODO LOG
+        
         return False
 
     return True
