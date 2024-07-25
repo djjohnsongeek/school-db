@@ -1,6 +1,7 @@
 from app.models.db_models import Staff, SchoolClass
 from app.models.forms import StaffEditForm
 from app.models.enums import StaffRole
+from app.services import log_service
 from datetime import datetime
 
 ## SELECT
@@ -76,7 +77,6 @@ def create(form: StaffEditForm, password: str) -> bool:
 
         return primary_key > -1
     except Exception as e:
-        print(e)
-        # TODO LOG THIS ERROR
+        log_service.record_log(f"Failed to create staff: {e}", "staff_repo", "error")
         return False
 

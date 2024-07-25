@@ -140,8 +140,8 @@ def record_attendance(request_data: dict) -> ApiResultItem:
     if len(attendance) == 0:
         errors.append("No attendance data recieved.")
 
-    # TODO GET STAFF FROM SESSION
-    staff = staff_repo.retrieve(1)
+    staff_id = session.get("user", {}).get("id", 0)
+    staff = staff_repo.retrieve(staff_id)
     if staff is None:
         errors.append("Staff not found.")
 

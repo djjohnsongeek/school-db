@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import session
 from werkzeug.security import generate_password_hash
 from app.repo import staff_repo, class_repo
@@ -103,23 +104,36 @@ def create_staff(form: StaffEditForm) -> []:
     if username_exists or email_exists:
         errors.append("This email address or username is already in use.")
 
-    # we manually set the id so it will pass validatoin
+    # we manually set the id so it will pass validation
     # the id is not used to insert
     form.staff_id.data = 1
     if not form.validate():
         errors.append("Invalid data detected. A new staff member was not created.")
 
     if len(errors) == 0:
-        # TODO: Password requirements, generate password
-        result = staff_repo.create(form, generate_password_hash("place-holder-password"))
+        pw = generate_first_password(form)
+        result = staff_repo.create(form, generate_password_hash(pw))
         if not result:
             errors.append("Failed to create new staff member.")
 
     return errors
 
+def generate_first_password(form: StaffEditForm):
+    generated_password = "generated-placeholder-pw-2096"
+
+    birthdate = form.birthday.data
+    first_name = form.first_name.data
+    last_name = form.last_name.data
+
+    if birthdate is None or first_name is None or last_name is None:
+        return generated_password
+    else:
+        generated_password = f"{birthdate.year}-{first_name[:1]}{last_name}-{birthdate.month}"
+
+    return generated_password
+
 # Removes staff from the dropdown list when assigning a class to a teacher
 # Removes staff from the main list of staff
-# Can later be restored (TODO)
 def soft_delete(staff_id: int) -> ApiResultItem:
     errors = []
     staff = staff_repo.retrieve(staff_id)

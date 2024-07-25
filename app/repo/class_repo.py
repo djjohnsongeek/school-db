@@ -4,6 +4,7 @@ from .base_repo import Database
 from datetime import datetime, date
 from flask import current_app
 from peewee import fn
+from app.services import log_service
 
 def retrieve_all() -> []:
     return SchoolClass.select(SchoolClass, Staff, Term).join(Staff).switch(SchoolClass).join(Term)
@@ -88,8 +89,7 @@ def create_roster_entries(class_roster_records: []) -> bool:
         # TODO: We should probably write this as a transaction
         ClassRosterEntry.bulk_create(class_roster_records)
     except Exception as e:
-        print(e)
-        
+        log_service.record_log(f"Failed to create roster records: {e}", "class_repo", "error")
         return False
 
     return True
@@ -117,8 +117,7 @@ def create_class(form: ClassEditForm, teacher: Staff, term: Term) -> bool:
 
         return primary_key > -1
     except Exception as e:
-        print(e)
-        # TODO LOG THIS ERROR
+        log_service.record_log(f"Failed to create class: {e}", "class_repo", "error")
         return False
 
 def create_attendance_record(school_class: SchoolClass, student: Student, staff: Staff, value: str, date: date) -> bool:

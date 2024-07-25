@@ -86,12 +86,10 @@ def create_student(form: StudentEditForm) -> []:
 
 # Removes student from the dropdown list adding students to a class
 # Removes student from the main list of students
-# Can later be restored (TODO)
 def soft_delete(student_id: int) -> ApiResultItem:
     errors = []
     student = student_repo.retrieve(student_id)
 
-    # TODO dicussion needs to be had about how to handle a student's data
     # TODO validate: if student had attendance or school work data, don't allow for deletion
 
     if student is None:

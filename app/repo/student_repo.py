@@ -1,5 +1,6 @@
 from app.models.db_models import Student, ClassRosterEntry, SchoolClass, Term
 from app.models.forms import StudentEditForm
+from app.services import log_service
 from .base_repo import Database
 from flask import current_app
 
@@ -83,8 +84,7 @@ def create(form: StudentEditForm) -> bool:
 
         return primary_key > -1
     except Exception as e:
-        print(e)
-        # TODO LOG THIS ERROR
+        log_service.record_log(f"Failed to create student: {e}", "student_repo", "error")
         return False
 
 def soft_delete(student: Student):
