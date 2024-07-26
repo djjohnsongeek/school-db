@@ -84,6 +84,13 @@ def create_student(form: StudentEditForm) -> []:
 
     return errors
 
+def generate_student_number():
+    last_student = student_repo.retrieve_last_student()
+    next_student_id = last_student.id + 1
+
+    return "Fake ID"
+
+
 # Removes student from the dropdown list adding students to a class
 # Removes student from the main list of students
 def soft_delete(student_id: int) -> ApiResultItem:

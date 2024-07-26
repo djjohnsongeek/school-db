@@ -32,6 +32,9 @@ def email_exists(email: str) -> bool:
 def student_number_exists(student_num: str) -> bool:
     return retrieve_by_number(student_num) != None
 
+def retrieve_last_student() -> Student:
+    return Student.select().order_by(Student.id.desc()).first()
+
 def retrieve_non_roster_students(class_id: int) -> []:
     sql = """SELECT *
             FROM `school_db`.`students`
