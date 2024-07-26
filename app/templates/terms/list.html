@@ -57,7 +57,7 @@
                         {% endif %}
                         {% for term in terms %}
                         <tr id="term-row-{{ term.id }}">
-                            <td>{{term.name}}</td>
+                            <td><a href="{{ url_for('terms.edit', term_id=term.id) }}">{{term.name}}</a></td>
                             <td>{{term.start_date}}</td>
                             <td>{{term.end_date}}</td>
                             <td>

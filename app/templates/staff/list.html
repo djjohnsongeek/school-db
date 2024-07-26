@@ -66,7 +66,7 @@
                         {% endif %}
                         {% for staff_member in staff %}
                         <tr id="staff-member-row-{{ staff_member.id }}">
-                            <td>{{staff_member.name}}</td>
+                            <td><a href="{{ url_for('staff.edit', staff_id=staff_member.id) }}">{{staff_member.name}}</a></td>
                             <td>{{staff_member.nick_name}}</td>
                             <td>{{staff_member.role.name}}</td>
                             <td>{{staff_member.gender.name}}</td>

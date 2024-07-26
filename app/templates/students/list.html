@@ -32,10 +32,10 @@
                     <thead>
                         <tr>
                             <th>
-                                Student Number
+                                Name
                             </th>
                             <th>
-                                Name
+                                Student Number
                             </th>
                             <th>
                                 Nickname
@@ -66,8 +66,8 @@
                         {% endif %}
                         {% for student in students %}
                         <tr id="student-row-{{ student.id }}">
+                            <td><a href="{{ url_for('students.edit', student_id=student.id) }}">{{student.name}}</a></td>
                             <td>{{student.student_number}}</td>
-                            <td>{{student.name}}</td>
                             <td>{{student.nick_name}}</td>
                             <td>{{student.gender.name}}</td>
                             <td>{{student.phone_number}}</td>

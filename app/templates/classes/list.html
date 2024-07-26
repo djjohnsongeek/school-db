@@ -63,7 +63,7 @@
                     <tbody>
                         {% for school_class in classes %}
                         <tr>
-                            <td>{{school_class.name}}</td>
+                            <td><a href="{{ url_for('classes.edit', class_id=school_class.id) }}">{{school_class.name}}</a></td>
                             <td>{{school_class.term}}</td>
                             <td>{{school_class.teacher_name}}</td>
                             <td>{{school_class.room_number}}</td>

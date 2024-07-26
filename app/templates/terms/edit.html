@@ -7,7 +7,8 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-header-title title is-3">
-                        <span class="has-text-grey mr-2"> Edit Term</span>
+                        <span class="has-text-grey mr-2">Term - </span>
+                        <span>{{ term_model.term.name }}</span>
                     </h1>
                     <button class="card-header-icon">
                         <a href="{{ url_for('terms.home') }}">
@@ -22,6 +23,37 @@
                 </div>
                 <div class="card-content">
                     {% include "/includes/terms_edit_form.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title title is-3">Classes</h2>
+                </div>
+                <div class="card-content">
+                    {% if term_model.term.classes %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for school_class in term_model.term.classes %}
+                            <tr>
+                                <td><a href="{{ url_for('classes.edit', class_id=school_class.id) }}">{{ school_class.name }}</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="notification is-warning">
+                        No Classes Found
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

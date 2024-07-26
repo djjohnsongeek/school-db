@@ -38,13 +38,13 @@ def update_term(form: TermEditForm):
     if len(errors) == 0:
         result = terms_repo.update(term_model, form)
 
-    return TermEditItem(form, errors)
+    return TermEditItem(term_model, form, errors)
 
 def retrieve_term(term_id: int) -> TermEditItem:
     term = terms_repo.retrieve(term_id)
     form = to_term_form(term)
     if form is not None:
-        return TermEditItem(form, [])
+        return TermEditItem(term, form, [])
     else:
         return None
 

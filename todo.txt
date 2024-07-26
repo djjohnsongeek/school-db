@@ -6,3 +6,9 @@ TODO: Check if the system actually generates a student number correctly
 TODO: allow user to change their passwords
 TODO: let the system generate student number?
 TODO: handle other todos
+TODO: fix the error messages being too large
+TODO: class>edit>student list fixed attendance summary
+TODO: classes>edit>attendance fix summary
+
+
+c. Under STUDENTS, if I were to click on a student's name, would that click take me to their current class, grades, attendance, etc.?
