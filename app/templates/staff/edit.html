@@ -7,8 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <h1 class="card-header-title title is-3">
-                        <span class="has-text-grey mr-2">{{ staff_model.role.name }} - </span>
-                        <span>{{ staff_model.fullname }}</span>
+                        <span>{{ staff_model.role.name }} - <span class="has-text-grey mr-2">{{ staff_model.fullname }}</span></span>
                     </h1>
                     <button class="card-header-icon">
                         <a href="{{ url_for('staff.home') }}">
