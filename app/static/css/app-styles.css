@@ -1,8 +1,13 @@
 .fixed-alert {
     position:fixed; 
-    top: 0px; 
-    left: 0px; 
-    width: 100%;
+    bottom: 10px; 
+    width: 50%;
     z-index:9999; 
-    border-radius:0px
+    border-radius:0px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.notification {
+    padding: .6em, .8em !important;
 }

@@ -15,9 +15,23 @@ def get_student(student_id: int) -> StudentEditItem:
     if student_model is not None:
         form = to_student_form(student_model)
         classes = [StudentClassItem(roster_entry) for roster_entry in student_repo.retrieve_classes(student_model)]
-        return StudentEditItem(student_model, form, classes, [])
+        attendance = get_student_attendance(student_model)
+        return StudentEditItem(student_model, form, attendance, classes, [])
     else:
         return None
+
+def get_student_attendance(student_model: Student) -> {}:
+    attendance = student_repo.retrieve_attendance(student_model.id)
+    organized_attendance = {}
+
+    for attendance in student_model.attendance:
+        if attendance.school_class.name not in organized_attendance:
+            organized_attendance[attendance.school_class.name] = []
+
+        organized_attendance[attendance.school_class.name].append({ "value": attendance.value, "date": attendance.date})
+
+    print(organized_attendance)
+    return organized_attendance
 
 def to_student_form(student_model: Student) -> StudentEditForm:
     # convert to wtforms object
@@ -61,8 +75,9 @@ def update_student(form: StudentEditForm) -> StudentEditItem:
     if len(errors) == 0:
         result = student_repo.update(student_model, form)
         form = to_student_form(student_model)
+        attendance = get_student_attendance(student_model)
 
-    return StudentEditItem(student_model, form, classes, errors)
+    return StudentEditItem(student_model, form, attendance, classes, errors)
 
 def create_student(form: StudentEditForm) -> []:
     errors = []

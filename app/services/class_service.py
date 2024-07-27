@@ -2,6 +2,7 @@ from app.repo import class_repo, staff_repo, terms_repo, student_repo
 from app.models.db_models import SchoolClass, Student, Attendance, ClassRosterEntry
 from app.models.forms import ClassEditForm
 from app.models.dto import ApiResultItem
+from app.services import attendance_service
 from datetime import datetime
 
 ### View Models ###
@@ -21,7 +22,7 @@ class ClassCreateItem():
         self.edit_errors = edit_errors
 
 class ClassEditItem():
-    def __init__(self, form: ClassEditForm, class_model: SchoolClass, attendance_summary: [], non_roster: [], edit_errors: []):
+    def __init__(self, form: ClassEditForm, class_model: SchoolClass, attendance_summary: {}, non_roster: [], edit_errors: []):
         self.form = form
         self.class_name = class_model.name
         self.class_id = class_model.id
@@ -74,7 +75,15 @@ def get_edit_model(class_id: int) -> ClassEditItem:
         errors.append("No class found.")
         return ClassEditItem(None, None, [], [], errors)
 
-    att_summary = class_repo.retrieve_attendance_summary(school_class.id)
+    records_summary = class_repo.retrieve_attendance_summary(school_class.id)
+    att_summary = {}
+
+    for value in attendance_service.permitted_attendance_values:
+        att_summary[value] = 0
+
+    for record in records_summary:
+        att_summary[record["value"]] = record["count"]
+
     students_not_on_roster = student_repo.retrieve_non_roster_students(school_class.id)
     form = to_edit_form(school_class)
 

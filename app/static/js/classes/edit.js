@@ -12,6 +12,7 @@ var classEdit = {
             itemName: null,
         };
         document.getElementById("confirm-delete-btn").addEventListener("click", (event) => AppApi.deleteRequest(event, options));
+        classEdit.drawAttendanceChart();
     },
     drawSelectedStudents: function()
     {
@@ -23,6 +24,46 @@ var classEdit = {
         }
 
         selectedStudentsContainer.replaceChildren(...tags);
+    },
+    drawAttendanceChart: function()
+    {
+        const chartEL = document.getElementById("class-attendance-chart");
+        const chartContainer = document.getElementById("class-attendance-chart-container");
+        const noAttendanceMsgContainer = document.getElementById("class-attendance-message-container");
+        const p = parseInt(document.getElementById("attendance-count-p").value);
+        const t = parseInt(document.getElementById("attendance-count-t").value);
+        const a = parseInt(document.getElementById("attendance-count-a").value);
+
+        const data = {
+            labels: [
+              'Present',
+              'Tardy',
+              'Absent'
+            ],
+            datasets: [{
+              label: '',
+              data: [p, t, a],
+              backgroundColor: [
+                '#3ABB81',
+                'rgb(255, 205, 86)',
+                'rgb(255, 99, 132)',
+              ],
+              hoverOffset: 4
+            }]
+          };
+
+        if (p === 0 & t === 0 & a === 0)
+        {
+            chartContainer.style.display = "none";
+            noAttendanceMsgContainer.style.display = "block";
+
+        }
+        else {
+            new Chart(chartEL, {
+                type: 'pie',
+                data: data
+            });
+        }
     },
     createStudentTag: function(student)
     {

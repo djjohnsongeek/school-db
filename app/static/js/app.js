@@ -13,6 +13,8 @@ var App = {
         {
             element.addEventListener("click", (event) => App.toggleVisible(event));
         }
+
+        setInterval(App.popMessage, 4500);
     },
     toggleVisible: function(event) {
         const t = event.currentTarget.dataset.target;
@@ -33,6 +35,19 @@ var App = {
         const notification = event.currentTarget.parentNode;
         const container = notification.parentNode;
         container.removeChild(notification)
+    },
+    popMessage: function()
+    {
+        console.log("Popping messages");
+        const messages_container = document.getElementById("app-messages-container");
+        if (messages_container)
+        {
+            messages = messages_container.children;
+            if (messages.length > 0)
+            {
+                messages[0].remove();
+            }
+        }
     }
 }
 

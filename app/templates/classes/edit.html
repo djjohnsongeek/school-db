@@ -44,22 +44,20 @@
                                 </span> 
                             </a>
                         </div>
-                        <div class="block" id="sessions-container">
-                            {% if not class_model.attendance_summary %}
-                            <div class="notification is-warning is-light">
-                                No Attendance Records Found
+                        <div class="block" id="class-attendance-container">
+                            <input value="{{ class_model.attendance_summary['P']}}" id="attendance-count-p" type="hidden">
+                            <input value="{{ class_model.attendance_summary['T']}}" id="attendance-count-t" type="hidden">
+                            <input value="{{ class_model.attendance_summary['A']}}" id="attendance-count-a" type="hidden">
+                            <div style="width: 350px;" id="class-attendance-chart-container">
+                                <canvas id="class-attendance-chart">
+
+                                </canvas>
                             </div>
-                            {% endif %}
-                            {% for record in class_model.attendance_summary %}
-                            <div class="columns">
-                                <div class="column">
-                                    {{ record["value"] }}
-                                </div>
-                                <div class="column">
-                                    {{ record["count"] }}
+                            <div id="class-attendance-message-container" style="display: none;">
+                                <div class="notification is-warning is-light">
+                                    No Attendance Records Found.
                                 </div>
                             </div>
-                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -90,9 +88,6 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>
-                                            Attendance
-                                        </th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -103,17 +98,6 @@
                                             <a href="{{ url_for('students.edit', student_id=roster_item.student.id) }}">
                                                 {{ roster_item.student.full_name() }}
                                             </a>
-                                        </td>
-                                        <td>
-                                            <span class="tag is-success">
-                                                P: ?
-                                            </span>
-                                            <span class="tag is-danger">
-                                                A: ?
-                                            </span>
-                                            <span class="tag is-warning">
-                                                T: ?
-                                            </span>
                                         </td>
                                         <td>
                                             <button class="button is-danger modal-trigger" data-item-id="{{roster_item.id}}" data-target="confirm-delete-modal">
@@ -218,5 +202,6 @@
 </div>
 {% endblock %}
 {% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/classes/edit.js')}}" type="text/javascript"></script>
 {% endblock %}

@@ -1,4 +1,4 @@
-from app.models.db_models import Student, ClassRosterEntry, SchoolClass, Term
+from app.models.db_models import Student, ClassRosterEntry, SchoolClass, Term, Attendance
 from app.models.forms import StudentEditForm
 from app.services import log_service
 from .base_repo import Database
@@ -9,6 +9,9 @@ def retrieve_all() -> []:
 
 def retrieve(id: int) -> Student:
     return Student.get_or_none(Student.id == id)
+
+def retrieve_attendance(student_id: int) -> []:
+    return Attendance.select().join(SchoolClass).where(Attendance.student_id == student_id)
 
 def retrieve_many(ids: []) -> []:
     return Student.select().where(Student.id.in_(ids))
