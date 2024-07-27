@@ -1,6 +1,7 @@
 TODO: handle other todos
 TODO: classes -> saving without making changes gives an error
 TODO: filter classes by term
+TODO: remove debug prints
 
 TODO: test all functionality
 TODO: push to production, setup domain name, production ready db-init
