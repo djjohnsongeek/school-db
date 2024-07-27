@@ -1,4 +1,4 @@
-from flask import Request
+from flask import Request, session
 from app.repo import class_repo, terms_repo, student_repo, staff_repo
 from app.models.dto import ApiResultItem
 from app.models.db_models import SchoolClass

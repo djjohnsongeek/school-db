@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-header-title title is-3">
-                        <span class="has-text-grey mr-2"> Create New Staff Member</span>
+                        Create New Staff Member
                     </h1>
                     <button class="card-header-icon">
                         <a href="{{ url_for('staff.home') }}">
@@ -24,6 +24,7 @@
                     {% include "/includes/staff_edit_form.html" %}
                 </div>
             </div>
+            {% include "/includes/admin_links.html" %}
         </div>
     </div>
 </div>

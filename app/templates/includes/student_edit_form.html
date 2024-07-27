@@ -26,6 +26,7 @@
                 <div class="control">
                     {{ student_model.form.student_number(class="input") }}
                 </div>
+                <p class="help">If left blank, the system will generate a number.</p>
                 {% for error in student_model.form.student_number.errors %}
                     <p class="help is-danger">{{ error }}</p>
                 {% endfor %}

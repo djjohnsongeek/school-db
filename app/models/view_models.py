@@ -9,7 +9,7 @@ class PersonItem:
         self.name = person_model.full_name()
         self.nick_name = person_model.nick_name
         self.gender = PersonGender(person_model.gender)
-        self.birthday = person_model.birthday.strftime("%d/%m/%Y")
+        self.birthday = person_model.birthday.strftime("%d/%m/%Y") if person_model.birthday is not None else ""
         self.phone_number = person_model.phone_number
         self.address = person_model.address
         self.email = person_model.email

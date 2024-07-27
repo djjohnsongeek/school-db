@@ -18,12 +18,12 @@ def home():
 def create():
     form = TermEditForm()
     if request.method == "GET":
-        return render_template("terms/create.html", term_model=TermEditItem(form, []))
+        return render_template("terms/create.html", term_model=TermEditItem(None, form, []))
     elif request.method == "POST":
         errors = terms_service.create_term(form)
         if len(errors) > 0:
             controller_service.flash_messages(errors, MessageCategory.Error)
-            return render_template("terms/create.html", term_model=TermEditItem(form, []))
+            return render_template("terms/create.html", term_model=TermEditItem(None, form, []))
         else:
             controller_service.flash_message("New Term Created!", MessageCategory.Success)
             return redirect(url_for("terms.home"))

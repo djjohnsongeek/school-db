@@ -3,6 +3,7 @@ from app.models.db_models import Student
 from app.models.view_models import StudentItem, StudentEditItem, StudentCreateItem, StudentClassItem
 from app.models.forms import StudentEditForm
 from app.models.dto import ApiResultItem
+from datetime import datetime
 
 def get_student_list() -> []:
     students = student_repo.retrieve_all()
@@ -65,6 +66,12 @@ def update_student(form: StudentEditForm) -> StudentEditItem:
 
 def create_student(form: StudentEditForm) -> []:
     errors = []
+
+    if form.student_number.data is None or form.student_number.data == "":
+        form.student_number.data = generate_student_number()
+    else:
+        form.student_number.data = form.student_number.data.zfill(12)
+    
     if student_repo.student_number_exists(form.student_number.data):
         errors.append("The supplied student number is already in use.")
     
@@ -80,7 +87,7 @@ def create_student(form: StudentEditForm) -> []:
     if len(errors) == 0:
         result = student_repo.create(form)
         if not result:
-            errors.append("Failed to create new staff member.")
+            errors.append("Failed to create new student.")
 
     return errors
 
@@ -88,7 +95,13 @@ def generate_student_number():
     last_student = student_repo.retrieve_last_student()
     next_student_id = last_student.id + 1
 
-    return "Fake ID"
+    now = datetime.now()
+
+    next_student_id = str(next_student_id).zfill(6)
+    month_str = str(now.month).zfill(2)
+    year_str = str(now.year)
+
+    return next_student_id + month_str + year_str
 
 
 # Removes student from the dropdown list adding students to a class

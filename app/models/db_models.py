@@ -33,7 +33,7 @@ class LoginLog(BaseModel):
         table_name = "login_logs"
 
 class Term(SoftDelete):
-    name = CharField(max_length=64)
+    name = CharField(max_length=128)
     start_date = DateField()
     end_date = DateField()
 
@@ -42,7 +42,7 @@ class Term(SoftDelete):
 
 class SchoolClass(BaseModel):
     name = CharField(max_length=64)
-    room_number = IntegerField()
+    room_number = IntegerField(null=True)
     teacher = ForeignKeyField(Staff, backref="classes")
     term = ForeignKeyField(Term, backref="classes")
 
