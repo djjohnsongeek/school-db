@@ -66,6 +66,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% if not classes %}
+                        <tr>
+                            <td colspan="6">
+                                <div class="notification is-warning is-light">
+                                    No Classes Found
+                                </div>
+                            </td>
+                        </tr>
+                        {% endif %}
                         {% for school_class in classes %}
                         <tr>
                             <td><a href="{{ url_for('classes.edit', class_id=school_class.id) }}">{{school_class.name}}</a></td>

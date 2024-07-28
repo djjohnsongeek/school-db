@@ -89,8 +89,8 @@ def create_student(form: StudentEditForm) -> []:
     if student_repo.student_number_exists(form.student_number.data):
         errors.append("The supplied student number is already in use.")
     
-    if student_repo.email_exists(form.email.data):
-        errors.append("This supplied email address is already in use.")
+    # if student_repo.email_exists(form.email.data):
+    #     errors.append("This supplied email address is already in use.")
 
     # We manually set the id so validation will pass
     # This value does not get when inserting the new record
@@ -107,7 +107,7 @@ def create_student(form: StudentEditForm) -> []:
 
 def generate_student_number():
     last_student = student_repo.retrieve_last_student()
-    next_student_id = last_student.id + 1
+    next_student_id = last_student.id + 1 if last_student is not None else 1
 
     now = datetime.now()
 

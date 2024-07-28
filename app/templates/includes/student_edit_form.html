@@ -114,7 +114,10 @@
                 {% endfor %}
             </div>
             <div class="field">
-                <label class="label">{{ student_model.form.application_date.label }}</label>
+                <label class="label">
+                    {{ student_model.form.application_date.label }}
+                    <span class="has-text-danger">*</span>
+                </label>
                 <div class="control">
                     {{ student_model.form.application_date(class="input") }}
                 </div>

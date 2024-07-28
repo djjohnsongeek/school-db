@@ -101,8 +101,8 @@ def create_staff(form: StaffEditForm) -> []:
     username_exists = staff_repo.username_exists(form.username.data)
     email_exists = staff_repo.email_exists(form.email.data)
 
-    if username_exists or email_exists:
-        errors.append("This email address or username is already in use.")
+    if username_exists:
+        errors.append("This username is already in use.")
 
     # we manually set the id so it will pass validation
     # the id is not used to insert

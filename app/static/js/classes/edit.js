@@ -171,7 +171,6 @@ var classEdit = {
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Attendance</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -197,17 +196,6 @@ var classEdit = {
                 <a href="${data.studentEditUrl}">
                     ${data.studentFullName}
                 </a>
-            </td>
-            <td>
-                <span class="tag is-success">
-                    P: ?
-                </span>
-                <span class="tag is-danger">
-                    A: ?
-                </span>
-                <span class="tag is-warning">
-                    T: ?
-                </span>
             </td>
         </tr>`;
 

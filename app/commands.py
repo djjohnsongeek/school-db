@@ -5,7 +5,7 @@ from datetime import date
 from werkzeug.security import generate_password_hash
 import click
 
-def init_db(no_populate):
+def init_db(prod):
     db = get_db()
     db.connect()
 
@@ -13,7 +13,7 @@ def init_db(no_populate):
     db.drop_tables(db_models)
     db.create_tables(db_models)
 
-    if no_populate is False:
+    if not prod:
         # Insert Staff
         Staff.insert(
             first_name_lao="ດານີເອນ",
@@ -242,6 +242,23 @@ def init_db(no_populate):
             value="A",
             recorded_by=teacher
         ).execute()
+    else:
+        Staff.insert(
+            first_name_lao="",
+            last_name_lao="",
+            first_name="Daniel",
+            last_name="Johnson",
+            nick_name="DJ",
+            gender=int(PersonGender.Male.value),
+            phone_number="803 840 5077",
+            username="djohnson",
+            hashed_password=generate_password_hash("password"),
+            email="danieleejohnson@gmail.com",
+            birthday=date.fromisoformat("1992-05-25"),
+            address="Midway, NC 27107",
+            role=StaffRole.Staff.value,
+            is_admin=True
+        ).execute()
 
     db.close()
 
@@ -249,9 +266,11 @@ def init_app_commands(app):
     app.cli.add_command(init_db_command)
 
 @click.command("init-db")
-@click.option("--no-populate", is_flag=True)
-def init_db_command(no_populate):
-    init_db(no_populate)
+@click.option("--prod", is_flag=True)
+def init_db_command(prod):
+    init_db(prod)
     click.echo("Database Initialized ...")
-    if not no_populate:
-        click.echo("Database Populated ...")
+    if prod:
+        click.echo("Database Populated (Production) ...")
+    else:
+        click.echo("Database populated (TEST) ...")
