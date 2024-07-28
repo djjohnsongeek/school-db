@@ -221,8 +221,6 @@ var classEdit = {
 
         return htmlRow;
     }
-
-
 }
 
 
