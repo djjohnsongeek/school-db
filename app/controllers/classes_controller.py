@@ -13,7 +13,6 @@ def home():
     classes = class_service.get_class_list()
     return render_template("/classes/list.html", classes=classes)
 
-
 @classes_blueprint.route("/classes/create", methods=["GET", "POST"])
 @login_required
 def create():

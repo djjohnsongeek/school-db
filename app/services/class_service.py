@@ -75,7 +75,16 @@ def get_edit_model(class_id: int) -> ClassEditItem:
         errors.append("No class found.")
         return ClassEditItem(None, None, [], [], errors)
 
-    records_summary = class_repo.retrieve_attendance_summary(school_class.id)
+
+
+    students_not_on_roster = student_repo.retrieve_non_roster_students(school_class.id)
+    form = to_edit_form(school_class)
+    attendance_summary = get_attendance_summary(school_class.id)
+
+    return ClassEditItem(form, school_class, attendance_summary, students_not_on_roster, errors)
+
+def get_attendance_summary(class_id: int) -> {}:
+    records_summary = class_repo.retrieve_attendance_summary(class_id)
     att_summary = {}
 
     for value in attendance_service.permitted_attendance_values:
@@ -84,10 +93,7 @@ def get_edit_model(class_id: int) -> ClassEditItem:
     for record in records_summary:
         att_summary[record["value"]] = record["count"]
 
-    students_not_on_roster = student_repo.retrieve_non_roster_students(school_class.id)
-    form = to_edit_form(school_class)
-
-    return ClassEditItem(form, school_class, att_summary, students_not_on_roster, errors)
+    return att_summary
 
 def to_create_model(form: ClassEditForm, errors: []) -> ClassCreateItem:
     form.teacher_id.choices = get_teacher_choices()
@@ -209,7 +215,7 @@ def update(form: ClassEditForm) -> ClassEditItem:
 
     form.teacher_id.choices = get_teacher_choices()
     form.term_id.choices = get_term_choices()
-    att_summary = class_repo.retrieve_attendance_summary(class_model.id)
+    att_summary = get_attendance_summary(class_model.id)
 
     if not form.validate():
         errors.append("Invalid data detected, no changes were saved.")

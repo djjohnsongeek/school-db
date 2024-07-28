@@ -143,7 +143,13 @@ def update(form: ClassEditForm, class_model: SchoolClass) -> bool:
     class_model.teacher = form.teacher_id.data
     class_model.term = form.term_id.data
 
-    return class_model.save() > 0
+    try:
+        class_model.save()
+    except Exception as e:
+        log_service.record_log(f"Failed to update class: {e}", "class_repo", "error")
+        return False
+
+    return True
 
 def delete_roster_entry(roster_entry: ClassRosterEntry) -> bool:
     return roster_entry.delete_instance() == 1
