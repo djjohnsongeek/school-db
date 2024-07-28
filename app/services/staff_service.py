@@ -50,8 +50,8 @@ def update_staff(form: StaffEditForm) -> StaffEditItem:
         return None
 
     errors = []
-    if form.email.data != staff_model.email and staff_repo.email_exists(form.email.data):
-        errors.append("The email supplied is already in use.")
+    # if form.email.data != staff_model.email and staff_repo.email_exists(form.email.data):
+    #     errors.append("The email supplied is already in use.")
 
     if form.username.data != staff_model.username and staff_repo.username_exists(form.username.data):
         errors.append("The username supplied is already in use.")

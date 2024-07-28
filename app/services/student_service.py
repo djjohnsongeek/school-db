@@ -30,7 +30,6 @@ def get_student_attendance(student_model: Student) -> {}:
 
         organized_attendance[attendance.school_class.name].append({ "value": attendance.value, "date": attendance.date})
 
-    print(organized_attendance)
     return organized_attendance
 
 def to_student_form(student_model: Student) -> StudentEditForm:
@@ -62,8 +61,9 @@ def update_student(form: StudentEditForm) -> StudentEditItem:
 
     errors = []
     classes = [StudentClassItem(roster_entry) for roster_entry in student_repo.retrieve_classes(student_model)]
-    if student_model.email != form.email.data and student_repo.email_exists(form.email.data):
-        errors.append("This email address is already in use.")
+    
+    # if student_model.email != form.email.data and student_repo.email_exists(form.email.data):
+    #     errors.append("This email address is already in use.")
 
     if student_model.student_number != form.student_number.data and student_repo.student_number_exists(form.student_number.data):
         errors.append("This Student Number is already in use.")
