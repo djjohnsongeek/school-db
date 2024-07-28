@@ -48,8 +48,8 @@ class RosterItem():
 
 ### Functions
 
-def get_class_list() -> []:
-    class_models = class_repo.retrieve_all()
+def get_class_list(term_id: int) -> []:
+    class_models = class_repo.retrieve_all(term_id)
     return [ClassItem(model) for model in class_models]
 
 def get_create_model() -> ClassCreateItem:

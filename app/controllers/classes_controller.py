@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from app.services import class_service, controller_service
+from app.services import class_service, controller_service, terms_service
 from app.models.forms import ClassEditForm
 from app.models.enums import MessageCategory
 from app.auth import login_required
@@ -10,8 +10,16 @@ classes_blueprint = Blueprint("classes", __name__)
 @classes_blueprint.route("/classes", methods=["GET"])
 @login_required
 def home():
-    classes = class_service.get_class_list()
-    return render_template("/classes/list.html", classes=classes)
+    term_filter = request.args.get("term_id", None)
+
+    try:
+        term_filter = int(term_filter)
+    except (ValueError, TypeError):
+        term_filter = None
+
+    classes = class_service.get_class_list(term_filter)
+    terms = terms_service.get_list()
+    return render_template("/classes/list.html", classes=classes, terms=terms, selected_term=term_filter)
 
 @classes_blueprint.route("/classes/create", methods=["GET", "POST"])
 @login_required

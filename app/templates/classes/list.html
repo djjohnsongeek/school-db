@@ -18,10 +18,15 @@
                         </div>
                         <div class="control mr-2">
                             <div class="select">
-                                <select>
-                                    <option>All Terms</option>
-                                    <option>Fall 2024</option>
-                                    <option>Spring 2024</option>
+                                <select id="class-list-terms-select">
+                                    <option value="">All Terms</option>
+                                    {% for term in terms %}
+                                        {% if term.id == selected_term %}
+                                            <option value="{{term.id}}" selected>{{term.name}}</option>
+                                        {% else %}
+                                            <option value="{{term.id}}">{{term.name}}</option>
+                                        {% endif %}
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
@@ -86,4 +91,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/classes/list.js')}}"></script>
 {% endblock %}

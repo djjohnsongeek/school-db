@@ -6,8 +6,12 @@ from flask import current_app
 from peewee import fn
 from app.services import log_service
 
-def retrieve_all() -> []:
-    return SchoolClass.select(SchoolClass, Staff, Term).join(Staff).switch(SchoolClass).join(Term)
+def retrieve_all(term_id: int) -> []:
+    query = SchoolClass.select(SchoolClass, Staff, Term).join(Staff).switch(SchoolClass).join(Term)
+    if term_id is not None:
+        query = query.where(SchoolClass.term_id == term_id)
+    
+    return query 
 
 def retrieve(class_id: int) -> SchoolClass:
         return (SchoolClass
