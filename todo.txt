@@ -1,6 +1,5 @@
-TODO: handle other todos
-TODO: check that we are not seraching by classname
 TODO: fix js warnings
+TODO: neeed to show loading when loading calendar events and such
 
 TODO: test all functionality
 TODO: push to production, setup domain name, production ready db-init

@@ -38,7 +38,6 @@ var App = {
     },
     popMessage: function()
     {
-        console.log("Popping messages");
         const messages_container = document.getElementById("app-messages-container");
         if (messages_container)
         {
@@ -312,7 +311,6 @@ var AppApi = {
 
             },
             errorCallback: function() {
-                console.log("Called error call back");
             }
         }
         AsyncApi.postRequest(options);
@@ -332,12 +330,11 @@ var AppApi = {
             data: Object.fromEntries(configObj.formData),
             successCallback: function(response)
             {
-                console.log(response);
                 configObj.successCallback(response.data);
                 Messages.addMessage(`${configObj.category} successfully created!`, "success")
             },
             errorCallback: function() {
-                alert("An error occured");
+                Messages.addMessage(`Failed to create ${configObj.category}`);
             }
         }
         AsyncApi.postRequest(options);

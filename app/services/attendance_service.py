@@ -166,9 +166,6 @@ def record_attendance(request_data: dict) -> ApiResultItem:
                     errors.append("Existing attendance record not found.")
                     break
 
-                # TODO verfy existing info
-                # date, student, class_model
-
                 attendance_record.recorded_by = staff
                 attendance_record.value = attendance_value
                 attendance_updated = class_repo.update_attendance_record(attendance_record)

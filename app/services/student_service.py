@@ -67,7 +67,6 @@ def update_student(form: StudentEditForm) -> StudentEditItem:
 
     if student_model.student_number != form.student_number.data and student_repo.student_number_exists(form.student_number.data):
         errors.append("This Student Number is already in use.")
-        # TODO should this value be readonly?
     
     if not form.validate():
         errors.append("Invalid data detected. No changes have been made.")
@@ -124,9 +123,7 @@ def generate_student_number():
 def soft_delete(student_id: int) -> ApiResultItem:
     errors = []
     student = student_repo.retrieve(student_id)
-
-    # TODO validate: if student had attendance or school work data, don't allow for deletion
-
+    
     if student is None:
         errors.append("Student was not found.")
 

@@ -2,8 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, DateField, EmailField, SelectField, HiddenField, PasswordField
 from wtforms.validators import DataRequired, Email, Length, Optional
 from app.models.validators import StudentNumber
-# first_name, last_name, gender are required
-# TODO make sure required fields match UI
+
 class PersonForm(FlaskForm):
     first_name_lao = StringField("First Name (Lao)", validators=[Length(max=128)])
     last_name_lao = StringField("Last Name (Lao)", validators=[Length(max=128)])

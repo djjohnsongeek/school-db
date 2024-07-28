@@ -100,7 +100,6 @@ const attendancePage = {
         attendancePage.payload = {};
     },
     loadAttendanceEvents: function() {
-        console.log("Fetching attendance events");
         const classId = parseInt(document.getElementById("attendance-class-select").value);
         const date = Util.formatDate(attendancePage.calendar.getDate());
         requestObj = {
@@ -118,13 +117,11 @@ const attendancePage = {
                 }
             },
             errorCallback: function() {
-                console.log("ERROR!");
             }
         }
         AsyncApi.getRequest(requestObj);
     },
     loadRosterAttendance: function() {
-        console.log("Fetching roster attendance");
         const classId = parseInt(document.getElementById("attendance-class-select").value);
         const date = document.getElementById("selected-date-input").value;
         const msgContainer = document.getElementById("student-attendance-messages-container");
@@ -203,7 +200,6 @@ const attendancePage = {
                 attendancePage.clearAttendancePayload();
             },
             errorCallback: function() {
-                console.log("ERROR!");
             }
         }
         AsyncApi.getRequest(requestObj);
@@ -236,9 +232,8 @@ const attendancePage = {
                 attendancePage.loadRosterAttendance();
 
             },
-            errorCallback: function(response)
+            errorCallback: function()
             {
-                console.log("ERROR!");
             }
         }
 
