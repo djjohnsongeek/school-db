@@ -22,57 +22,65 @@
                     <div class="columns">
                         <div class="column">
                             <div id="calendar"></div>
+                            <div id="calendar-loading">
+                                <progress class="progress is-primary" max="100">50%</progress>
+                            </div>
                         </div>
                         <div class="column">
-                            <div class="field">
-                                <label class="label">Class</label>
-                                <div class="control has-icons-left">
-                                    <div class="select">
-                                        <select id="attendance-class-select">
-                                          {% for class in model.classes %}
-                                            {% if class.id == model.selected_class.id %}
-                                                <option selected value="{{class.id}}">{{class.name}}</option>
-                                            {% else %}
-                                                <option value="{{class.id}}">{{class.name}}</option>
-                                            {% endif %}
-                                          {% endfor %}
-                                        </select>
+                            <div id="roster-container">
+                                <div class="field">
+                                    <label class="label">Class</label>
+                                    <div class="control has-icons-left">
+                                        <div class="select">
+                                            <select id="attendance-class-select">
+                                              {% for class in model.classes %}
+                                                {% if class.id == model.selected_class.id %}
+                                                    <option selected value="{{class.id}}">{{class.name}}</option>
+                                                {% else %}
+                                                    <option value="{{class.id}}">{{class.name}}</option>
+                                                {% endif %}
+                                              {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span class="icon is-left">
+                                            <i class="fa fa-book" aria-hidden="true"></i>
+                                        </span>
                                     </div>
-                                    <span class="icon is-left">
-                                        <i class="fa fa-book" aria-hidden="true"></i>
-                                    </span>
+                                    <p class="help">Select the class for which you would like to record attendance.</p>
                                 </div>
-                                <p class="help">Select the class for which you would like to record attendance.</p>
-                            </div>
-                            <div class="field">
-                                <label class="label">Selected Date</label>
-                                <div class="control has-icons-left">
-                                    <input class="input" id="selected-date-input" type="text" placeholder="Select a Date" readonly/>
-                                    <span class="icon is-left">
-                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                                <p class="help">Use the calendar on the left to select a date.</p>
-                            </div>
-                            <div class="block">
-                                <label class="label">Students</label>
-                                <div id="student-attendance-messages-container" class="notification is-warning is-light is-hidden">
-
-                                </div>
-                                <div class="columns">
-                                    <div class="column" id="student-info-container">
+                                <div class="field">
+                                    <label class="label">Selected Date</label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" id="selected-date-input" type="text" placeholder="Select a Date" readonly/>
+                                        <span class="icon is-left">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        </span>
                                     </div>
-                                    <div class="column" id="student-attendance-container">
+                                    <p class="help">Use the calendar on the left to select a date.</p>
+                                </div>
+                                <div class="block">
+                                    <label class="label">Students</label>
+                                    <div id="student-attendance-messages-container" class="notification is-warning is-light is-hidden">
+    
+                                    </div>
+                                    <div class="columns">
+                                        <div class="column" id="student-info-container">
+                                        </div>
+                                        <div class="column" id="student-attendance-container">
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="field">
+                                    <button class="button is-primary" type="button" id="student-attendance-saveBtn">
+                                        <span class="icon">
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                        </span>
+                                        <span>Save Attendance</span>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="field">
-                                <button class="button is-primary" type="button" id="student-attendance-saveBtn">
-                                    <span class="icon">
-                                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
-                                    </span>
-                                    <span>Save Attendance</span>
-                                </button>
+                            <div id="roster-loading" class="is-hidden">
+                                <progress class="progress is-primary" max="100">50%</progress>
                             </div>
                         </div>
                     </div>

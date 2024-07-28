@@ -195,7 +195,8 @@ requestObj = {
     action: "",
     data: {},
     successCallback: function(),
-    errorCallback: function()
+    errorCallback: function(),
+    finallyCallback: function()
 }
 */
 // need to gracefully handle HTTP error codes automatically
@@ -221,6 +222,7 @@ var AsyncApi = {
                         if (responseData.errors.length > 0)
                         {
                             Messages.addMessages(responseData.errors, "danger");
+                            requestObj.errorCallback();
                         }
                         else {
                             requestObj.successCallback(responseData);
@@ -235,7 +237,14 @@ var AsyncApi = {
             .catch((error) => {
                 console.log(error);
                 Messages.addMessage("An unknown error occured.", "danger");
-            });
+                requestObj.errorCallback();
+            })
+            .finally()
+            {
+                if (typeof requestObj.errorCallback === 'function') {
+                    requestObj.finallyCallback();
+                }
+            };
     },
     getRequest: async function(requestObj) {
         const paramStr = new URLSearchParams(requestObj.data).toString();
@@ -254,6 +263,7 @@ var AsyncApi = {
                         if (responseData.errors.length > 0)
                         {
                             Messages.addMessages(responseData.errors, "danger");
+                            requestObj.errorCallback();
                         }
                         else {
                             requestObj.successCallback(responseData);
@@ -268,7 +278,14 @@ var AsyncApi = {
             .catch((error) => {
                 console.log(error);
                 Messages.addMessage("An unknown error occured.", "danger");
-            });
+                requestObj.errorCallback();
+            })
+            .finally()
+            {
+                if (typeof requestObj.errorCallback === 'function') {
+                    requestObj.finallyCallback();
+                }
+            }
     }
 }
 
