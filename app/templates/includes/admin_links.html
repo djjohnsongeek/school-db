@@ -1,0 +1,19 @@
+{% if session["user"]["is_admin"] %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-header-title title is-3">
+            Admin Links
+        </h2>
+    </div>
+    <div class="card-content">
+        <a href="{{ url_for('auth.passwords') }}" target="_blank">
+            <span class="icon-text">
+                <span class="icon">
+                    <i class="fa fa-key" aria-hidden="true"></i>
+                </span>
+                <span>Password Details</span>
+            </span> 
+        </a>
+    </div>
+</div>
+{% endif %}

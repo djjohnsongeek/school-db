@@ -7,7 +7,7 @@ from datetime import date
 class Student(Person):
     student_number = CharField(max_length=32, unique=True)
     application_date = DateField()
-    occupation = CharField(max_length=128)
+    occupation = CharField(max_length=128, null=True)
 
     class Meta:
         table_name = "students"
@@ -16,6 +16,7 @@ class Staff(Person):
     username = CharField(max_length=64)
     hashed_password = CharField(max_length=256)
     role = IntegerField()
+    is_admin = BooleanField(default=False)
 
     def full_name(self) -> str:
         if self.role == StaffRole.Teacher.value:
@@ -32,7 +33,7 @@ class LoginLog(BaseModel):
         table_name = "login_logs"
 
 class Term(SoftDelete):
-    name = CharField(max_length=64)
+    name = CharField(max_length=128)
     start_date = DateField()
     end_date = DateField()
 
@@ -41,7 +42,7 @@ class Term(SoftDelete):
 
 class SchoolClass(BaseModel):
     name = CharField(max_length=64)
-    room_number = IntegerField()
+    room_number = IntegerField(null=True)
     teacher = ForeignKeyField(Staff, backref="classes")
     term = ForeignKeyField(Term, backref="classes")
 

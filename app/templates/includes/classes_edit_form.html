@@ -4,7 +4,10 @@
     <div class="columns">
         <div class="column">
             <div class="field">
-                <label class="label">{{ class_model.form.name.label }}</label>
+                <label class="label">
+                    {{ class_model.form.name.label }}
+                    <span class="has-text-danger">*</span>
+                </label>
                 <div class="control">
                     {{ class_model.form.name(class="input") }}
                 </div>
@@ -28,7 +31,10 @@
     <div class="columns">
         <div class="column">
             <div class="field">
-                <label class="label">{{ class_model.form.teacher_id.label }}</label>
+                <label class="label">
+                    {{ class_model.form.teacher_id.label }}
+                    <span class="has-text-danger">*</span>
+                </label>
                 <div class="select">
                     {{ class_model.form.teacher_id() }}
                 </div>
@@ -39,7 +45,10 @@
         </div>
         <div class="column">
             <div class="field">
-                <label class="label">{{ class_model.form.term_id.label }}</label>
+                <label class="label">
+                    {{ class_model.form.term_id.label }}
+                    <span class="has-text-danger">*</span>
+                </label>
                 <div class="select">
                     {{ class_model.form.term_id() }}
                 </div>

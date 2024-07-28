@@ -13,6 +13,8 @@ var App = {
         {
             element.addEventListener("click", (event) => App.toggleVisible(event));
         }
+
+        setInterval(App.popMessage, 4500);
     },
     toggleVisible: function(event) {
         const t = event.currentTarget.dataset.target;
@@ -33,6 +35,18 @@ var App = {
         const notification = event.currentTarget.parentNode;
         const container = notification.parentNode;
         container.removeChild(notification)
+    },
+    popMessage: function()
+    {
+        const messages_container = document.getElementById("app-messages-container");
+        if (messages_container)
+        {
+            messages = messages_container.children;
+            if (messages.length > 0)
+            {
+                messages[0].remove();
+            }
+        }
     }
 }
 
@@ -181,7 +195,8 @@ requestObj = {
     action: "",
     data: {},
     successCallback: function(),
-    errorCallback: function()
+    errorCallback: function(),
+    finallyCallback: function()
 }
 */
 // need to gracefully handle HTTP error codes automatically
@@ -207,6 +222,7 @@ var AsyncApi = {
                         if (responseData.errors.length > 0)
                         {
                             Messages.addMessages(responseData.errors, "danger");
+                            requestObj.errorCallback();
                         }
                         else {
                             requestObj.successCallback(responseData);
@@ -221,7 +237,14 @@ var AsyncApi = {
             .catch((error) => {
                 console.log(error);
                 Messages.addMessage("An unknown error occured.", "danger");
-            });
+                requestObj.errorCallback();
+            })
+            .finally()
+            {
+                if (typeof requestObj.errorCallback === 'function') {
+                    requestObj.finallyCallback();
+                }
+            };
     },
     getRequest: async function(requestObj) {
         const paramStr = new URLSearchParams(requestObj.data).toString();
@@ -240,6 +263,7 @@ var AsyncApi = {
                         if (responseData.errors.length > 0)
                         {
                             Messages.addMessages(responseData.errors, "danger");
+                            requestObj.errorCallback();
                         }
                         else {
                             requestObj.successCallback(responseData);
@@ -254,7 +278,14 @@ var AsyncApi = {
             .catch((error) => {
                 console.log(error);
                 Messages.addMessage("An unknown error occured.", "danger");
-            });
+                requestObj.errorCallback();
+            })
+            .finally()
+            {
+                if (typeof requestObj.errorCallback === 'function') {
+                    requestObj.finallyCallback();
+                }
+            }
     }
 }
 
@@ -297,7 +328,6 @@ var AppApi = {
 
             },
             errorCallback: function() {
-                console.log("Called error call back");
             }
         }
         AsyncApi.postRequest(options);
@@ -317,12 +347,11 @@ var AppApi = {
             data: Object.fromEntries(configObj.formData),
             successCallback: function(response)
             {
-                console.log(response);
                 configObj.successCallback(response.data);
                 Messages.addMessage(`${configObj.category} successfully created!`, "success")
             },
             errorCallback: function() {
-                alert("An error occured");
+                Messages.addMessage(`Failed to create ${configObj.category}`);
             }
         }
         AsyncApi.postRequest(options);

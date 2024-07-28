@@ -11,7 +11,7 @@
                 <div class="block">
                     <div class="field is-grouped">
                         <div class="control has-icons-left">
-                            <input class="input" type="text" placeholder="Type to search ...">
+                            <input class="input" type="text" placeholder="Future Release ...">
                             <span class="icon is-small is-left">
                                 <i class="fa fa-search"></i>
                             </span>
@@ -58,7 +58,7 @@
                         {% if not staff %}
                         <tr>
                             <td colspan="7">
-                                <div class="notification is-warning">
+                                <div class="notification is-warning is-light">
                                     No Staff Found
                                 </div>
                             </td>
@@ -66,7 +66,7 @@
                         {% endif %}
                         {% for staff_member in staff %}
                         <tr id="staff-member-row-{{ staff_member.id }}">
-                            <td>{{staff_member.name}}</td>
+                            <td><a href="{{ url_for('staff.edit', staff_id=staff_member.id) }}">{{staff_member.name}}</a></td>
                             <td>{{staff_member.nick_name}}</td>
                             <td>{{staff_member.role.name}}</td>
                             <td>{{staff_member.gender.name}}</td>
@@ -81,6 +81,7 @@
                                         <span>Details</span>
                                     </span>
                                 </a>
+                                {% if session["user"]["is_admin"] %}
                                 <button class="button is-warning modal-trigger" data-target="confirm-pwreset-modal" data-item-id="{{ staff_member.id }}">
                                     <span class="icon-text">
                                         <span class="icon">
@@ -97,6 +98,7 @@
                                         <span>Delete</span>
                                     </span>
                                 </button>
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
@@ -140,19 +142,37 @@
                 <p class="modal-card-title">Reset Password</p>
               </header>
               <section class="modal-card-body">
-                <span>Are sure you want to reset this Staff Member's password?</span>
+                <div class="field">
+                    <label class="label">New Password</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Must be at least 8 characters long" id="pwreset-password">
+                    </div>
+                    <p class="help is-success">As an admin, you can set this user's password if they forget it.</p>
+                </div>
+                <div class="field">
+                    {% if session["user"]["is_admin"] %}
+                    <a href="{{ url_for('auth.passwords') }}" target="_blank">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i class="fa fa-key" aria-hidden="true"></i>
+                            </span>
+                            <span>Password Details</span>
+                        </span> 
+                    </a>
+                    {% endif %}
+                </div>
               </section>
               <footer class="modal-card-foot">
                 <div class="buttons">
-                  <button class="button is-warning">
+                  <button class="button is-warning" id="pwreset-save-btn">
                     <span class="icon-text">
                         <span class="icon">
                             <i class="fa fa-key" aria-hidden="true"></i>
                         </span>
-                        <span>Yes</span>
+                        <span>Reset Password</span>
                     </span>
                   </button>
-                  <button class="button is-secondary close-modal">No</button>
+                  <button class="button is-secondary close-modal">Cancel</button>
                 </div>
               </footer>
             </div>

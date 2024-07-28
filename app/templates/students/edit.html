@@ -7,8 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <h1 class="card-header-title title is-3">
-                        <span class="has-text-grey mr-2">Student - </span>
-                        <span>{{ student_model.fullname }}</span>
+                        <span>Student - <span class="has-text-grey mr-2">{{ student_model.fullname }}</span></span>
                     </h1>
                     <button class="card-header-icon">
                         <a href="{{ url_for('students.home') }}">
@@ -52,10 +51,62 @@
                         </tbody>
                     </table>
                     {% else %}
-                    <div class="notification is-warning">
+                    <div class="notification is-warning is-light">
                         No Classes Found
                     </div>
                     {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title title is-3">Attendance</h2>
+                </div>
+                <div class="card-content">
+                    {% if not student_model.attendance %}
+                    <div class="notification is-warning is-light">
+                        No Attendance Found.
+                    </div>
+                    {% else %}
+                    <div class="grid">
+                        {% for key in student_model.attendance.keys() %}
+                        <div class="cell">
+                            <table class="table">
+                                <caption>{{key}}</caption>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in student_model.attendance[key] %}
+                                        <tr>
+                                            <td>{{record["value"]}}</td>
+                                            <td>{{record["date"]}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title title is-3">Grades</h2>
+                </div>
+                <div class="card-content">
+                    Future release
                 </div>
             </div>
         </div>

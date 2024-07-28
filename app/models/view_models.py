@@ -3,16 +3,13 @@ from app.models.base_models import Person
 from app.models.enums import PersonGender, StaffRole
 from app.models.forms import StaffEditForm, StudentEditForm, TermEditForm, ClassEditForm
 
-# This is becoming too much.
-# TODO: Move relevant view models to their related service
-
 class PersonItem:
     def __init__(self, person_model: Person):
         self.id = person_model.id
         self.name = person_model.full_name()
         self.nick_name = person_model.nick_name
         self.gender = PersonGender(person_model.gender)
-        self.birthday = person_model.birthday.strftime("%d/%m/%Y")
+        self.birthday = person_model.birthday.strftime("%d/%m/%Y") if person_model.birthday is not None else ""
         self.phone_number = person_model.phone_number
         self.address = person_model.address
         self.email = person_model.email
@@ -42,9 +39,10 @@ class StaffCreateItem():
         self.form = edit_form
 
 class StudentEditItem():
-    def __init__(self, student_model: Student, edit_form: StudentEditForm, classes: [], edit_errors: []):
+    def __init__(self, student_model: Student, edit_form: StudentEditForm, attendance: [], classes: [], edit_errors: []):
         self.fullname = student_model.full_name()
         self.classes = classes
+        self.attendance = attendance
         self.form = edit_form
         self.edit_errors = edit_errors
 
@@ -77,7 +75,8 @@ class TermItem():
         self.name = term.name
 
 class TermEditItem():
-    def __init__(self, form: TermEditForm, edit_errors: []):
+    def __init__(self, term: Term, form: TermEditForm, edit_errors: []):
+        self.term = term
         self.form = form
         self.edit_errors = edit_errors
 

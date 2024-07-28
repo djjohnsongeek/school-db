@@ -7,8 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <h1 class="card-header-title title is-3">
-                        <span class="has-text-grey mr-2">{{ staff_model.role.name }} - </span>
-                        <span>{{ staff_model.fullname }}</span>
+                        <span>{{ staff_model.role.name }} - <span class="has-text-grey mr-2">{{ staff_model.fullname }}</span></span>
                     </h1>
                     <button class="card-header-icon">
                         <a href="{{ url_for('staff.home') }}">
@@ -44,7 +43,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {# TODO: accessing the term model like this creats an n+1 problem? #}
                             {% for staff_class in staff_model.classes %}
                             <tr>
                                 <td><a href="{{ url_for('classes.edit', class_id=staff_class.id )}}">{{ staff_class.name }}</a></td>
@@ -63,5 +61,6 @@
         </div>
     </div>
     {% endif %}
+    {% include "/includes/admin_links.html" %}
 </div>
 {% endblock %}

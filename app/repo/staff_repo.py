@@ -1,6 +1,7 @@
 from app.models.db_models import Staff, SchoolClass
 from app.models.forms import StaffEditForm
 from app.models.enums import StaffRole
+from app.services import log_service
 from datetime import datetime
 
 ## SELECT
@@ -45,6 +46,11 @@ def update(form: StaffEditForm, staff: Staff) -> bool:
     rows_updated = staff.save()
     return rows_updated == 1
 
+def update_password(staff: Staff, hashed_pw: str) -> bool:
+    staff.hashed_password = hashed_pw
+    rows_updated = staff.save()
+    return rows_updated == 1
+
 def soft_delete(staff: Staff) -> bool:
     staff.deleted = True
     rows_updated = staff.save()
@@ -71,7 +77,6 @@ def create(form: StaffEditForm, password: str) -> bool:
 
         return primary_key > -1
     except Exception as e:
-        print(e)
-        # TODO LOG THIS ERROR
+        log_service.record_log(f"Failed to create staff: {e}", "staff_repo", "error")
         return False
 

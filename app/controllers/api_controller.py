@@ -10,5 +10,5 @@ def api_endpoint(category: str, action: str):
         result = api_service.handle_get(category, action, request)
     else:
         result = api_service.handle_post(category, action, request)
-        
+    
     return result.to_dict()

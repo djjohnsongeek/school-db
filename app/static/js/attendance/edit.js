@@ -100,7 +100,6 @@ const attendancePage = {
         attendancePage.payload = {};
     },
     loadAttendanceEvents: function() {
-        console.log("Fetching attendance events");
         const classId = parseInt(document.getElementById("attendance-class-select").value);
         const date = Util.formatDate(attendancePage.calendar.getDate());
         requestObj = {
@@ -116,15 +115,30 @@ const attendancePage = {
                 {
                     attendancePage.calendar.addEvent(event);
                 }
+
             },
             errorCallback: function() {
-                console.log("ERROR!");
+            },
+            finallyCallback: function()
+            {
+                attendancePage.hideCalendarLoading();
             }
         }
+        attendancePage.showCalendarLoading();
         AsyncApi.getRequest(requestObj);
     },
+    showCalendarLoading: function()
+    {
+        document.getElementById("calendar-loading").classList.remove("is-hidden");
+        document.getElementById("calendar").classList.add("is-hidden");
+    },
+    hideCalendarLoading: function()
+    {
+        document.getElementById("calendar-loading").classList.add("is-hidden");
+        document.getElementById("calendar").classList.remove("is-hidden");
+        attendancePage.calendar.render();
+    },
     loadRosterAttendance: function() {
-        console.log("Fetching roster attendance");
         const classId = parseInt(document.getElementById("attendance-class-select").value);
         const date = document.getElementById("selected-date-input").value;
         const msgContainer = document.getElementById("student-attendance-messages-container");
@@ -200,13 +214,31 @@ const attendancePage = {
 
                     studentAttendanceContainer.appendChild(buttonsContainer);
                 }
+
                 attendancePage.clearAttendancePayload();
             },
             errorCallback: function() {
-                console.log("ERROR!");
+            },
+            finallyCallback: function() {
+                attendancePage.hideRosterLoading();
             }
         }
+
+        attendancePage.showRosterLoading();
         AsyncApi.getRequest(requestObj);
+    },
+    showRosterLoading: function()
+    {
+        console.log("show roster laoding");
+        document.getElementById("roster-loading").classList.remove("is-hidden");
+        document.getElementById("roster-container").classList.add("is-hidden");
+    },
+    hideRosterLoading: function()
+    {
+        console.log("hide roster laoding");
+
+        document.getElementById("roster-loading").classList.add("is-hidden");
+        document.getElementById("roster-container").classList.remove("is-hidden");
     },
     saveAttendance: function() {
         const classId = parseInt(document.getElementById("attendance-class-select").value);
@@ -236,9 +268,8 @@ const attendancePage = {
                 attendancePage.loadRosterAttendance();
 
             },
-            errorCallback: function(response)
+            errorCallback: function()
             {
-                console.log("ERROR!");
             }
         }
 

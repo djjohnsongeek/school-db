@@ -1,5 +1,6 @@
 from app.models.db_models import Term
 from app.models.forms import TermEditForm
+from app.services import log_service
 from datetime import datetime
 
 def retrieve_all():
@@ -21,8 +22,7 @@ def create(form: TermEditForm):
         ).execute()
         return primary_key > -1
     except Exception as e:
-        print(e)
-        # TODO LOG THIS ERROR
+        log_service.record_log(f"Failed to create term: {e}", "terms_repo", "error")
         return False
 
 def update(term_model: Term, form: TermEditForm) -> bool:

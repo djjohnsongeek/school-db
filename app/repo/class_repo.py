@@ -4,9 +4,14 @@ from .base_repo import Database
 from datetime import datetime, date
 from flask import current_app
 from peewee import fn
+from app.services import log_service
 
-def retrieve_all() -> []:
-    return SchoolClass.select(SchoolClass, Staff, Term).join(Staff).switch(SchoolClass).join(Term)
+def retrieve_all(term_id: int) -> []:
+    query = SchoolClass.select(SchoolClass, Staff, Term).join(Staff).switch(SchoolClass).join(Term)
+    if term_id is not None:
+        query = query.where(SchoolClass.term_id == term_id)
+    
+    return query 
 
 def retrieve(class_id: int) -> SchoolClass:
         return (SchoolClass
@@ -88,8 +93,7 @@ def create_roster_entries(class_roster_records: []) -> bool:
         # TODO: We should probably write this as a transaction
         ClassRosterEntry.bulk_create(class_roster_records)
     except Exception as e:
-        print(e)
-        # TODO LOG
+        log_service.record_log(f"Failed to create roster records: {e}", "class_repo", "error")
         return False
 
     return True
@@ -117,8 +121,7 @@ def create_class(form: ClassEditForm, teacher: Staff, term: Term) -> bool:
 
         return primary_key > -1
     except Exception as e:
-        print(e)
-        # TODO LOG THIS ERROR
+        log_service.record_log(f"Failed to create class: {e}", "class_repo", "error")
         return False
 
 def create_attendance_record(school_class: SchoolClass, student: Student, staff: Staff, value: str, date: date) -> bool:
@@ -144,7 +147,13 @@ def update(form: ClassEditForm, class_model: SchoolClass) -> bool:
     class_model.teacher = form.teacher_id.data
     class_model.term = form.term_id.data
 
-    return class_model.save() > 0
+    try:
+        class_model.save()
+    except Exception as e:
+        log_service.record_log(f"Failed to update class: {e}", "class_repo", "error")
+        return False
+
+    return True
 
 def delete_roster_entry(roster_entry: ClassRosterEntry) -> bool:
     return roster_entry.delete_instance() == 1

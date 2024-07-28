@@ -21,7 +21,10 @@ def handle_post(category: str, action: str, request: Request) -> ApiResultItem:
     if not errors:
         if action == "delete":
             if category == "staff":
-                result = staff_service.soft_delete(item_id)
+                if session["user"]["is_admin"]:
+                    result = staff_service.soft_delete(item_id)
+                else:
+                    errors.append("You are not authorized to complete this action.")
             elif category == "student":
                 result = student_service.soft_delete(item_id)
             elif category == "term":
@@ -37,6 +40,11 @@ def handle_post(category: str, action: str, request: Request) -> ApiResultItem:
                 result = attendance_service.record_attendance(request_data)
             else:
                 errors.append("Not Supported")
+        elif action == "reset":
+            if category == "password":
+                result = staff_service.reset_password(request_data)
+            else:
+                errors.app("Not Supported")
         else:
             errors.append("Not Supported")
     

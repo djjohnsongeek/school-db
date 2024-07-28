@@ -1,4 +1,4 @@
-from flask import Request
+from flask import Request, session
 from app.repo import class_repo, terms_repo, student_repo, staff_repo
 from app.models.dto import ApiResultItem
 from app.models.db_models import SchoolClass
@@ -140,8 +140,8 @@ def record_attendance(request_data: dict) -> ApiResultItem:
     if len(attendance) == 0:
         errors.append("No attendance data recieved.")
 
-    # TODO GET STAFF FROM SESSION
-    staff = staff_repo.retrieve(1)
+    staff_id = session.get("user", {}).get("id", 0)
+    staff = staff_repo.retrieve(staff_id)
     if staff is None:
         errors.append("Staff not found.")
 
@@ -165,9 +165,6 @@ def record_attendance(request_data: dict) -> ApiResultItem:
                 if attendance_record is None:
                     errors.append("Existing attendance record not found.")
                     break
-
-                # TODO verfy existing info
-                # date, student, class_model
 
                 attendance_record.recorded_by = staff
                 attendance_record.value = attendance_value

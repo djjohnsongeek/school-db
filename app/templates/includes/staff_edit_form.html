@@ -22,10 +22,14 @@
                 {% endfor %}
             </div>
             <div class="field">
-                <label class="label">{{ staff_model.form.username.label }}</label>
+                <label class="label">
+                    {{ staff_model.form.username.label }}
+                    <span class="has-text-danger">*</span>
+                </label>
                 <div class="control">
                     {{ staff_model.form.username(class="input") }}
                 </div>
+                <p class="help">This will be used by the user to login to their account.</p>
                 {% for error in staff_model.form.username.errors %}
                     <p class="help is-danger">{{ error }}</p>
                 {% endfor %}
@@ -60,7 +64,10 @@
         </div>
         <div class="column">
             <div class="field">
-                <label class="label">{{ staff_model.form.first_name.label }}</label>
+                <label class="label">
+                    {{ staff_model.form.first_name.label }}
+                    <span class="has-text-danger">*</span>
+                </label>
                 <div class="control">
                     {{ staff_model.form.first_name(class="input") }}
                 </div>
@@ -69,7 +76,10 @@
                 {% endfor %}
             </div>
             <div class="field">
-                <label class="label">{{ staff_model.form.last_name.label }}</label>
+                <label class="label">
+                    {{ staff_model.form.last_name.label }}
+                    <span class="has-text-danger">*</span>
+                </label>
                 <div class="control">
                     {{ staff_model.form.last_name(class="input") }}
                 </div>
@@ -96,7 +106,10 @@
                 {% endfor %}
             </div>
             <div class="field">
-                <label class="label">{{ staff_model.form.gender.label }}</label>
+                <label class="label">
+                    {{ staff_model.form.gender.label }}
+                    <span class="has-text-danger">*</span>
+                </label>
                 <div class="select">
                     {{ staff_model.form.gender() }}
                 </div>
@@ -105,7 +118,10 @@
                 {% endfor %}
             </div>
             <div class="field">
-                <label class="label">{{ staff_model.form.role.label }}</label>
+                <label class="label">
+                    {{ staff_model.form.role.label }}
+                    <span class="has-text-danger">*</span>
+                </label>
                 <div class="select">
                     {{ staff_model.form.role() }}
                 </div>

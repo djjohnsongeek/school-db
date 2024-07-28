@@ -11,17 +11,22 @@
                 <div class="block">
                     <div class="field is-grouped">
                         <div class="control has-icons-left">
-                            <input class="input" type="text" placeholder="Type to search ...">
+                            <input class="input" type="text" placeholder="Future Release ...">
                             <span class="icon is-small is-left">
                                 <i class="fa fa-search"></i>
                             </span>
                         </div>
                         <div class="control mr-2">
                             <div class="select">
-                                <select>
-                                    <option>All Terms</option>
-                                    <option>Fall 2024</option>
-                                    <option>Spring 2024</option>
+                                <select id="class-list-terms-select">
+                                    <option value="">All Terms</option>
+                                    {% for term in terms %}
+                                        {% if term.id == selected_term %}
+                                            <option value="{{term.id}}" selected>{{term.name}}</option>
+                                        {% else %}
+                                            <option value="{{term.id}}">{{term.name}}</option>
+                                        {% endif %}
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
@@ -61,9 +66,18 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% if not classes %}
+                        <tr>
+                            <td colspan="6">
+                                <div class="notification is-warning is-light">
+                                    No Classes Found
+                                </div>
+                            </td>
+                        </tr>
+                        {% endif %}
                         {% for school_class in classes %}
                         <tr>
-                            <td>{{school_class.name}}</td>
+                            <td><a href="{{ url_for('classes.edit', class_id=school_class.id) }}">{{school_class.name}}</a></td>
                             <td>{{school_class.term}}</td>
                             <td>{{school_class.teacher_name}}</td>
                             <td>{{school_class.room_number}}</td>
@@ -86,4 +100,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/classes/list.js')}}"></script>
 {% endblock %}

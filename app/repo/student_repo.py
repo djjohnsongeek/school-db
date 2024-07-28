@@ -1,5 +1,6 @@
-from app.models.db_models import Student, ClassRosterEntry, SchoolClass, Term
+from app.models.db_models import Student, ClassRosterEntry, SchoolClass, Term, Attendance
 from app.models.forms import StudentEditForm
+from app.services import log_service
 from .base_repo import Database
 from flask import current_app
 
@@ -8,6 +9,9 @@ def retrieve_all() -> []:
 
 def retrieve(id: int) -> Student:
     return Student.get_or_none(Student.id == id)
+
+def retrieve_attendance(student_id: int) -> []:
+    return Attendance.select().join(SchoolClass).where(Attendance.student_id == student_id)
 
 def retrieve_many(ids: []) -> []:
     return Student.select().where(Student.id.in_(ids))
@@ -30,6 +34,9 @@ def email_exists(email: str) -> bool:
 
 def student_number_exists(student_num: str) -> bool:
     return retrieve_by_number(student_num) != None
+
+def retrieve_last_student() -> Student:
+    return Student.select().order_by(Student.id.desc()).first()
 
 def retrieve_non_roster_students(class_id: int) -> []:
     sql = """SELECT *
@@ -83,8 +90,7 @@ def create(form: StudentEditForm) -> bool:
 
         return primary_key > -1
     except Exception as e:
-        print(e)
-        # TODO LOG THIS ERROR
+        log_service.record_log(f"Failed to create student: {e}", "student_repo", "error")
         return False
 
 def soft_delete(student: Student):
