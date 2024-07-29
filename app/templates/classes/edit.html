@@ -81,6 +81,14 @@
                                     <span>Add Student</span>
                                 </span> 
                             </button>
+                            <a class="button" href="{{ url_for('files.download', category='classes', class_id=class_model.class_id, item='roster') }}">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa fa-download" aria-hidden="true"></i>
+                                    </span>
+                                    <span>Download Roster</span>
+                                </span> 
+                            </a>
                         </div>
                         <div class="block" id="class-roster-container">
                             {% if class_model.roster %}
