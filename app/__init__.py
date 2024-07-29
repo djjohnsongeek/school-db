@@ -49,6 +49,7 @@ def create_app(test_config=None):
     from .controllers.terms_controller import terms_blueprint
     from .controllers.attendance_controller import attendance_blueprint
     from .controllers.auth_controller import auth_blueprint
+    from .controllers.file_controller import files_blueprint
 
     app.register_blueprint(index_blueprint)
     app.register_blueprint(classes_blueprint)
@@ -58,5 +59,6 @@ def create_app(test_config=None):
     app.register_blueprint(terms_blueprint)
     app.register_blueprint(attendance_blueprint)
     app.register_blueprint(auth_blueprint)
+    app.register_blueprint(files_blueprint)
 
     return app
