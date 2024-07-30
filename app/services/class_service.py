@@ -1,9 +1,10 @@
+from flask import Request
 from app.repo import class_repo, staff_repo, terms_repo, student_repo
 from app.models.db_models import SchoolClass, Student, Attendance, ClassRosterEntry
 from app.models.forms import ClassEditForm
 from app.models.dto import ApiResultItem
 from app.services import attendance_service
-from datetime import datetime
+from datetime import datetime, timedelta
 
 ### View Models ###
 class ClassItem:
@@ -145,6 +146,52 @@ def create_class(form: ClassEditForm) -> ClassCreateItem:
             errors.append("Failed to create new class.")
 
     return to_create_model(form, errors)
+
+def get_roster(class_id: int, request: Request) -> {}:
+    roster = class_repo.retrieve_roster(class_id)
+    if roster.count() == 0:
+        return {}
+
+    start_date = datetime.fromisoformat(request.args.get("start_date", f"{datetime.now().date()}"))
+    days = int(request.args.get("days", "1"))
+    skip_weekends = request.args.get("skip_weekends", "true") == "true"
+
+    dates = get_roster_dates(start_date, days, skip_weekends)
+    
+    roster_info = {
+        "class_name": roster[0].school_class.name,
+        "term_name": roster[0].school_class.term.name,
+        "term_start": roster[0].school_class.term.start_date,
+        "term_end": roster[0].school_class.term.end_date,
+        "dates": dates,
+        "students": []
+    }
+
+    for item in roster:
+        roster_info["students"].append({
+            "name": item.student.full_name(),
+            "number": item.student.student_number
+        })
+
+    print(roster_info)
+    return roster_info
+
+def get_roster_dates(start_date: datetime, days_count: int, skip_weekends: bool) -> []:
+    finished = False
+    dates = []
+    i = 0
+    while len(dates) != days_count:
+        next_day = start_date + timedelta(days=i)
+        is_weekday = next_day.date().weekday() < 5
+
+        if skip_weekends and is_weekday:
+            dates.append(next_day.date())
+        elif not skip_weekends:
+            dates.append(next_dat.date())
+        
+        i = i + 1
+
+    return dates
 
 def create_roster_entries(request_data: {}) -> ApiResultItem:
     class_id = request_data.get("itemId", None)

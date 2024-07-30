@@ -82,11 +82,12 @@ def retrieve_attendance_date(class_id: int, date: date) -> []:
 def retrieve_roster(class_id: int) -> []:
     query = (ClassRosterEntry
         .select()
-        .join(Student)
-        .join_from(ClassRosterEntry, SchoolClass)
+        .join(SchoolClass)
+        .join(Term)
+        .join_from(ClassRosterEntry, Student)
         .where(ClassRosterEntry.school_class.id == class_id))
 
-    return [roster_item.student for roster_item in query]
+    return query
 
 def create_roster_entries(class_roster_records: []) -> bool:
     try:

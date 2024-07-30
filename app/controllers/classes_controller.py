@@ -58,3 +58,9 @@ def edit(class_id: int):
         else:
             controller_service.flash_message("Class updated!", MessageCategory.Success)
         return render_template("/classes/edit.html", class_model=edit_model)
+
+@classes_blueprint.route("/classes/roster/<int:class_id>", methods=["GET"])
+@login_required
+def roster(class_id: int):
+    roster = class_service.get_roster(class_id, request)
+    return render_template("/classes/roster.html", roster=roster)

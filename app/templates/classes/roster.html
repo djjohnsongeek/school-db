@@ -1,0 +1,37 @@
+{% extends "/layouts/unauthorized.layout.html" %}
+{% block main %}
+    <div class="container">
+        <div class="is-centered has-text-centered block">
+            <h1 class="title is-1">{{ roster["class_name"] }}</h1>
+            <h2 class="subtitle is-3">{{ roster["term_name"] }}</h2>
+        </div>
+        <div class="block">
+            {% for date in roster["dates"] %}
+            <table class="table is-fullwidth is-borderd">
+                <thead>
+                    <caption class="title is-6">{{ date }}</caption>
+                    <tr>
+                        <th>Student Number</th>
+                        <th>Student Name</th>
+                        <th>Attendance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in roster["students"] %}
+                        <tr>
+                            <td>{{student["number"]}}</td>
+                            <td>{{student["name"]}}</td>
+                            <td>
+                                Present <input type="checkbox" />
+                                Tardy <input type="checkbox" />
+                                Absent <input type="checkbox" />
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
