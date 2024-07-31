@@ -169,7 +169,6 @@ def get_roster(class_id: int, get_params: {}) -> {}:
             "number": item.student.student_number
         })
 
-    print(roster_info)
     return roster_info
 
 def get_roster_dates(get_params: {}) -> []:
