@@ -147,16 +147,12 @@ def create_class(form: ClassEditForm) -> ClassCreateItem:
 
     return to_create_model(form, errors)
 
-def get_roster(class_id: int, request: Request) -> {}:
+def get_roster(class_id: int, get_params: {}) -> {}:
     roster = class_repo.retrieve_roster(class_id)
     if roster.count() == 0:
         return {}
 
-    start_date = datetime.fromisoformat(request.args.get("start_date", f"{datetime.now().date()}"))
-    days = int(request.args.get("days", "1"))
-    skip_weekends = request.args.get("skip_weekends", "true") == "true"
-
-    dates = get_roster_dates(start_date, days, skip_weekends)
+    dates = get_roster_dates(get_params)
     
     roster_info = {
         "class_name": roster[0].school_class.name,
@@ -176,18 +172,18 @@ def get_roster(class_id: int, request: Request) -> {}:
     print(roster_info)
     return roster_info
 
-def get_roster_dates(start_date: datetime, days_count: int, skip_weekends: bool) -> []:
+def get_roster_dates(get_params: {}) -> []:
     finished = False
     dates = []
     i = 0
-    while len(dates) != days_count:
-        next_day = start_date + timedelta(days=i)
-        is_weekday = next_day.date().weekday() < 5
+    while len(dates) != get_params["days"]:
+        next_day = get_params["start_date"] + timedelta(days=i)
+        is_weekday = next_day.weekday() < 5
 
-        if skip_weekends and is_weekday:
-            dates.append(next_day.date())
-        elif not skip_weekends:
-            dates.append(next_dat.date())
+        if get_params["skip_weekends"] and is_weekday:
+            dates.append(next_day)
+        elif not get_params["skip_weekends"]:
+            dates.append(next_day)
         
         i = i + 1
 

@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint, render_template, request, redirect, url_for
 from app.services import class_service, controller_service, terms_service
 from app.models.forms import ClassEditForm
@@ -62,5 +63,28 @@ def edit(class_id: int):
 @classes_blueprint.route("/classes/roster/<int:class_id>", methods=["GET"])
 @login_required
 def roster(class_id: int):
-    roster = class_service.get_roster(class_id, request)
-    return render_template("/classes/roster.html", roster=roster)
+    errors = []
+    try:
+        start_date = datetime.fromisoformat(request.args.get("start_date", f"{datetime.now().date()}"))
+        days = int(request.args.get("days", "1"))
+    except ValueError:
+        start_date = datetime.now()
+        days = 1
+        errors.append("Invalid data recieved. Double check start date format is YYYY-MM-DD.")
+
+    if days < 1 or days > 100:
+        days = 1
+        errors.append("Invalid data recieved. Number of days cannot be less then 1 or greater then 100")
+
+    controller_service.flash_messages(errors, MessageCategory.Warn)
+
+    skip_weekends = request.args.get("skip_weekends", "true") == "true"
+
+    get_params = {
+        "start_date": start_date.date(),
+        "days": days,
+        "skip_weekends": skip_weekends
+    }
+
+    roster = class_service.get_roster(class_id, get_params)
+    return render_template("/classes/roster.html", roster=roster, get_params=get_params)
