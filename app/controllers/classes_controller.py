@@ -55,6 +55,11 @@ def edit(class_id: int):
     if request.method == "POST":
         form = ClassEditForm()
         edit_model = class_service.update(form)
+
+        if edit_model is None:
+            controller_service.flash_message("Class not found.", MessageCategory.Error)
+            return redirect(url_for("classes.home"))
+
         if edit_model.edit_errors:
             controller_service.flash_messages(edit_model.edit_errors, MessageCategory.Error)
         else:

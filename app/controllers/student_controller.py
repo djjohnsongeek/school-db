@@ -20,14 +20,16 @@ def edit(student_id: int):
     if request.method == "GET":
         student_edit_model = student_service.get_student(student_id)
         if student_edit_model is None:
-            return redirect(url_for("index.error", error_code=404))
+            controller_service.flash_message("Student not found.", MessageCategory.Error)
+            return redirect(url_for("students.home"))
         else:
             return render_template("/students/edit.html", student_model=student_edit_model)
     elif request.method == "POST":
         student_form = StudentEditForm()
         student_edit_model = student_service.update_student(student_form)
         if student_edit_model is None:
-            return redirect(url_for("index.error", error_code=404))
+            controller_service.flash_message("Student not found.", MessageCategory.Error)
+            return redirect(url_for("students.home"))
         else:
             if student_edit_model.edit_errors:
                 controller_service.flash_messages(student_edit_model.edit_errors, MessageCategory.Error)

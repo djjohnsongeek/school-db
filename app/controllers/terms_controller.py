@@ -35,7 +35,8 @@ def edit(term_id: int):
     if request.method == "GET":
         term_edit_model = terms_service.retrieve_term(term_id)
         if term_edit_model is None:
-            return redirect(url_for("index.error", error_code=404))
+            controller_service.flash_message("Term not found.", MessageCategory.Error)
+            return redirect(url_for("terms.home"))
         else:
             return render_template("terms/edit.html", term_model=term_edit_model)
     elif request.method == "POST":
@@ -43,7 +44,8 @@ def edit(term_id: int):
         term_edit_model = terms_service.update_term(term_form)
 
         if term_edit_model is None:
-            return redirect(url_for("index.error", error_code=404))
+            controller_service.flash_message("Term not found.", MessageCategory.Error)
+            return redirect(url_for("terms.home"))
         else:
             if term_edit_model.edit_errors:
                 controller_service.flash_messages(term_edit_model.edit_errors, MessageCategory.Error)
