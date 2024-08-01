@@ -19,7 +19,7 @@ def retrieve(class_id: int) -> SchoolClass:
             .join_from(SchoolClass, Staff)
             .join_from(SchoolClass, Term)
             .where(SchoolClass.id == class_id)
-            .get())
+            .get_or_none())
 
 def retrieve_current_or_future(staff: Staff) -> []:
     now = datetime.now()

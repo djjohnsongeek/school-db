@@ -48,7 +48,8 @@ def edit(class_id: int):
     if request.method == "GET":
         edit_model = class_service.get_edit_model(class_id)
         if edit_model.edit_errors:
-            return redirect(url_for("index.error", error_code=404))
+            controller_service.flash_messages(edit_model.edit_errors, MessageCategory.Error)
+            return redirect(url_for("classes.home"))
         else:
             return render_template("/classes/edit.html", class_model=edit_model)
     if request.method == "POST":
@@ -87,6 +88,11 @@ def roster(class_id: int):
     }
 
     roster = class_service.get_roster(class_id, get_params)
+
+    if roster is None:
+        controller_service.flash_message("Class not found.", MessageCategory.Error)
+        return redirect(url_for("classes.home"))
+
     if not roster:
         controller_service.flash_message("There are no students on this class's roster.", MessageCategory.Warn)
         return redirect(url_for("classes.edit", class_id=class_id))
