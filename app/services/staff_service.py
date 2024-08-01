@@ -76,7 +76,7 @@ def reset_password(request_data: {}) -> ApiResultItem:
     if None in [new_password, staff_id]:
         errors.append("Invalid data.")
 
-    if len(new_password) < 8:
+    if new_password is None or len(new_password) < 8:
         errors.append("Password must be at least 8 characters.")
 
     if len(errors) == 0:
@@ -87,6 +87,9 @@ def reset_password(request_data: {}) -> ApiResultItem:
 
         if not session["user"]["is_admin"]:
             errors.append("You are not authorized to perform this action.")
+
+        if session["user"]["id"] != staff_id:
+            errors.append("You may not reset another admin user's password.")
 
         if len(errors) == 0:
             hashed_password = generate_password_hash(new_password)

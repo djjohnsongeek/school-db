@@ -1,9 +1,10 @@
+from flask import Request
 from app.repo import class_repo, staff_repo, terms_repo, student_repo
 from app.models.db_models import SchoolClass, Student, Attendance, ClassRosterEntry
 from app.models.forms import ClassEditForm
 from app.models.dto import ApiResultItem
 from app.services import attendance_service
-from datetime import datetime
+from datetime import datetime, timedelta
 
 ### View Models ###
 class ClassItem:
@@ -145,6 +146,48 @@ def create_class(form: ClassEditForm) -> ClassCreateItem:
             errors.append("Failed to create new class.")
 
     return to_create_model(form, errors)
+
+def get_roster(class_id: int, get_params: {}) -> {}:
+    roster = class_repo.retrieve_roster(class_id)
+    if roster.count() == 0:
+        return {}
+
+    dates = get_roster_dates(get_params)
+    
+    roster_info = {
+        "class_id": class_id,
+        "class_name": roster[0].school_class.name,
+        "term_name": roster[0].school_class.term.name,
+        "term_start": roster[0].school_class.term.start_date,
+        "term_end": roster[0].school_class.term.end_date,
+        "dates": dates,
+        "students": []
+    }
+
+    for item in roster:
+        roster_info["students"].append({
+            "name": item.student.full_name(),
+            "number": item.student.student_number
+        })
+
+    return roster_info
+
+def get_roster_dates(get_params: {}) -> []:
+    finished = False
+    dates = []
+    i = 0
+    while len(dates) != get_params["days"]:
+        next_day = get_params["start_date"] + timedelta(days=i)
+        is_weekday = next_day.weekday() < 5
+
+        if get_params["skip_weekends"] and is_weekday:
+            dates.append(next_day)
+        elif not get_params["skip_weekends"]:
+            dates.append(next_day)
+        
+        i = i + 1
+
+    return dates
 
 def create_roster_entries(request_data: {}) -> ApiResultItem:
     class_id = request_data.get("itemId", None)

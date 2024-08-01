@@ -81,6 +81,14 @@
                                     <span>Add Student</span>
                                 </span> 
                             </button>
+                            <a class="button" href="{{ url_for('classes.roster', class_id=class_model.class_id) }}">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa fa-print" aria-hidden="true"></i>
+                                    </span>
+                                    <span>Print Roster</span>
+                                </span> 
+                            </a>
                         </div>
                         <div class="block" id="class-roster-container">
                             {% if class_model.roster %}

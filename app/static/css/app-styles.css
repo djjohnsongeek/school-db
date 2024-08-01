@@ -11,3 +11,19 @@
 .notification {
     padding: .6em, .8em !important;
 }
+
+.is-visually-hidden {
+    visibility: hidden;
+}
+
+
+@media print {
+    .no-print{
+        display: none;
+    }
+
+    table
+    {
+        break-inside: avoid;
+    }
+}

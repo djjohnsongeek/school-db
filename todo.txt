@@ -1,8 +1,3 @@
-TODO: test all functionality
-TODO: push to production, setup domain name, production ready db-init
-TODO: email steve and kevin about the progress
-
-Later TODO:
 TODO: on attendance calendar, if zero for a particular value, don't add to the calendar?
 TODO: allow user to change their passwords
 TODO: get search and filtering working for all list pages?

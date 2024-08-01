@@ -1,0 +1,123 @@
+{% extends "/layouts/layout.html" %}
+{% block main %}
+    <div class="container no-print">
+        <div class="card mb-6">
+            <div class="card-header">
+                <div class="card-header-title">
+                    <h1 class="title is-4">Printing Options</h1>
+                </div>
+                <button class="card-header-icon">
+                    <a href="{{ url_for('classes.edit', class_id=roster['class_id']) }}">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            </span>
+                            <strong>Back To Class</strong>
+                        </span>
+                    </a>
+                </button>
+            </div>
+            <div class="card-content">
+                <div class="field is-grouped">
+                    <div class="field">
+                        <label class="label">Start Date</label>
+                        <div class="control">
+                            <input class="input" id="start-date-input" type="text" placeholder="yyyy-mm-dd" value="{{ get_params['start_date'] }}">
+                        </div>
+                        <span class="help">Format: YYYY-MM-DD</span>
+                    </div>
+                    <div class="field">
+                        <label class="label">Number of Days</label>
+                        <div class="control">
+                            <input class="input" id="number-of-days-input" type="number" placeholder="Number of Days" min="1" max="100" value="{{ get_params['days'] }}">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Skip Weekends?</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select name="skip_weekends" id="skip-weekends-select">
+                                    {% if get_params["skip_weekends"] %}
+                                        <option selected value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    {% else %}
+                                        <option value="true">Yes</option>
+                                        <option selected value="false">No</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label is-visually-hidden">Apply Changes</label>
+                        <div class="control">
+                            <button class="button is-primary" id="apply-changes-btn">
+                                Apply Changes
+                            </button>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label is-visually-hidden">Print Button</label>
+                        <div class="control">
+                            <button class="button" id="print-btn">
+                                <span class="icon">
+                                    <i class="fa fa-print" aria-hidden="true"></i>
+                                </span>
+                                <span>Print</span>
+                              </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="is-centered has-text-centered block">
+            <h2 class="title is-1">{{ roster["class_name"] }}</h1>
+            <h3 class="subtitle is-3">{{ roster["term_name"] }}</h2>
+        </div>
+        <div class="block">
+            {% for date in roster["dates"] %}
+            <table class="table is-fullwidth is-borderd">
+                <thead>
+                    <caption class="title is-6">{{ date }}</caption>
+                    <tr>
+                        <th>Student Number</th>
+                        <th>Student Name</th>
+                        <th>Attendance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in roster["students"] %}
+                        <tr>
+                            <td>{{student["number"]}}</td>
+                            <td>{{student["name"]}}</td>
+                            <td>
+                                <div class="checkboxes">
+                                    <label class="checkbox">
+                                        <input type="checkbox" />
+                                        Present
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" />
+                                        Tardy
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" />
+                                        Absent
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/classes/roster.js') }}"></script>
+{% endblock %}

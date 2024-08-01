@@ -6,6 +6,9 @@ __pycache__/
 
 instance/
 
+downloads/
+logs/
+
 .pytest_cache/
 .coverage
 .vscode/

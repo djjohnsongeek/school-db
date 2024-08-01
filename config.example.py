@@ -1,8 +1,4 @@
 # NOTE: Put config in an instance folder
-
-import os
-cwd = os.getcwd()
-
 DB_NAME = ""
 DB_USER = ""
 DB_PORT = 0
@@ -19,4 +15,5 @@ MAILJET_API_KEY = ""
 MAILJET_SECRET_KEY = ""
 MAILJET_SENDER_EMAIL = ""
 
-LOG_FILE_PATH = os.path.join(cwd, "instance", "error_logs.txt")
+LOG_FILE_PATH = "logs/error_logs.txt"
+DOWNLOAD_DIR = "downloads"
