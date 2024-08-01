@@ -19,7 +19,8 @@ def edit(staff_id: int):
     if request.method == "GET":
         staff_edit_model = staff_service.get_staff(staff_id)
         if staff_edit_model is None:
-            return redirect(url_for("index.error", error_code=404))
+            controller_service.flash_message("Staff member not found.", MessageCategory.Error)
+            return redirect(url_for("staff.home"))
         else:
             return render_template("/staff/edit.html", staff_model=staff_edit_model)
 
@@ -27,7 +28,8 @@ def edit(staff_id: int):
         staff_form = StaffEditForm()
         staff_edit_model = staff_service.update_staff(staff_form)
         if staff_edit_model is None:
-            return redirect(url_for("index.error", error_code=404))
+            controller_service.flash_message("Staff member not found.", MessageCategory.Error)
+            return redirect(url_for("staff.home"))
         else:
             if staff_edit_model.edit_errors:
                 controller_service.flash_messages(staff_edit_model.edit_errors, MessageCategory.Error)

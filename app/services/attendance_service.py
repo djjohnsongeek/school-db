@@ -18,6 +18,10 @@ class AttendancePageModel:
 ## Business Logic ##
 def get_attendance_model(class_id: int):
     selected_class = class_repo.retrieve(class_id)
+
+    if selected_class is None:
+        return None
+
     current_term = selected_class.term
     classes = class_repo.retrieve_by_term(current_term)
 

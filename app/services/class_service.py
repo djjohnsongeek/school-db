@@ -24,13 +24,14 @@ class ClassCreateItem():
 
 class ClassEditItem():
     def __init__(self, form: ClassEditForm, class_model: SchoolClass, attendance_summary: {}, non_roster: [], edit_errors: []):
-        self.form = form
-        self.class_name = class_model.name
-        self.class_id = class_model.id
-        self.attendance_summary = attendance_summary
-        self.roster = [RosterItem(roster_item.id, roster_item.student) for roster_item in class_model.roster]
-        self.non_roster = non_roster
-        self.teacher = class_model.teacher
+        if class_model is not None:
+            self.form = form
+            self.class_name = class_model.name
+            self.class_id = class_model.id
+            self.attendance_summary = attendance_summary
+            self.roster = [RosterItem(roster_item.id, roster_item.student) for roster_item in class_model.roster]
+            self.non_roster = non_roster
+            self.teacher = class_model.teacher
         self.edit_errors = edit_errors
 
 class RosterItem():
@@ -75,9 +76,7 @@ def get_edit_model(class_id: int) -> ClassEditItem:
     if school_class is None:
         errors.append("No class found.")
         return ClassEditItem(None, None, [], [], errors)
-
-
-
+        
     students_not_on_roster = student_repo.retrieve_non_roster_students(school_class.id)
     form = to_edit_form(school_class)
     attendance_summary = get_attendance_summary(school_class.id)
@@ -148,6 +147,11 @@ def create_class(form: ClassEditForm) -> ClassCreateItem:
     return to_create_model(form, errors)
 
 def get_roster(class_id: int, get_params: {}) -> {}:
+    class_model = class_repo.retrieve(class_id)
+
+    if class_model is None:
+        return None
+
     roster = class_repo.retrieve_roster(class_id)
     if roster.count() == 0:
         return {}
