@@ -155,6 +155,7 @@ def get_roster(class_id: int, get_params: {}) -> {}:
     dates = get_roster_dates(get_params)
     
     roster_info = {
+        "class_id": class_id,
         "class_name": roster[0].school_class.name,
         "term_name": roster[0].school_class.term.name,
         "term_start": roster[0].school_class.term.start_date,

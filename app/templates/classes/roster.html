@@ -1,4 +1,4 @@
-{% extends "/layouts/unauthorized.layout.html" %}
+{% extends "/layouts/layout.html" %}
 {% block main %}
     <div class="container no-print">
         <div class="card mb-6">
@@ -6,6 +6,16 @@
                 <div class="card-header-title">
                     <h1 class="title is-4">Printing Options</h1>
                 </div>
+                <button class="card-header-icon">
+                    <a href="{{ url_for('classes.edit', class_id=roster['class_id']) }}">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            </span>
+                            <strong>Back To Class</strong>
+                        </span>
+                    </a>
+                </button>
             </div>
             <div class="card-content">
                 <div class="field is-grouped">
