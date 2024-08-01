@@ -87,4 +87,8 @@ def roster(class_id: int):
     }
 
     roster = class_service.get_roster(class_id, get_params)
+    if not roster:
+        controller_service.flash_message("There are no students on this class's roster.", MessageCategory.Warn)
+        return redirect(url_for("classes.edit", class_id=class_id))
+
     return render_template("/classes/roster.html", roster=roster, get_params=get_params)

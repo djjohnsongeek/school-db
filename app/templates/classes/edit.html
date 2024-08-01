@@ -81,7 +81,7 @@
                                     <span>Add Student</span>
                                 </span> 
                             </button>
-                            <a class="button" href="{{ url_for('classes.roster', class_id=class_model.class_id) }}">
+                            <a class="button" {{ "" if class_model.roster else "disabled" }} href="{{ url_for('classes.roster', class_id=class_model.class_id) }}">
                                 <span class="icon-text">
                                     <span class="icon">
                                         <i class="fa fa-print" aria-hidden="true"></i>
