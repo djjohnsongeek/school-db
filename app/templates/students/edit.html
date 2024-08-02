@@ -71,9 +71,9 @@
                         No Attendance Found.
                     </div>
                     {% else %}
-                    <div class="grid">
+                    <div class="columns is-multiline is-8">
                         {% for key in student_model.attendance.keys() %}
-                        <div class="cell">
+                        <div class="column is-narrow has-box-shadow ml-1 mr-1">
                             <table class="table">
                                 <caption>{{key}}</caption>
                                 <thead>
@@ -85,8 +85,8 @@
                                 <tbody>
                                     {% for record in student_model.attendance[key] %}
                                         <tr>
-                                            <td>{{record["value"]}}</td>
                                             <td>{{record["date"]}}</td>
+                                            <td>{{record["value"]}}</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
