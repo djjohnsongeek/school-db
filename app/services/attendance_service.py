@@ -61,25 +61,25 @@ def get_attendance_roster(request: Request) -> ApiResultItem:
 
 def get_roster_attendance(class_id: int, selected_date: date) -> []:
     roster_attendance = []
-    student_roster = class_repo.retrieve_roster(class_id)
+    student_roster_records = class_repo.retrieve_roster(class_id)
     student_attendance = class_repo.retrieve_attendance_date(class_id, selected_date)
     
     # If a student has attendance records, they cannot be deleted, so they are guarenteed to be in the roster
     # However a student can be in the roster and not have attedance data
     # There should only be one record for each student on a particular date
-    for student in student_roster:
+    for roster_record in student_roster_records:
         student_attendance_record = None
 
         # Simple linear search should suffice
         for attendance_record in student_attendance:
-            if attendance_record.student.id == student.id:
+            if attendance_record.student.id == roster_record.student.id:
                 student_attendance_record = attendance_record
                 break
 
         attendance = {
             "student": {
-                "name": student.full_name(),
-                "id": student.id
+                "name": roster_record.student.full_name(),
+                "id": roster_record.student.id
             },
             "attendance_value": student_attendance_record.value if student_attendance_record is not None else "",
             "attendance_id": student_attendance_record.id if student_attendance_record is not None else 0
