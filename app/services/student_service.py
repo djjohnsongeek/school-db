@@ -61,6 +61,7 @@ def update_student(form: StudentEditForm) -> StudentEditItem:
 
     errors = []
     classes = [StudentClassItem(roster_entry) for roster_entry in student_repo.retrieve_classes(student_model)]
+    attendance = get_student_attendance(student_model)
     
     # if student_model.email != form.email.data and student_repo.email_exists(form.email.data):
     #     errors.append("This email address is already in use.")
@@ -74,17 +75,14 @@ def update_student(form: StudentEditForm) -> StudentEditItem:
     if len(errors) == 0:
         result = student_repo.update(student_model, form)
         form = to_student_form(student_model)
-        attendance = get_student_attendance(student_model)
 
     return StudentEditItem(student_model, form, attendance, classes, errors)
 
 def create_student(form: StudentEditForm) -> []:
     errors = []
 
-    if form.student_number.data is None or form.student_number.data == "":
-        form.student_number.data = generate_student_number()
-    else:
-        form.student_number.data = form.student_number.data.zfill(12)
+    # if form.student_number.data is None or form.student_number.data == "":
+    #     form.student_number.data = generate_student_number()
     
     if student_repo.student_number_exists(form.student_number.data):
         errors.append("The supplied student number is already in use.")
