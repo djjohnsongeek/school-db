@@ -14,12 +14,12 @@ class StudentNumber(object):
         if student_number is None or not student_number.isdigit():
             raise ValidationError(self.message)
 
-        year = int(student_number[-4:])
-        month = int(student_number[-6:][:2])
+        # year = int(student_number[-4:])
+        # month = int(student_number[-6:][:2])
 
-        valid = (len(student_number) >= 7 and len(student_number) < 33 and
-                year <= datetime.now().year and year > 2023
-                and month > 0 and month < 13)
+        # valid = (len(student_number) >= 7 and len(student_number) < 33 and
+        #         year <= datetime.now().year and year > 2023
+        #         and month > 0 and month < 13)
 
-        if not valid:
-            raise ValidationError(self.message)
+        # if not valid:
+        #     raise ValidationError(self.message)
