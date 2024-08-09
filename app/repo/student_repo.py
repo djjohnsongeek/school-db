@@ -40,12 +40,12 @@ def retrieve_last_student() -> Student:
 
 def retrieve_non_roster_students(class_id: int) -> []:
     sql = """SELECT *
-            FROM `school_db`.`students`
+            FROM `students`
             WHERE `deleted` = 0
             AND `id` NOT IN
                 (SELECT S.`id`
-                FROM `school_db`.`class_rosters` AS R
-                INNER JOIN `school_db`.`students` AS S ON R.`student_id` = S.`id`
+                FROM `class_rosters` AS R
+                INNER JOIN `students` AS S ON R.`student_id` = S.`id`
                 WHERE R.`school_class_id` = %s)"""
 
     with Database(current_app.config) as db:
