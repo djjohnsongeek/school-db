@@ -45,17 +45,40 @@
                             </a>
                         </div>
                         <div class="block" id="class-attendance-container">
-                            <input value="{{ class_model.attendance_summary['P']}}" id="attendance-count-p" type="hidden">
-                            <input value="{{ class_model.attendance_summary['T']}}" id="attendance-count-t" type="hidden">
-                            <input value="{{ class_model.attendance_summary['A']}}" id="attendance-count-a" type="hidden">
-                            <div style="width: 350px;" id="class-attendance-chart-container">
-                                <canvas id="class-attendance-chart">
-
-                                </canvas>
-                            </div>
                             <div id="class-attendance-message-container" style="display: none;">
                                 <div class="notification is-warning is-light">
                                     No Attendance Records Found.
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-two-thirds">
+                                    <input value="{{class_model.attendance}}" id="attendance-json" type="hidden" />
+                                    <div id="class-attendance-chart-container">
+                                        <canvas id="class-attendance-chart">
+        
+                                        </canvas>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <div class="p-5">
+                                        <table class="table is-fullwidth">
+                                            <caption>Totals</caption>
+                                            <tbody>
+                                                <!-- <tr>
+                                                    <th>Presents</th>
+                                                    <td id="attendance-totals-presents"></td>
+                                                </tr> -->
+                                                <tr>
+                                                    <th>Tardies</th>
+                                                    <td id="attendance-totals-tardies"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Absents</th>
+                                                    <td id="attendance-totals-absents"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
