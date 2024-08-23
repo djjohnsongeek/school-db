@@ -73,9 +73,34 @@
                     {% else %}
                     <div class="columns is-multiline is-8">
                         {% for key in student_model.attendance.keys() %}
-                        <div class="column is-narrow has-box-shadow ml-1 mr-1">
-                            <table class="table">
-                                <caption>{{key}}</caption>
+                        <div class="column is-3 has-box-shadow ml-1 mr-1">
+                            <div class="columns mb-0">
+                                <div class="column">
+                                    <strong>{{key}}</strong>
+                                </div>
+                            </div>
+                            <div class="columns mb-0">
+                                <div class="column">
+                                    Absences:
+                                </div>
+                                <div class="column">
+                                    <span class="tag is-danger">
+                                        {{student_model.attendance[key]["A_total"]}}
+                                    </spam>
+                                </div>
+                            </div>
+                            <div class="columns mb-0">
+                                <div class="column">
+                                    Tardies:
+                                </div>
+                                <div class="column">
+                                    <span class="tag is-warning">
+                                        {{student_model.attendance[key]["T_total"]}}
+                                    </span>
+                                </div>
+                            </div>
+                            <button class="button toggle is-link is-outlined is-fullwidth" data-target="attendance-table-{{key}}">Attendance Dates</button>
+                            <table class="table is-hidden is-fullwidth" id="attendance-table-{{key}}">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
@@ -83,7 +108,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for record in student_model.attendance[key] %}
+                                    {% for record in student_model.attendance[key]["days"] %}
                                         <tr>
                                             <td>{{record["date"]}}</td>
                                             <td>{{record["value"]}}</td>

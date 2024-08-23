@@ -26,9 +26,22 @@ def get_student_attendance(student_model: Student) -> {}:
 
     for attendance in student_model.attendance:
         if attendance.school_class.name not in organized_attendance:
-            organized_attendance[attendance.school_class.name] = []
+            # Prepare school class dictionary
+            organized_attendance[attendance.school_class.name] = {
+                "days": [],
+                "P_total": 0,
+                "T_total": 0,
+                "A_total": 0
+            }
 
-        organized_attendance[attendance.school_class.name].append({ "value": attendance.value, "date": attendance.date})
+        # Add attendance day
+        organized_attendance[attendance.school_class.name]["days"].append({
+                "value": attendance.value,
+                "date": attendance.date
+            })
+
+        # Count totals
+        organized_attendance[attendance.school_class.name][f"{attendance.value}_total"] += 1
 
     return organized_attendance
 
