@@ -39,7 +39,7 @@ class StaffCreateItem():
         self.form = edit_form
 
 class StudentEditItem():
-    def __init__(self, student_model: Student, edit_form: StudentEditForm, attendance: [], classes: [], edit_errors: []):
+    def __init__(self, student_model: Student, edit_form: StudentEditForm, attendance: {}, classes: [], edit_errors: []):
         self.fullname = student_model.full_name()
         self.classes = classes
         self.attendance = attendance
