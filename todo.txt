@@ -4,5 +4,3 @@ TODO: get search and filtering working for all list pages?
 TODO: validate class attendance date by looking up term start and end dates
 TODO: validate class attendace by check if date is in the future
 TODO: fix full_name display
-TODO: hide presents total for each day from the attendance calendar
-TODO: merge classes and attendance sections?

@@ -113,7 +113,11 @@ const attendancePage = {
                 attendancePage.removeAllCalendarEvents();
                 for (let event of responseData.data.calendarEvents)
                 {
-                    attendancePage.calendar.addEvent(event);
+                    // Filter out Present counts for now
+                    if (!event.title.includes("P"))
+                    {
+                        attendancePage.calendar.addEvent(event);
+                    }
                 }
 
             },
