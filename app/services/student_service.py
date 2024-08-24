@@ -15,20 +15,34 @@ def get_student(student_id: int) -> StudentEditItem:
     if student_model is not None:
         form = to_student_form(student_model)
         classes = [StudentClassItem(roster_entry) for roster_entry in student_repo.retrieve_classes(student_model)]
-        attendance = get_student_attendance(student_model)
-        return StudentEditItem(student_model, form, attendance, classes, [])
+        attendance = get_student_attendance(student_model, classes)
+        return StudentEditItem(student_model, form, attendance, [], [])
     else:
         return None
 
-def get_student_attendance(student_model: Student) -> {}:
+def get_student_attendance(student_model: Student, class_items: []) -> {}:
     attendance = student_repo.retrieve_attendance(student_model.id)
     organized_attendance = {}
+
+    for class_item in class_items:
+        organized_attendance[class_item.name] = {
+            "days": [],
+            "class_id": class_item.class_id,
+            "class_term": class_item.term,
+            "class_name": class_item.name,
+            "P_total": 0,
+            "T_total": 0,
+            "A_total": 0
+        }
 
     for attendance in student_model.attendance:
         if attendance.school_class.name not in organized_attendance:
             # Prepare school class dictionary
             organized_attendance[attendance.school_class.name] = {
                 "days": [],
+                "class_id": attendance.school_class.id,
+                "class_term": attendance.school_class.term.name,
+                "class_name": attendance.school_class.name,
                 "P_total": 0,
                 "T_total": 0,
                 "A_total": 0

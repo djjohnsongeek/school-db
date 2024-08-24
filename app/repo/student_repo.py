@@ -11,7 +11,7 @@ def retrieve(id: int) -> Student:
     return Student.get_or_none(Student.id == id)
 
 def retrieve_attendance(student_id: int) -> []:
-    return Attendance.select().join(SchoolClass).where(Attendance.student_id == student_id)
+    return Attendance.select().join(SchoolClass).join(Term).where(Attendance.student_id == student_id)
 
 def retrieve_many(ids: []) -> []:
     return Student.select().where(Student.id.in_(ids))
