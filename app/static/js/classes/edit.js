@@ -51,13 +51,15 @@ var classEdit = {
                     backgroundColor: 'rgb(255, 205, 86)',
                     borderColor: 'rgb(255, 205, 86)',
                     radius: (ctx, a, b) => (ctx.parsed.y === 0 ? 0 : 2),
+                    borderWidth: 2
                 },
                 {
                     label: ["Absents"],
                     data: attendance.absents,
                     backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'rgb(255, 99, 132)',
-                    radius: (ctx, a, b) => (ctx.parsed.y === 0 ? 0 : 4),
+                    radius: (ctx, a, b) => (ctx.parsed.y === 0 ? 0 : 3),
+                    borderWidth: 3
                 }
             ]
         };
@@ -72,6 +74,12 @@ var classEdit = {
                     }
                 }
             },
+            plugins: {
+                title: {
+                    display: true,
+                    text: attendance.labels.length <= 14 ? "Last Two Weeks of Attendance" : "Attendance"
+                }
+            }
         }
 
 

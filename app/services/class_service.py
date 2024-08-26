@@ -88,8 +88,20 @@ def get_edit_model(class_id: int) -> ClassEditItem:
     return ClassEditItem(form, school_class, attendance, students_not_on_roster, errors)
 
 def format_attendance_records(attendance: [], class_model: SchoolClass) -> {}:
-    start_date = class_model.term.start_date
-    end_date = class_model.term.end_date
+    today = datetime.now().date()
+    term_start = class_model.term.start_date
+    term_end = class_model.term.end_date
+
+    start_date = term_start
+    end_date = term_end
+
+    # if the term is not over, just show up to the last two weeks
+    if today >= term_start and today <= term_end:
+        end_date = today
+        start_date = today - timedelta(days=14)
+
+        if start_date < term_start:
+            start_date = term_start
 
     dates = []
     while start_date < end_date:   
@@ -112,21 +124,21 @@ def format_attendance_records(attendance: [], class_model: SchoolClass) -> {}:
 
     # Find total of each attendance value per date
     for record in attendance:
-        if record["value"] == "P":
+        if record["value"] == "P" and record["date"] in presents:
             presents[record["date"]] = presents[record["date"]] + 1
-        elif record["value"] == "T":
+        elif record["value"] == "T" and record["date"] in tardies:
             tardies[record["date"]] = tardies[record["date"]] + 1
-        elif record["value"] == "A":
+        elif record["value"] == "A" and record["date"] in absents:
             absents[record["date"]] = absents[record["date"]] + 1
 
     return {
         "labels": list(dates),
         "presents": list(presents.values()),
-        "presentsTotal": sum(presents.values()),
+        "presentsTotal":len([record["value"] for record in attendance if record["value"] == "P"]),
         "tardies": list(tardies.values()),
-        "tardiesTotal": sum(tardies.values()),
+        "tardiesTotal": len([record["value"] for record in attendance if record["value"] == "T"]),
         "absents": list(absents.values()),
-        "absentsTotal": sum(absents.values())
+        "absentsTotal": len([record["value"] for record in attendance if record["value"] == "A"])
     }
 
 def to_create_model(form: ClassEditForm, errors: []) -> ClassCreateItem:
