@@ -25,7 +25,7 @@ class ClassCreateItem():
         self.edit_errors = edit_errors
 
 class ClassEditItem():
-    def __init__(self, form: ClassEditForm, class_model: SchoolClass, attendance: [], non_roster: [], edit_errors: []):
+    def __init__(self, form: ClassEditForm, class_model: SchoolClass, attendance: {}, non_roster: [], edit_errors: []):
         if class_model is not None:
             self.form = form
             self.class_name = class_model.name
@@ -83,7 +83,6 @@ def get_edit_model(class_id: int) -> ClassEditItem:
     form = to_edit_form(school_class)
     attendance = class_repo.retrieve_attendance_records(class_id)
     attendance = format_attendance_records(attendance, school_class)
-
 
     return ClassEditItem(form, school_class, attendance, students_not_on_roster, errors)
 
@@ -308,7 +307,9 @@ def update(form: ClassEditForm) -> ClassEditItem:
 
     form.teacher_id.choices = get_teacher_choices()
     form.term_id.choices = get_term_choices()
-    att_summary = get_attendance_summary(class_model.id)
+
+    attendance = class_repo.retrieve_attendance_records(class_model.id)
+    att_summary = format_attendance_records(attendance, class_model)
 
     if not form.validate():
         errors.append("Invalid data detected, no changes were saved.")
