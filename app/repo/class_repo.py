@@ -49,9 +49,9 @@ def retrieve_attendance_record(attendance_id: int) -> Attendance:
 
     return query
 
-def retrieve_attendance_summary(class_id: int) -> []:
+def retrieve_attendance_records(class_id: int) -> []:
     with Database(current_app.config) as db:
-        sql = "SELECT `value`, count(*) AS `count` FROM `attendance` WHERE `school_class_id` = %s GROUP BY `value`"
+        sql = "SELECT `date`, `value` FROM `attendance` WHERE `school_class_id` = %s ORDER BY `date`"
         db.execute(sql, (class_id,))
         return db.fetchall()
 

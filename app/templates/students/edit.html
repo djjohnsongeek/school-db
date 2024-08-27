@@ -30,40 +30,7 @@
         <div class="column">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-header-title title is-3">Classes</h2>
-                </div>
-                <div class="card-content">
-                    {% if student_model.classes %}
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Term</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for student_class in student_model.classes %}
-                            <tr>
-                                <td><a href="{{ url_for('classes.edit', class_id=student_class.class_id) }}">{{ student_class.name }}</a></td>
-                                <td>{{ student_class.term }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    {% else %}
-                    <div class="notification is-warning is-light">
-                        No Classes Found
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="columns">
-        <div class="column">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-header-title title is-3">Attendance</h2>
+                    <h2 class="card-header-title title is-3">Classes & Attendance</h2>
                 </div>
                 <div class="card-content">
                     {% if not student_model.attendance %}
@@ -73,9 +40,41 @@
                     {% else %}
                     <div class="columns is-multiline is-8">
                         {% for key in student_model.attendance.keys() %}
-                        <div class="column is-narrow has-box-shadow ml-1 mr-1">
-                            <table class="table">
-                                <caption>{{key}}</caption>
+                        <div class="column is-3 has-box-shadow ml-1 mr-1">
+                            <a href="{{url_for('classes.edit', class_id=student_model.attendance[key]['class_id'])}}">
+                                <div class="columns mb-0">
+                                    <div class="column">
+                                        <strong>
+                                            {{key}}
+                                        </strong>
+                                    </div>
+                                    <div class="column">
+                                        <strong>{{student_model.attendance[key]["class_term"]}}</strong>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="columns mb-0">
+                                <div class="column">
+                                    Absences:
+                                </div>
+                                <div class="column">
+                                    <span class="tag is-danger">
+                                        {{student_model.attendance[key]["A_total"]}}
+                                    </spam>
+                                </div>
+                            </div>
+                            <div class="columns mb-0">
+                                <div class="column">
+                                    Tardies:
+                                </div>
+                                <div class="column">
+                                    <span class="tag is-warning">
+                                        {{student_model.attendance[key]["T_total"]}}
+                                    </span>
+                                </div>
+                            </div>
+                            <button class="button toggle is-link is-outlined is-fullwidth" data-target="attendance-table-{{key}}">Attendance Dates</button>
+                            <table class="table is-hidden is-fullwidth" id="attendance-table-{{key}}">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
@@ -83,7 +82,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for record in student_model.attendance[key] %}
+                                    {% for record in student_model.attendance[key]["days"] %}
                                         <tr>
                                             <td>{{record["date"]}}</td>
                                             <td>{{record["value"]}}</td>

@@ -113,7 +113,11 @@ const attendancePage = {
                 attendancePage.removeAllCalendarEvents();
                 for (let event of responseData.data.calendarEvents)
                 {
-                    attendancePage.calendar.addEvent(event);
+                    // Filter out Present counts for now
+                    if (!event.title.includes("P"))
+                    {
+                        attendancePage.calendar.addEvent(event);
+                    }
                 }
 
             },
@@ -194,21 +198,26 @@ const attendancePage = {
                     studentInfoContainer.appendChild(studentSpan);
 
                     // render student buttons
-                    const presentSelectedClasses = item.attendance_value == "P" ? " is-selected is-success" : "";
+                    // 8/15/2040 Note: removed the present btn at Steve's Request
+                    // const presentSelectedClasses = item.attendance_value == "P" ? " is-selected is-success" : "";
                     const tardySelectedClasses = item.attendance_value == "T" ? " is-selected is-warning" : "";
                     const absentSelectedClasses = item.attendance_value == "A" ? " is-selected is-danger" : "";
 
-                    const presentBtn = Util.toHtml(`<button class="button${presentSelectedClasses}" data-student-id="${item.student.id}" data-attendance-id="${item.attendance_id}" data-payload="P">Present</button>`);
+                    // 8/15/2040 Note: removed the present btn at Steve's Request
+                    // const presentBtn = Util.toHtml(`<button class="button${presentSelectedClasses}" data-student-id="${item.student.id}" data-attendance-id="${item.attendance_id}" data-payload="P">Present</button>`);
                     const tardyBtn = Util.toHtml(`<button class="button${tardySelectedClasses}" data-student-id="${item.student.id}" data-attendance-id="${item.attendance_id}" data-payload="T">Tardy</button>`);
                     const absentBtn = Util.toHtml(`<button class="button${absentSelectedClasses}" data-student-id="${item.student.id}" data-attendance-id="${item.attendance_id}" data-payload="A">Absent</button>`);
                     
-                    for (let btn of [presentBtn, tardyBtn, absentBtn])
+                    // 8/15/2040 Note: removed the present btn at Steve's Request
+                    for (let btn of [tardyBtn, absentBtn])
                     {
                         btn.addEventListener("click", attendancePage.onAttendanceBtnClick);
                     }
                     
                     const buttonsContainer = Util.toHtml(`<div class="buttons has-addons mb-1"></div>`);
-                    buttonsContainer.appendChild(presentBtn);
+
+                    // 8/15/2040 Note: removed the present btn at Steve's Request
+                    // buttonsContainer.appendChild(presentBtn);
                     buttonsContainer.appendChild(tardyBtn);
                     buttonsContainer.appendChild(absentBtn);
 
@@ -229,14 +238,11 @@ const attendancePage = {
     },
     showRosterLoading: function()
     {
-        console.log("show roster laoding");
         document.getElementById("roster-loading").classList.remove("is-hidden");
         document.getElementById("roster-container").classList.add("is-hidden");
     },
     hideRosterLoading: function()
     {
-        console.log("hide roster laoding");
-
         document.getElementById("roster-loading").classList.add("is-hidden");
         document.getElementById("roster-container").classList.remove("is-hidden");
     },

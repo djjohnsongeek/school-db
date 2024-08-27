@@ -5,6 +5,8 @@ from app.models.forms import ClassEditForm
 from app.models.dto import ApiResultItem
 from app.services import attendance_service
 from datetime import datetime, timedelta
+import json
+from ordered_set import OrderedSet
 
 ### View Models ###
 class ClassItem:
@@ -23,12 +25,12 @@ class ClassCreateItem():
         self.edit_errors = edit_errors
 
 class ClassEditItem():
-    def __init__(self, form: ClassEditForm, class_model: SchoolClass, attendance_summary: {}, non_roster: [], edit_errors: []):
+    def __init__(self, form: ClassEditForm, class_model: SchoolClass, attendance: {}, non_roster: [], edit_errors: []):
         if class_model is not None:
             self.form = form
             self.class_name = class_model.name
             self.class_id = class_model.id
-            self.attendance_summary = attendance_summary
+            self.attendance = json.dumps(attendance)
             self.roster = [RosterItem(roster_item.id, roster_item.student) for roster_item in class_model.roster]
             self.non_roster = non_roster
             self.teacher = class_model.teacher
@@ -79,21 +81,64 @@ def get_edit_model(class_id: int) -> ClassEditItem:
         
     students_not_on_roster = student_repo.retrieve_non_roster_students(school_class.id)
     form = to_edit_form(school_class)
-    attendance_summary = get_attendance_summary(school_class.id)
+    attendance = class_repo.retrieve_attendance_records(class_id)
+    attendance = format_attendance_records(attendance, school_class)
 
-    return ClassEditItem(form, school_class, attendance_summary, students_not_on_roster, errors)
+    return ClassEditItem(form, school_class, attendance, students_not_on_roster, errors)
 
-def get_attendance_summary(class_id: int) -> {}:
-    records_summary = class_repo.retrieve_attendance_summary(class_id)
-    att_summary = {}
+def format_attendance_records(attendance: [], class_model: SchoolClass) -> {}:
+    today = datetime.now().date()
+    term_start = class_model.term.start_date
+    term_end = class_model.term.end_date
 
-    for value in attendance_service.permitted_attendance_values:
-        att_summary[value] = 0
+    start_date = term_start
+    end_date = term_end
 
-    for record in records_summary:
-        att_summary[record["value"]] = record["count"]
+    # if the term is not over, just show up to the last two weeks
+    if today >= term_start and today <= term_end:
+        end_date = today
+        start_date = today - timedelta(days=14)
 
-    return att_summary
+        if start_date < term_start:
+            start_date = term_start
+
+    dates = []
+    while start_date <= end_date:   
+        dates.append(start_date.strftime("%Y/%m/%d"))
+        start_date = start_date + timedelta(days=1)
+
+    presents = {}
+    tardies = {}
+    absents = {}
+
+    # Get set of unique dates
+    for record in attendance:
+        record["date"] = record["date"].strftime("%Y/%m/%d")
+
+    # Set base line values foreach date (0)
+    for date in dates:
+        presents[date] = 0
+        tardies[date] = 0
+        absents[date] = 0
+
+    # Find total of each attendance value per date
+    for record in attendance:
+        if record["value"] == "P" and record["date"] in presents:
+            presents[record["date"]] = presents[record["date"]] + 1
+        elif record["value"] == "T" and record["date"] in tardies:
+            tardies[record["date"]] = tardies[record["date"]] + 1
+        elif record["value"] == "A" and record["date"] in absents:
+            absents[record["date"]] = absents[record["date"]] + 1
+
+    return {
+        "labels": list(dates),
+        "presents": list(presents.values()),
+        "presentsTotal":len([record["value"] for record in attendance if record["value"] == "P"]),
+        "tardies": list(tardies.values()),
+        "tardiesTotal": len([record["value"] for record in attendance if record["value"] == "T"]),
+        "absents": list(absents.values()),
+        "absentsTotal": len([record["value"] for record in attendance if record["value"] == "A"])
+    }
 
 def to_create_model(form: ClassEditForm, errors: []) -> ClassCreateItem:
     form.teacher_id.choices = get_teacher_choices()
@@ -262,7 +307,9 @@ def update(form: ClassEditForm) -> ClassEditItem:
 
     form.teacher_id.choices = get_teacher_choices()
     form.term_id.choices = get_term_choices()
-    att_summary = get_attendance_summary(class_model.id)
+
+    attendance = class_repo.retrieve_attendance_records(class_model.id)
+    att_summary = format_attendance_records(attendance, class_model)
 
     if not form.validate():
         errors.append("Invalid data detected, no changes were saved.")

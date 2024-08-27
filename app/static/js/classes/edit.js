@@ -30,38 +30,69 @@ var classEdit = {
         const chartEL = document.getElementById("class-attendance-chart");
         const chartContainer = document.getElementById("class-attendance-chart-container");
         const noAttendanceMsgContainer = document.getElementById("class-attendance-message-container");
-        const p = parseInt(document.getElementById("attendance-count-p").value);
-        const t = parseInt(document.getElementById("attendance-count-t").value);
-        const a = parseInt(document.getElementById("attendance-count-a").value);
+
+        const attendance = JSON.parse(document.getElementById("attendance-json").value);
+
+        // document.getElementById("attendance-totals-presents").innerText = attendance.presentsTotal;
+        document.getElementById("attendance-totals-tardies").innerText = attendance.tardiesTotal;
+        document.getElementById("attendance-totals-absents").innerText = attendance.absentsTotal;
 
         const data = {
-            labels: [
-              'Present',
-              'Tardy',
-              'Absent'
-            ],
-            datasets: [{
-              label: '',
-              data: [p, t, a],
-              backgroundColor: [
-                '#3ABB81',
-                'rgb(255, 205, 86)',
-                'rgb(255, 99, 132)',
-              ],
-              hoverOffset: 4
-            }]
-          };
+            labels: attendance.labels,
+            datasets: [
+                // {
+                //     label: ["Presents"],
+                //     data: attendance.presents,
+                //     backgroundColor: "#3ABB81"
+                // },
+                {
+                    label: ["Tardies"],
+                    data: attendance.tardies,
+                    backgroundColor: 'rgb(255, 205, 86)',
+                    borderColor: 'rgb(255, 205, 86)',
+                    radius: (ctx, a, b) => (ctx.parsed.y === 0 ? 0 : 2),
+                    borderWidth: 2
+                },
+                {
+                    label: ["Absents"],
+                    data: attendance.absents,
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    radius: (ctx, a, b) => (ctx.parsed.y === 0 ? 0 : 3),
+                    borderWidth: 3
+                }
+            ]
+        };
 
-        if (p === 0 & t === 0 & a === 0)
+        const options = {
+            scales: {
+                y: {
+                    ticks: {
+                        stepSize: 1,          
+                        suggestedMin: 'min-int-value',      
+                        suggestedMax: 'max-int-value' 
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: attendance.labels.length <= 14 ? "Last Two Weeks of Attendance" : "Attendance"
+                }
+            }
+        }
+
+
+        if (attendance.labels.length === 0)
         {
             chartContainer.style.display = "none";
             noAttendanceMsgContainer.style.display = "block";
-
         }
         else {
             new Chart(chartEL, {
-                type: 'pie',
-                data: data
+                type: 'line',
+                data: data,
+                options: options
             });
         }
     },

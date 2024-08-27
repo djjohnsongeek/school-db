@@ -116,14 +116,14 @@ def init_db(prod):
         # Insert terms
         term = Term.create(
             name="Fall 2024",
-            start_date=date.fromisoformat("2024-08-01"),
-            end_date=date.fromisoformat("2024-12-01")
+            start_date=date.fromisoformat("2024-08-06"),
+            end_date=date.fromisoformat("2024-11-28")
         )
 
         term_2 = Term.create(
             name="Spring 2025",
-            start_date=date.fromisoformat("2025-01-01"),
-            end_date=date.fromisoformat("2025-05-01")
+            start_date=date.fromisoformat("2024-01-01"),
+            end_date=date.fromisoformat("2024-05-01")
         )
 
         # Insert classes, store a few for later
@@ -131,21 +131,21 @@ def init_db(prod):
             name='Algebra 1',
             room_number=5,
             teacher=teacher,
-            term=term_2
+            term=term
         )
 
         physics = SchoolClass.create(
             name="Physics",
             room_number=12,
             teacher=teacher,
-            term=term_2
+            term=term
         )
 
         SchoolClass.insert(
             name="English",
             room_number=9,
             teacher=teacher,
-            term=term_2
+            term=term
         ).execute()
 
         # Fill out the class roster
@@ -172,7 +172,7 @@ def init_db(prod):
         # Student 1 Attendance Records
         Attendance.insert(
             school_class=algebra,
-            date=date.fromisoformat("2024-07-24"),
+            date=date.fromisoformat("2024-08-24"),
             student=student_1,
             value="P",
             recorded_by=teacher
@@ -180,7 +180,7 @@ def init_db(prod):
 
         Attendance.insert(
             school_class=algebra,
-            date=date.fromisoformat("2024-07-25"),
+            date=date.fromisoformat("2024-08-25"),
             student=student_1,
             value="T",
             recorded_by=teacher
@@ -188,7 +188,7 @@ def init_db(prod):
 
         Attendance.insert(
             school_class=algebra,
-            date=date.fromisoformat("2024-07-26"),
+            date=date.fromisoformat("2024-08-26"),
             student=student_1,
             value="A",
             recorded_by=teacher
@@ -197,7 +197,7 @@ def init_db(prod):
         # Student 2 Attendance Records
         Attendance.insert(
             school_class=algebra,
-            date=date.fromisoformat("2024-07-24"),
+            date=date.fromisoformat("2024-08-24"),
             student=student_2,
             value="P",
             recorded_by=teacher
@@ -205,7 +205,7 @@ def init_db(prod):
 
         Attendance.insert(
             school_class=algebra,
-            date=date.fromisoformat("2024-07-25"),
+            date=date.fromisoformat("2024-08-25"),
             student=student_2,
             value="P",
             recorded_by=teacher
@@ -213,7 +213,7 @@ def init_db(prod):
 
         Attendance.insert(
             school_class=algebra,
-            date=date.fromisoformat("2024-07-26"),
+            date=date.fromisoformat("2024-08-26"),
             student=student_2,
             value="P",
             recorded_by=teacher
@@ -221,7 +221,7 @@ def init_db(prod):
 
         Attendance.insert(
             school_class=physics,
-            date=date.fromisoformat("2024-07-24"),
+            date=date.fromisoformat("2024-08-24"),
             student=student_2,
             value="P",
             recorded_by=teacher
@@ -229,7 +229,7 @@ def init_db(prod):
 
         Attendance.insert(
             school_class=physics,
-            date=date.fromisoformat("2024-07-25"),
+            date=date.fromisoformat("2024-08-25"),
             student=student_2,
             value="T",
             recorded_by=teacher
@@ -237,7 +237,7 @@ def init_db(prod):
 
         Attendance.insert(
             school_class=physics,
-            date=date.fromisoformat("2024-07-26"),
+            date=date.fromisoformat("2024-08-26"),
             student=student_2,
             value="A",
             recorded_by=teacher

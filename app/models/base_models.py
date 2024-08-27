@@ -30,4 +30,14 @@ class Person(SoftDelete):
         return f"{self.first_name_lao} {self.last_name_lao}"
 
     def full_name(self) -> str:
-        return f"{self.full_lao_name()} ({self.full_english_name()})"
+        eng_name = self.full_english_name().replace(" ", "")
+        lao_name = self.full_lao_name().replace(" ", "")
+
+        if lao_name == "" and eng_name != "":
+            return self.full_english_name()
+        elif eng_name == "" and lao_name != "":
+            return self.full_lao_name()
+        elif lao_name != "" and eng_name != "":
+            return f"{self.full_lao_name()} ({self.full_english_name()})"
+        else:
+            return ""
