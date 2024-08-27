@@ -77,7 +77,7 @@ var classEdit = {
             plugins: {
                 title: {
                     display: true,
-                    text: attendance.labels.length <= 14 ? "Last Two Weeks of Attendance" : "Attendance"
+                    text: attendance.labels.length <= 15 ? "Last Two Weeks of Attendance" : "Attendance"
                 }
             }
         }
