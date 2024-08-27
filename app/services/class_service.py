@@ -6,7 +6,6 @@ from app.models.dto import ApiResultItem
 from app.services import attendance_service
 from datetime import datetime, timedelta
 import json
-from ordered_set import OrderedSet
 
 ### View Models ###
 class ClassItem:
