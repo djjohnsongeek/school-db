@@ -104,7 +104,7 @@ def format_attendance_records(attendance: [], class_model: SchoolClass) -> {}:
             start_date = term_start
 
     dates = []
-    while start_date < end_date:   
+    while start_date <= end_date:   
         dates.append(start_date.strftime("%Y/%m/%d"))
         start_date = start_date + timedelta(days=1)
 
