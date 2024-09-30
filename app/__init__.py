@@ -29,6 +29,7 @@ def create_app(test_config=None):
         pass
 
     csrf.init_app(app)
+
     init_app_commands(app)
 
     @app.before_request
