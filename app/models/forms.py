@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, DateField, EmailField, SelectField, HiddenField, PasswordField
-from wtforms.validators import DataRequired, Email, Length, Optional
+from wtforms.validators import DataRequired, Email, Length, Optional, InputRequired
 from app.models.validators import StudentNumber
 
 class PersonForm(FlaskForm):
@@ -40,5 +40,5 @@ class ClassEditForm(FlaskForm):
     term_id = SelectField("Term", validators=[DataRequired()], coerce=int, choices=[])
 
 class LoginForm(FlaskForm):
-    username = StringField(validators=[DataRequired()])
-    password = PasswordField(validators=[DataRequired()])
+    username = StringField(validators=[InputRequired()])
+    password = PasswordField(validators=[InputRequired()])

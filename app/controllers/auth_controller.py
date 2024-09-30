@@ -29,8 +29,10 @@ def login():
                 errors.append("The username or password is invalid.")
 
         if len(errors) == 0:
+            print("setting session porps")
             session["user"] = {
-                "name": user_account.full_name(), 
+                "name": user_account.full_name(),
+                "username": user_account.username,
                 "id": user_account.id,
                 "role": user_account.role,
                 "is_admin": user_account.is_admin
@@ -49,7 +51,12 @@ def logout():
 
 @auth_blueprint.route("/auth/passwords", methods=["GET"])
 def passwords():
-    if not session.get("user").get("is_admin") == True:
+    user = session.get("user", None)
+    user_is_admin = False
+    if user is not None:
+        user_is_admin = user.get("is_admin", False) == True
+
+    if not user_is_admin:
         controller_service.flash_message("You are not authorized to access this resource.", MessageCategory.Warn)
         return redirect(url_for("index.home"))
 
