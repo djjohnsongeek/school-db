@@ -88,7 +88,7 @@ def update_student(form: StudentEditForm) -> StudentEditItem:
 
     errors = []
     classes = [StudentClassItem(roster_entry) for roster_entry in student_repo.retrieve_classes(student_model)]
-    attendance = get_student_attendance(student_model)
+    attendance = get_student_attendance(student_model, classes)
     
     # if student_model.email != form.email.data and student_repo.email_exists(form.email.data):
     #     errors.append("This email address is already in use.")
