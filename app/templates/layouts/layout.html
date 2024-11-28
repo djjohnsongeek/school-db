@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/font-awesome-4.7.0/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app-styles.css') }}">
     {% block stylesheets %}{% endblock %}
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/database.png')}}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/csec_icon.png')}}">
     {% block early_scripts %}{% endblock %}
     <script>
         var csrf_token = "{{ csrf_token() }}";
@@ -19,7 +19,7 @@
     <nav class="navbar mb-5 has-shadow no-print" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="{{ url_for('index.home') }}">
-                <img src="{{ url_for('static', filename='images/database.png')}}" height="28">
+                <img src="{{ url_for('static', filename='images/csec_icon.png')}}" height="64">
             </a>
         </div>
         <div id="navbarBasicExample" class="navbar-menu">
