@@ -12,7 +12,8 @@ var classEdit = {
             itemName: null,
         };
         document.getElementById("confirm-delete-btn").addEventListener("click", (event) => AppApi.deleteRequest(event, options));
-        classEdit.drawAttendanceChart();
+        // Chart not being used really
+        // classEdit.drawAttendanceChart();
     },
     drawSelectedStudents: function()
     {
