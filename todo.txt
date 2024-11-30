@@ -8,6 +8,9 @@ git TODO: vlidate term dates being changed after attendace has already been take
 
 
 1. Final / aggregate grade score for each student (medium)
+- display final scores (DONT)
+- Allow user to edit final scores
+
 2. Organize a students's classes by current and previous terms (medium)
 3. Student / Class search (slow)
 4. Financial Tracking (slow)
