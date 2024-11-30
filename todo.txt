@@ -6,14 +6,13 @@ TODO: validate class attendace by check if date is in the future
 git TODO: vlidate term dates being changed after attendace has already been taken
 
 
-1. Add Logo (fast)
-2. Remove Attendance Graph (fast)
-3. Clean up a student's "classes" section (fast)
-4. Final / aggregate grade score for each student (medium)
-5. Student / Class search (slow)
-6. Financial Tracking (slow)
-7. Full Grades Tracking (slow)
-8. Update to testing and development to increase app stability (constant)
+
+1. Final / aggregate grade score for each student (medium)
+2. Organize a students's classes by current and previous terms (medium)
+3. Student / Class search (slow)
+4. Financial Tracking (slow)
+5. Full Grades Tracking (slow)
+6. Update to testing and development to increase app stability (constant)
      - Logging,
      - Testing
      - Test Instance
