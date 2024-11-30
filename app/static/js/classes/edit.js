@@ -12,8 +12,7 @@ var classEdit = {
             itemName: null,
         };
         document.getElementById("confirm-delete-btn").addEventListener("click", (event) => AppApi.deleteRequest(event, options));
-        // Chart not being used really
-        // classEdit.drawAttendanceChart();
+        classEdit.drawAttendanceChart();
     },
     drawSelectedStudents: function()
     {
@@ -28,8 +27,8 @@ var classEdit = {
     },
     drawAttendanceChart: function()
     {
-        const chartEL = document.getElementById("class-attendance-chart");
-        const chartContainer = document.getElementById("class-attendance-chart-container");
+        // const chartEL = document.getElementById("class-attendance-chart");
+        // const chartContainer = document.getElementById("class-attendance-chart-container");
         const noAttendanceMsgContainer = document.getElementById("class-attendance-message-container");
 
         const attendance = JSON.parse(document.getElementById("attendance-json").value);
@@ -37,6 +36,18 @@ var classEdit = {
         // document.getElementById("attendance-totals-presents").innerText = attendance.presentsTotal;
         document.getElementById("attendance-totals-tardies").innerText = attendance.tardiesTotal;
         document.getElementById("attendance-totals-absents").innerText = attendance.absentsTotal;
+
+
+        if ((attendance.tardiesTotal + attendance.absentsTotal) === 0)
+        {
+            noAttendanceMsgContainer.style.display = "";
+        }
+        else {
+            noAttendanceMsgContainer.style.display = "none";
+        }
+
+        // Chart not being used
+        return;
 
         const data = {
             labels: attendance.labels,
