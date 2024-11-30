@@ -55,6 +55,7 @@ class StudentClassItem():
         self.class_id = class_info.school_class.id
         self.term = class_info.school_class.term.name
         self.name = class_info.school_class.name
+        self.final_grade = class_info.final_grade
 
 class AsyncJsResponseItem():
     def __init__(self, errors: [], data: dict):

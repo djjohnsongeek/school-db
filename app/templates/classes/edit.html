@@ -111,6 +111,7 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
+                                        <th>Grade</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -121,6 +122,9 @@
                                             <a href="{{ url_for('students.edit', student_id=roster_item.student.id) }}">
                                                 {{ roster_item.student.full_name() }}
                                             </a>
+                                        </td>
+                                        <td>
+                                            {{ roster_item.final_grade }}
                                         </td>
                                         <td>
                                             <button class="button is-danger modal-trigger" data-item-id="{{roster_item.id}}" data-target="confirm-delete-modal">

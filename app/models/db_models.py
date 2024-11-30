@@ -52,6 +52,7 @@ class SchoolClass(BaseModel):
 class ClassRosterEntry(BaseModel):
     student = ForeignKeyField(Student, backref="class_list")
     school_class = ForeignKeyField(SchoolClass, backref="roster")
+    final_grade = DoubleField(null=True)
 
     class Meta:
         table_name = "class_rosters"

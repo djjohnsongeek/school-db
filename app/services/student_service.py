@@ -30,6 +30,7 @@ def get_student_attendance(student_model: Student, class_items: []) -> {}:
             "class_id": class_item.class_id,
             "class_term": class_item.term,
             "class_name": class_item.name,
+            "student_grade": class_item.final_grade,
             "P_total": 0,
             "T_total": 0,
             "A_total": 0

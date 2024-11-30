@@ -30,15 +30,16 @@ class ClassEditItem():
             self.class_name = class_model.name
             self.class_id = class_model.id
             self.attendance = json.dumps(attendance)
-            self.roster = [RosterItem(roster_item.id, roster_item.student) for roster_item in class_model.roster]
+            self.roster = [RosterItem(roster_record) for roster_record in class_model.roster]
             self.non_roster = non_roster
             self.teacher = class_model.teacher
         self.edit_errors = edit_errors
 
 class RosterItem():
-    def __init__(self, roster_item_id: int, student: Student):
-        self.id = roster_item_id
-        self.student = student
+    def __init__(self, roster_record):
+        self.id = roster_record.id
+        self.student = roster_record.student
+        self.final_grade =  roster_record.final_grade
 
     def to_dict(self) -> {}:
         return {
@@ -273,7 +274,7 @@ def create_roster_entries(request_data: {}) -> ApiResultItem:
             new_ids = [student.id for student in students]
             for item in class_model.roster:
                 if item.student.id in new_ids:
-                    roster_item = RosterItem(item.id, item.student)
+                    roster_item = RosterItem(item)
                     roster_items.append(roster_item.to_dict())
 
     # needs to return an ApiResult
