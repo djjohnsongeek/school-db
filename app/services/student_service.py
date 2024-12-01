@@ -159,3 +159,19 @@ def soft_delete(student_id: int) -> ApiResultItem:
             errors.append("Failed to delete student.")
 
     return ApiResultItem(errors, { "itemId": student_id })
+
+
+def update_grade(request: {}) -> ApiResultItem:
+    student_id = 0
+    class_id = 0
+    grade = 0
+    errors = []
+
+    try:
+        student_id = int(request["student_id"])
+        class_id = int(request["class_id"])
+        grade = float(request["final_grade"])
+    except Exception as e:
+        errors.append("Invalid data detected.")
+
+    return ApiResultItem(errors, { "itemId": 0 })

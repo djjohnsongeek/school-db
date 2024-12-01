@@ -58,7 +58,11 @@
                                     Final Grade:
                                 </div>
                                 <dib class="column">
-                                    <input class="input is-small" value="{{student_model.attendance[key]['student_grade']}}" />
+                                    <input 
+                                        class="input is-small student-grade-input"
+                                        value="{{student_model.attendance[key]['student_grade']}}"
+                                        data-class-id="{{student_model.attendance[key]['class_id']}}"
+                                        data-student-id="{{student_model.form.student_id.data}}" />
                                 </dib>
                             </div>
                             <div class="columns mb-0">
@@ -119,4 +123,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/students/edit.js')}}" type="text/javascript"></script>
 {% endblock %}
