@@ -21,16 +21,17 @@ class StudentEditPage {
             data: {
                 class_id: input.dataset.classId,
                 student_id: input.dataset.studentId,
+                record_id: input.dataset.recordId,
                 final_grade: input.value
             },
             successCallback: (response) => {
-                console.log("success");
+                Messages.addMessage("Student's grade updated successfully.", "success")
             },
             errorCallback: (response) => {
-                console.log("error");
+                // gets call on server or customer errors
             },
             finallyCallback: () => {
-                console.log("finally!");
+
             }
         }
 

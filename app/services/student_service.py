@@ -1,4 +1,4 @@
-from app.repo import student_repo
+from app.repo import student_repo, class_repo
 from app.models.db_models import Student
 from app.models.view_models import StudentItem, StudentEditItem, StudentCreateItem, StudentClassItem
 from app.models.forms import StudentEditForm
@@ -31,6 +31,7 @@ def get_student_attendance(student_model: Student, class_items: []) -> {}:
             "class_term": class_item.term,
             "class_name": class_item.name,
             "student_grade": class_item.final_grade,
+            "record_id": class_item.record_id,
             "P_total": 0,
             "T_total": 0,
             "A_total": 0
@@ -165,13 +166,25 @@ def update_grade(request: {}) -> ApiResultItem:
     student_id = 0
     class_id = 0
     grade = 0
+    record_id = 0
     errors = []
 
     try:
         student_id = int(request["student_id"])
         class_id = int(request["class_id"])
         grade = float(request["final_grade"])
+        record_id = int(request["record_id"])
+
     except Exception as e:
         errors.append("Invalid data detected.")
 
-    return ApiResultItem(errors, { "itemId": 0 })
+    if len(errors) == 0:
+        roster_record = class_repo.retrieve_roster_entry(record_id)
+
+        if roster_record.student.id != student_id or roster_record.school_class.id != class_id:
+            errors.append("Invalid record retrieved.")
+        else:
+            roster_record.final_grade = grade
+            class_repo.update_roster_entry(roster_record)
+
+    return ApiResultItem(errors, { "itemId": record_id })

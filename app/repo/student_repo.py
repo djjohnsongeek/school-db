@@ -29,6 +29,14 @@ def retrieve_classes(student: Student) -> []:
         .join(Term)
         .where(ClassRosterEntry.student == student))
 
+def retrieve_class_roster_record(record_id: int) -> ClassRosterEntry:
+    return (ClassRosterEntry
+        .select()
+        .join(SchoolClass)
+        .join(Term)
+        .where(ClassRosterEntry.id == record_id)
+        .first())
+
 def email_exists(email: str) -> bool:
     return retrieve_by_email(email) != None
 

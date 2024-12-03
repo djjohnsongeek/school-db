@@ -156,5 +156,8 @@ def update(form: ClassEditForm, class_model: SchoolClass) -> bool:
 
     return True
 
+def update_roster_entry(roster_entry: ClassRosterEntry) -> bool:
+    return roster_entry.save() == 1
+
 def delete_roster_entry(roster_entry: ClassRosterEntry) -> bool:
     return roster_entry.delete_instance() == 1
