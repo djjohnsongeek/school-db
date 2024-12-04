@@ -1,17 +1,15 @@
-class StudentEditPage {
+class StudentGrades {
 
     finalGradeInputs = null;
 
     constructor()
     {
-        console.log("Constructing");
         this.finalGradeInputs = document.getElementsByClassName("student-grade-input");
         for (let input of this.finalGradeInputs)
         {
             input.addEventListener("change", this.updateFinalGrade);
         }
     }
-
 
     updateFinalGrade(event) {
         const input = event.currentTarget;
@@ -41,4 +39,4 @@ class StudentEditPage {
     }
 }
 
-var studentEdit = new StudentEditPage();
+var studentEdit = new StudentGrades();

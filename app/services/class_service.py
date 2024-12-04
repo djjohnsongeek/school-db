@@ -39,6 +39,7 @@ class RosterItem():
     def __init__(self, roster_record):
         self.id = roster_record.id
         self.student = roster_record.student
+        self.school_class = roster_record.school_class
         self.final_grade = roster_record.final_grade
 
     def to_dict(self) -> {}:
