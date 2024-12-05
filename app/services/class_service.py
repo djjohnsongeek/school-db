@@ -158,6 +158,9 @@ def to_edit_form(class_model: SchoolClass) -> ClassEditForm:
         )
 
         form.teacher_id.choices = get_teacher_choices()
+
+
+
         form.term_id.choices = get_term_choices()
     
     return form if class_model is not None else None
@@ -167,8 +170,10 @@ def get_teacher_choices() -> []:
     return [(teacher.id, teacher.full_name()) for teacher in teachers]
 
 def get_term_choices() -> []:
-    terms = terms_repo.retrieve_current()
-    return [(term.id, term.name) for term in terms]
+    # terms = terms_repo.retrieve_current()
+    terms = terms_repo.retrieve_all()
+    choices = [(term.id, term.name) for term in terms]
+    return choices
 
 def create_class(form: ClassEditForm) -> ClassCreateItem:
     errors = []
