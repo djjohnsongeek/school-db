@@ -152,6 +152,7 @@ def init_db(prod):
         ClassRosterEntry.insert(
             student = student_1,
             school_class = algebra,
+            final_grade = 200
         ).execute()
 
         ClassRosterEntry.insert(
