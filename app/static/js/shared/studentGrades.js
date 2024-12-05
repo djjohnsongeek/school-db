@@ -32,9 +32,6 @@ class StudentGrades {
 
             }
         }
-
-        console.log(requestObj.data);
-
         AsyncApi.postRequest(requestObj);
     }
 }
