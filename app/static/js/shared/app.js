@@ -240,7 +240,7 @@ var AsyncApi = {
             })
             .finally()
             {
-                if (typeof requestObj.errorCallback === 'function') {
+                if (typeof requestObj.finallyCallback === 'function') {
                     requestObj.finallyCallback();
                 }
             };
@@ -281,7 +281,7 @@ var AsyncApi = {
             })
             .finally()
             {
-                if (typeof requestObj.errorCallback === 'function') {
+                if (typeof requestObj.finallyCallback === 'function') {
                     requestObj.finallyCallback();
                 }
             }
