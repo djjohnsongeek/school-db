@@ -199,6 +199,9 @@ var classEdit = {
             data = {
                 studentEditUrl: `/students/edit/${item.student.id}`,
                 rosterItemId: item.id,
+                studentId: item.student.id,
+                classId: item.school_class.id,
+                finalGrade: item.final_grade,
                 studentFullName: item.student.name,
             }
 
@@ -252,15 +255,32 @@ var classEdit = {
             </span>
         </button>`
 
-
+        // Main Conatiner
         const htmlRow = Util.toHtml(htmlStr);
-        const lastCell = document.createElement("td");
+        
+        // Grade Col
+        const inputCell = document.createElement("td");
+        const gradeInput = document.createElement("input");
+        gradeInput.type = "text";
+        gradeInput.className = "input";
+        gradeInput.dataset.studentId = data.studentId;
+        gradeInput.dataset.classId = data.classId;
+        gradeInput.dataset.recordId = data.rosterItemId;
+        gradeInput.value = data.finalGrade ?? "None";
+        inputCell.append(gradeInput);
+
+        // Action Col
+        const actionCell = document.createElement("td");
         const removeBtn = Util.toHtml(removeBtnHtmlStr);
-        lastCell.append(removeBtn);
-        htmlRow.append(lastCell);
+        actionCell.append(removeBtn);
 
+        // Add cols to main container
+        htmlRow.append(inputCell);
+        htmlRow.append(actionCell);
+
+        // Add event listeners
         removeBtn.addEventListener("click", Modal._openAndSetItemId);
-
+        gradeInput.addEventListener("change", studentGrades.updateFinalGrade);
 
         return htmlRow;
     }

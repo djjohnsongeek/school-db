@@ -39,4 +39,4 @@ class StudentGrades {
     }
 }
 
-var studentEdit = new StudentGrades();
+var studentGrades = new StudentGrades();

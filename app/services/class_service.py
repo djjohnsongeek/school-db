@@ -48,7 +48,12 @@ class RosterItem():
             "student": {
                 "name": self.student.full_name(),
                 "id": self.student.id
-            }
+            },
+            "school_class": {
+                "class_name": self.school_class.name,
+                "id": self.school_class.id
+            },
+            "final_grade": self.final_grade
         }
 
 ### Functions
