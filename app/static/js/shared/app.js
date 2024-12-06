@@ -13,8 +13,6 @@ var App = {
         {
             element.addEventListener("click", (event) => App.toggleVisible(event));
         }
-
-        setInterval(App.popMessage, 4500);
     },
     toggleVisible: function(event) {
         const t = event.currentTarget.dataset.target;
@@ -146,6 +144,7 @@ var Messages = {
         const container = document.getElementById(this.containerId);
         let msgHtml = this.createMsgHtml(msg, category);
         container.appendChild(msgHtml);
+        setTimeout(App.popMessage, 4500);
     },
     addMessages: function(msgs, category)
     {
@@ -241,7 +240,7 @@ var AsyncApi = {
             })
             .finally()
             {
-                if (typeof requestObj.errorCallback === 'function') {
+                if (typeof requestObj.finallyCallback === 'function') {
                     requestObj.finallyCallback();
                 }
             };
@@ -282,7 +281,7 @@ var AsyncApi = {
             })
             .finally()
             {
-                if (typeof requestObj.errorCallback === 'function') {
+                if (typeof requestObj.finallyCallback === 'function') {
                     requestObj.finallyCallback();
                 }
             }

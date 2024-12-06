@@ -27,8 +27,8 @@ var classEdit = {
     },
     drawAttendanceChart: function()
     {
-        const chartEL = document.getElementById("class-attendance-chart");
-        const chartContainer = document.getElementById("class-attendance-chart-container");
+        // const chartEL = document.getElementById("class-attendance-chart");
+        // const chartContainer = document.getElementById("class-attendance-chart-container");
         const noAttendanceMsgContainer = document.getElementById("class-attendance-message-container");
 
         const attendance = JSON.parse(document.getElementById("attendance-json").value);
@@ -36,6 +36,18 @@ var classEdit = {
         // document.getElementById("attendance-totals-presents").innerText = attendance.presentsTotal;
         document.getElementById("attendance-totals-tardies").innerText = attendance.tardiesTotal;
         document.getElementById("attendance-totals-absents").innerText = attendance.absentsTotal;
+
+
+        if ((attendance.tardiesTotal + attendance.absentsTotal) === 0)
+        {
+            noAttendanceMsgContainer.style.display = "";
+        }
+        else {
+            noAttendanceMsgContainer.style.display = "none";
+        }
+
+        // Chart not being used
+        return;
 
         const data = {
             labels: attendance.labels,
@@ -187,6 +199,9 @@ var classEdit = {
             data = {
                 studentEditUrl: `/students/edit/${item.student.id}`,
                 rosterItemId: item.id,
+                studentId: item.student.id,
+                classId: item.school_class.id,
+                finalGrade: item.final_grade,
                 studentFullName: item.student.name,
             }
 
@@ -240,15 +255,32 @@ var classEdit = {
             </span>
         </button>`
 
-
+        // Main Conatiner
         const htmlRow = Util.toHtml(htmlStr);
-        const lastCell = document.createElement("td");
+        
+        // Grade Col
+        const inputCell = document.createElement("td");
+        const gradeInput = document.createElement("input");
+        gradeInput.type = "text";
+        gradeInput.className = "input";
+        gradeInput.dataset.studentId = data.studentId;
+        gradeInput.dataset.classId = data.classId;
+        gradeInput.dataset.recordId = data.rosterItemId;
+        gradeInput.value = data.finalGrade ?? "None";
+        inputCell.append(gradeInput);
+
+        // Action Col
+        const actionCell = document.createElement("td");
         const removeBtn = Util.toHtml(removeBtnHtmlStr);
-        lastCell.append(removeBtn);
-        htmlRow.append(lastCell);
+        actionCell.append(removeBtn);
 
+        // Add cols to main container
+        htmlRow.append(inputCell);
+        htmlRow.append(actionCell);
+
+        // Add event listeners
         removeBtn.addEventListener("click", Modal._openAndSetItemId);
-
+        gradeInput.addEventListener("change", studentGrades.updateFinalGrade);
 
         return htmlRow;
     }

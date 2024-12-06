@@ -30,7 +30,7 @@
         <div class="column">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-header-title title is-3">Classes & Attendance</h2>
+                    <h2 class="card-header-title title is-3">Classes Details</h2>
                 </div>
                 <div class="card-content">
                     {% if not student_model.attendance %}
@@ -53,6 +53,19 @@
                                     </div>
                                 </div>
                             </a>
+                            <div class="columns mb-0">
+                                <div class="column">
+                                    Final Grade:
+                                </div>
+                                <dib class="column">
+                                    <input 
+                                        class="input is-small student-grade-input"
+                                        value="{{student_model.attendance[key]['student_grade']}}"
+                                        data-class-id="{{student_model.attendance[key]['class_id']}}"
+                                        data-student-id="{{student_model.form.student_id.data}}"
+                                        data-record-id="{{student_model.attendance[key]['record_id']}}" />
+                                </dib>
+                            </div>
                             <div class="columns mb-0">
                                 <div class="column">
                                     Absences:
@@ -98,17 +111,9 @@
             </div>
         </div>
     </div>
-    <div class="columns">
-        <div class="column">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-header-title title is-3">Grades</h2>
-                </div>
-                <div class="card-content">
-                    Future release
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/shared/studentGrades.js')}}" type="text/javascript"></script>
 {% endblock %}

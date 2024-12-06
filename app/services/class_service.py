@@ -30,15 +30,17 @@ class ClassEditItem():
             self.class_name = class_model.name
             self.class_id = class_model.id
             self.attendance = json.dumps(attendance)
-            self.roster = [RosterItem(roster_item.id, roster_item.student) for roster_item in class_model.roster]
+            self.roster = [RosterItem(roster_record) for roster_record in class_model.roster]
             self.non_roster = non_roster
             self.teacher = class_model.teacher
         self.edit_errors = edit_errors
 
 class RosterItem():
-    def __init__(self, roster_item_id: int, student: Student):
-        self.id = roster_item_id
-        self.student = student
+    def __init__(self, roster_record):
+        self.id = roster_record.id
+        self.student = roster_record.student
+        self.school_class = roster_record.school_class
+        self.final_grade = roster_record.final_grade
 
     def to_dict(self) -> {}:
         return {
@@ -46,7 +48,12 @@ class RosterItem():
             "student": {
                 "name": self.student.full_name(),
                 "id": self.student.id
-            }
+            },
+            "school_class": {
+                "class_name": self.school_class.name,
+                "id": self.school_class.id
+            },
+            "final_grade": self.final_grade
         }
 
 ### Functions
@@ -156,6 +163,9 @@ def to_edit_form(class_model: SchoolClass) -> ClassEditForm:
         )
 
         form.teacher_id.choices = get_teacher_choices()
+
+
+
         form.term_id.choices = get_term_choices()
     
     return form if class_model is not None else None
@@ -165,8 +175,10 @@ def get_teacher_choices() -> []:
     return [(teacher.id, teacher.full_name()) for teacher in teachers]
 
 def get_term_choices() -> []:
-    terms = terms_repo.retrieve_current()
-    return [(term.id, term.name) for term in terms]
+    # terms = terms_repo.retrieve_current()
+    terms = terms_repo.retrieve_all()
+    choices = [(term.id, term.name) for term in terms]
+    return choices
 
 def create_class(form: ClassEditForm) -> ClassCreateItem:
     errors = []
@@ -273,7 +285,7 @@ def create_roster_entries(request_data: {}) -> ApiResultItem:
             new_ids = [student.id for student in students]
             for item in class_model.roster:
                 if item.student.id in new_ids:
-                    roster_item = RosterItem(item.id, item.student)
+                    roster_item = RosterItem(item)
                     roster_items.append(roster_item.to_dict())
 
     # needs to return an ApiResult

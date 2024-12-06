@@ -45,24 +45,16 @@
                             </a>
                         </div>
                         <div class="block" id="class-attendance-container">
-                            <div id="class-attendance-message-container" style="display: none;">
+                            <input id="attendance-json" value="{{ class_model.attendance }}" type="hidden">
+                            <div id="class-attendance-message-container">
                                 <div class="notification is-warning is-light">
                                     No Attendance Records Found.
                                 </div>
                             </div>
                             <div class="columns">
-                                <div class="column is-two-thirds">
-                                    <input value="{{class_model.attendance}}" id="attendance-json" type="hidden" />
-                                    <div id="class-attendance-chart-container">
-                                        <canvas id="class-attendance-chart">
-        
-                                        </canvas>
-                                    </div>
-                                </div>
                                 <div class="column">
                                     <div class="p-5">
                                         <table class="table is-fullwidth">
-                                            <caption>Totals</caption>
                                             <tbody>
                                                 <!-- <tr>
                                                     <th>Presents</th>
@@ -119,6 +111,7 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
+                                        <th>Grade</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -129,6 +122,14 @@
                                             <a href="{{ url_for('students.edit', student_id=roster_item.student.id) }}">
                                                 {{ roster_item.student.full_name() }}
                                             </a>
+                                        </td>
+                                        <td>
+                                            <input class="input student-grade-input"
+                                                   value="{{ roster_item.final_grade }}"
+                                                   data-class-id="{{ roster_item.school_class.id }}"
+                                                   data-student-id="{{ roster_item.student.id }}"
+                                                   data-record-id="{{ roster_item.id }}"
+                                            >
                                         </td>
                                         <td>
                                             <button class="button is-danger modal-trigger" data-item-id="{{roster_item.id}}" data-target="confirm-delete-modal">
@@ -148,20 +149,6 @@
                             <div class="notification is-warning is-light">No Students Found</div>
                             {% endif %}
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="columns">
-        <div class="column">
-            <div class="block">
-                <div class="card">
-                    <div class="card-header">
-                        <h1 class="card-header-title title is-3">Assignments & Grades</h1>
-                    </div>
-                    <div class="card-content">
-                        Future Release
                     </div>
                 </div>
             </div>
@@ -233,6 +220,7 @@
 </div>
 {% endblock %}
 {% block scripts %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
     <script src="{{ url_for('static', filename='js/classes/edit.js')}}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/shared/studentGrades.js')}}" type="text/javascript"></script>
 {% endblock %}

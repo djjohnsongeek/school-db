@@ -7,11 +7,13 @@ from app.db import get_db
 from app.commands import init_db
 from flask import g, session
 
+# Run tests with py -m pytest
 
 @pytest.fixture
 def app():
     app = create_app({
         "TESTING": True,
+        "WTF_CSRF_ENABLED": False,
         "DB_NAME": "school_db_test",
         "DB_USER": "root",
         "DB_PORT": 3306,

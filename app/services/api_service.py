@@ -44,7 +44,12 @@ def handle_post(category: str, action: str, request: Request) -> ApiResultItem:
             if category == "password":
                 result = staff_service.reset_password(request_data)
             else:
-                errors.app("Not Supported")
+                errors.append("Not Supported")
+        elif action == "update":
+            if category == "student":
+                result = student_service.update_grade(request_data)
+            else:
+                errors.append("Not Supported")
         else:
             errors.append("Not Supported")
     

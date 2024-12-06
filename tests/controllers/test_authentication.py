@@ -4,7 +4,7 @@ from flask import g, session
 @pytest.mark.parametrize(('url',), (
     ("/terms/create",),
     ("/terms",),
-    ("/terms/edit/1",)
+    ("/terms/edit/1",),
     ("/attendance/1",),
     ("/classes/edit/1",),
     ("/classes",),

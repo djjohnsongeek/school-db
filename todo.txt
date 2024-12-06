@@ -1,6 +1,22 @@
+NOTE:
+# run tests with py -m pytest
+
+
 TODO: on attendance calendar, if zero for a particular value, don't add to the calendar?
 TODO: allow users to change their passwords
 TODO: get search and filtering working for all list pages?
 TODO: validate class attendance date by looking up term start and end dates
 TODO: validate class attendace by check if date is in the future
 git TODO: vlidate term dates being changed after attendace has already been taken
+
+
+1. DONE
+2. Organize a students's classes by current and previous terms (medium)
+3. Student / Class search (slow)
+4. Financial Tracking (slow)
+5. Full Grades Tracking (slow)
+6. Update to testing and development to increase app stability (constant)
+     - Logging,
+     - Testing
+     - Test Instance
+     - Automated Deployment

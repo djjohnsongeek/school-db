@@ -8,35 +8,41 @@
                 <h1 class="card-header-title title is-3">Dashboard</h1>
             </div>
             <div class="card-content">
-                <div class="content">
-                    Welcome to the home page. What should go here?
-                </div>
-                <div class="menu">
-                    <p class="menu-label">
-                        Actions
-                    </p>
-                    <ul class="menu-list">
-                        <li>
-                            <a href="#">
-                                Manage Terms
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for('classes.home') }}">
-                                Manage Classes
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for('staff.home') }}">
-                                Manage Staff
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for('students.home') }}">
-                                Manage Students
-                            </a>
-                        </li>
-                    </ul>
+                <div class="fixed-grid">
+                    <div class="grid">
+                        <div class="cell">
+                            <div class="menu">
+                                <p class="menu-label">
+                                    Actions
+                                </p>
+                                <ul class="menu-list">
+                                    <li>
+                                        <a href="#">
+                                            Manage Terms
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url_for('classes.home') }}">
+                                            Manage Classes
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url_for('staff.home') }}">
+                                            Manage Staff
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url_for('students.home') }}">
+                                            Manage Students
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="cell" style="text-align: center;">
+                            <img src="{{ url_for('static', filename='images/csec_logo.jpg')}}" width="300px"></img>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
