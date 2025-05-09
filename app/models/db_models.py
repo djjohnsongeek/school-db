@@ -5,7 +5,7 @@ from app.models.enums import StaffRole
 from datetime import date
 
 class Student(Person):
-    student_number = CharField(max_length=32, unique=True)
+    student_number = CharField(max_length=32)
     application_date = DateField()
     occupation = CharField(max_length=128, null=True)
 
