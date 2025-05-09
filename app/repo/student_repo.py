@@ -22,6 +22,9 @@ def retrieve_by_email(email: str) -> Student:
 def retrieve_by_number(student_number: str) -> Student:
     return Student.get_or_none(Student.student_number == student_number)
 
+def retrieve_active_by_number(student_number: str) -> Student:
+    return Student.select().where((Student.student_number == student_number) & (Student.deleted == False)).first()
+
 def retrieve_classes(student: Student) -> []:
     return (ClassRosterEntry
         .select()
@@ -33,7 +36,7 @@ def email_exists(email: str) -> bool:
     return retrieve_by_email(email) != None
 
 def student_number_exists(student_num: str) -> bool:
-    return retrieve_by_number(student_num) != None
+    return retrieve_active_by_number(student_num) != None
 
 def retrieve_last_student() -> Student:
     return Student.select().order_by(Student.id.desc()).first()
