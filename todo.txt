@@ -9,13 +9,13 @@ TODO: validate class attendance date by looking up term start and end dates
 TODO: validate class attendace by check if date is in the future
 git TODO: vlidate term dates being changed after attendace has already been taken
 
-
-1. DONE
-2. Organize a students's classes by current and previous terms (medium)
-3. Student / Class search (slow)
-4. Financial Tracking (slow)
-5. Full Grades Tracking (slow)
-6. Update to testing and development to increase app stability (constant)
+1. look into bug about not being able to create a student with a '2501007' student number.
+2. Allow attendace records to be deleted
+3. Organize a students's classes by current and previous terms (medium)
+4. Student / Class search (slow)
+5. Financial Tracking (slow)
+6. Full Grades Tracking (slow)
+7. Update to testing and development to increase app stability (constant)
      - Logging,
      - Testing
      - Test Instance
