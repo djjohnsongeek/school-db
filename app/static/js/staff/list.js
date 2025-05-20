@@ -32,3 +32,12 @@ document.getElementById("pwreset-save-btn").addEventListener("click", function(e
 
     AsyncApi.postRequest(options);
 });
+
+$(document).ready( function () {
+    const table = $('#staff-table').DataTable();
+    document.getElementsByClassName("dt-search")[0].style.display = "none";
+        document.getElementById("staff-search-input").addEventListener("keyup", (event) => {
+        const queryString = event.currentTarget.value;
+        table.search(queryString).draw();
+    });
+} );
