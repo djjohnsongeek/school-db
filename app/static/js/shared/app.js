@@ -293,8 +293,9 @@ var AppApi = {
     /* DELETE Requests Config Obj
         {
             category: string
-            itemName : string, 
-            rowToRemoveIdPrefix: string
+            itemName: string, 
+            rowToRemoveIdPrefix: string,
+            dataTable: datatable | null
         }
     */
     deleteRequest: function(event, configObj) {
@@ -313,7 +314,15 @@ var AppApi = {
                 {
                     const id = response.data.itemId;
                     let rowEl = document.getElementById(`${configObj.rowToRemoveIdPrefix}${id}`);
-                    rowEl.remove();
+
+                    if (configObj.dataTable != null && configObj.dataTable != undefined)
+                    {
+                        configObj.dataTable.row(rowEl).remove();
+                    }
+                    else {
+                        rowEl.remove();
+                    }
+
                     delete rowEl;
 
                     if (configObj.successMsg)
