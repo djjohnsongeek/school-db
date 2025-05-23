@@ -313,14 +313,16 @@ var AppApi = {
                 if (response.errors.length == 0)
                 {
                     const id = response.data.itemId;
-                    let rowEl = document.getElementById(`${configObj.rowToRemoveIdPrefix}${id}`);
+                    const rowId = `${configObj.rowToRemoveIdPrefix}${id}`;
 
                     if (configObj.dataTable != null && configObj.dataTable != undefined)
                     {
-                        configObj.dataTable.row(rowEl).remove();
+                        configObj.dataTable.row("#" + rowId).remove().draw();
                     }
                     else {
+                        let rowEl = document.getElementById(rowId);
                         rowEl.remove();
+                        delete rowEl;
                     }
 
                     delete rowEl;

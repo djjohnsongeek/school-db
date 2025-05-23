@@ -59,15 +59,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% if not students %}
-                        <tr>
-                            <td colspan="7">
-                                <div class="notification is-warning is-light">
-                                    No Students Found
-                                </div>
-                            </td>
-                        </tr>
-                        {% endif %}
                         {% for student in students %}
                         <tr id="student-row-{{ student.id }}">
                             <td><a href="{{ url_for('students.edit', student_id=student.id) }}">{{student.name}}</a></td>

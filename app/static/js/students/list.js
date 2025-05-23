@@ -3,8 +3,14 @@ class StudentList
     constructor()
     {
         // Setup data table
-        this.table = $('#students-table').DataTable();
-        document.getElementsByClassName("dt-search")[0].style.display = "none";
+        this.table = $('#students-table').DataTable({
+            layout: {
+                topStart: 'pageLength',
+                topEnd: null,
+                bottomStart: 'info',
+                bottomEnd: 'paging'
+            }
+        });
         document.getElementById("students-search-input").addEventListener("keyup", (event) => {
             const queryString = event.currentTarget.value;
             this.table.search(queryString).draw();

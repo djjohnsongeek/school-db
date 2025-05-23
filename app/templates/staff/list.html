@@ -59,15 +59,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% if not staff %}
-                        <tr>
-                            <td colspan="7">
-                                <div class="notification is-warning is-light">
-                                    No Staff Found
-                                </div>
-                            </td>
-                        </tr>
-                        {% endif %}
                         {% for staff_member in staff %}
                         <tr id="staff-member-row-{{ staff_member.id }}">
                             <td><a href="{{ url_for('staff.edit', staff_id=staff_member.id) }}">{{staff_member.name}}</a></td>

@@ -12,7 +12,7 @@ git TODO: vlidate term dates being changed after attendace has already been take
 2. Allow attendace records to be deleted
 3. Organize a students's classes by current and previous terms (medium)
 4. Student / Class search
-     - make sure that row buttons still function as expected
+     - check for existance of table before instantiated it (when no records are found)
 5. Financial Tracking (slow)
 6. Full Grades Tracking (slow)
 7. Update to testing and development to increase app stability (constant)

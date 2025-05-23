@@ -1,10 +1,17 @@
 class StaffList {
+
     constructor()
     {
         // Setup datatable
-        this.table = $('#staff-table').DataTable();
+        this.table = $('#staff-table').DataTable({
+            layout: {
+                topStart: 'pageLength',
+                topEnd: null,
+                bottomStart: 'info',
+                bottomEnd: 'paging'
+            }
+        });
 
-        document.getElementsByClassName("dt-search")[0].style.display = "none";
         document.getElementById("staff-search-input").addEventListener("keyup", (event) => {
             const queryString = event.currentTarget.value;
             this.table.search(queryString).draw();
